@@ -2,7 +2,7 @@
 
 **Outcome:** a synthetic dataset in which every error is planted and recorded, and a scorer that says what share of them the app finds.
 
-**Why it matters:** "it seems to work" is not evidence. This epic is built before the checks on purpose, so every check and every AI task lands with a number, and the commit history shows recall rising task by task. The same generator produces the demo's sample file, so the demo runs on data whose answers are known.
+**Why it matters:** "it seems to work" is not evidence. This epic is built before the checks on purpose, so every check and every AI task lands with a number, and recall can be seen rising task by task. The same generator produces the demo's sample file, so the demo runs on data whose answers are known.
 
 **Show after this epic:** `yarn eval --checks-only` printing a table of zeros that Epic 4 will fill.
 
@@ -64,7 +64,7 @@
 **Decisions**
 
 - `--checks-only` needs no key and costs nothing. Runs against real models come in T10.1 and use the same scorer.
-- Result files are committed. Each task in Epic 4 commits the updated baseline with its code.
+- Result files are committed. Each task in Epic 4 updates the baseline alongside its code.
 
 **Done when**
 

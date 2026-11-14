@@ -21,7 +21,7 @@
 9. Project structure.
 10. Decisions and trade-offs, including what was deliberately not built and why.
 11. What comes next: the production shape for large files and teams (a queue and workers, object storage for uploads, a database for recipes and audit trails), and the items in `stretch.md`.
-12. How AI was used to build it: `CLAUDE.md`, this plan, and one commit per task.
+12. How AI was used to build it: `CLAUDE.md`, this plan, and one commit per epic.
 
 **Decisions**
 
@@ -50,7 +50,7 @@
 | 2:45 | Export, then replay the recipe on next month's file with zero AI calls                       |
 | 3:30 | How it is built: rules instead of edits, the worker, validation of everything the model says |
 | 4:10 | The accuracy table, and how the default model was chosen                                     |
-| 4:35 | What it took: the plan, one commit per task, CI. What comes next                             |
+| 4:35 | What it took: the plan, one commit per epic, CI. What comes next                             |
 
 **Decisions**
 
@@ -65,7 +65,7 @@
 
 **After:** T11.2
 
-**Build:** `docs/submission-checklist.md`. Each defect found during the pass is corrected in its own commit, titled `Fix …`.
+**Build:** `docs/submission-checklist.md`. Each defect found during the pass is fixed within this epic and listed in the checklist.
 
 **The pass**
 

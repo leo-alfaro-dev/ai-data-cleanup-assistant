@@ -1,6 +1,6 @@
 # Development plan
 
-How the AI Data Cleanup Assistant gets built: 12 epics, 44 tasks, one commit per task. `CLAUDE.md` says how code is written in this repository; this folder says what gets built, in what order, and how each piece is proven.
+How the AI Data Cleanup Assistant gets built: 12 epics, 44 tasks, one commit per epic. `CLAUDE.md` says how code is written in this repository; this folder says what gets built, in what order, and how each piece is proven.
 
 ## The brief
 
@@ -29,7 +29,7 @@ The submission is a public repository with a descriptive README, a five-minute d
 4. **Review at volume.** One decision covers a rule across every row it touches. Bulk accept, full keyboard control, edit before accepting, undo for everything. _Epic 5, Epic 8_
 5. **Nothing hidden.** A panel shows exactly what was sent to the AI and what it cost. Small files are read in full, large ones as summaries. _T6.6_
 6. **A demo that survives visitors.** Sample data one click away, a spend cap, rate limits, and the option to use your own key. _Epic 7_
-7. **Visible process.** This plan, `CLAUDE.md`, CI, and one commit per task. _Epic 0_
+7. **Visible process.** This plan, `CLAUDE.md`, CI, and one commit per epic. _Epic 0_
 
 ## Epics
 
@@ -74,14 +74,14 @@ Epic 11 is never cut: without a README and a video there is no submission. Cut i
 
 The shortest route to a real submission is checkpoint C, then Epic 11.
 
-## How a task runs
+## How an epic runs
 
-1. Read `CLAUDE.md`, this file and the task's epic file.
-2. Take the first open task whose **After** tasks are done. One task at a time.
-3. Build only what the task lists. If it turns out bigger than planned, stop and propose a split here instead of widening the commit.
-4. Prove it: the task's **Done when**, then `yarn verify`, and `yarn integrations` when the task touches the UI, the worker or a route.
-5. Tick the task in the status list below and apply its **Also update** line. Both edits belong to the same commit.
-6. Report what changed, what was verified, and the commit message, which is the task's title. Claude never commits or stages; the user commits.
+1. Read `CLAUDE.md`, this file and the epic's file.
+2. Build the epic's tasks in order, each once its **After** tasks are done, one at a time and without pausing between them.
+3. Build only what each task lists. If one turns out bigger than planned, stop and propose a split here instead of widening it.
+4. Prove each task: its **Done when**, then `yarn verify`, and `yarn integrations` when it touches the UI, the worker or a route.
+5. Tick each task in the status list below and apply its **Also update** line.
+6. When the epic is done, report what changed, what was verified, and the commit message: the subject `Epic N: <name>` and the task titles in the body. Claude never commits or stages; the user commits once per epic.
 
 Every task is done only when:
 
@@ -124,7 +124,7 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ## What needs you
 
-- **A commit after every task.** The message is the task's title.
+- **A commit after every epic.** The subject is `Epic N: <name>`; the body lists the task titles.
 - **T0.4 and T7.3:** push to GitHub, create the Vercel project, add the production key.
 - **Before Epic 6:** a development OpenRouter key in `.env.local`. Each real call is announced before it is made.
 - **T7.3:** a production key with a credit limit, set in Vercel.
@@ -142,9 +142,9 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 1 — A CSV becomes data
 
-- [ ] **T1.1** Parse CSV files into an immutable dataset
-- [ ] **T1.2** Add Button and ProgressBar primitives
-- [ ] **T1.3** Load a CSV in a Web Worker and show its facts
+- [x] **T1.1** Parse CSV files into an immutable dataset
+- [x] **T1.2** Add Button and ProgressBar primitives
+- [x] **T1.3** Load a CSV in a Web Worker and show its facts
 
 ### Epic 2 — Understand the data
 

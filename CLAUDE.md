@@ -24,7 +24,7 @@ It should feel like a meticulous data analyst working beside you: it does the te
 
 - **In:** the four categories; review with accept, edit, reject, undo and bulk decisions; export of the cleaned CSV, a change log and a recipe; replaying a recipe; a transparency panel; built-in sample data; an optional own OpenRouter key; `yarn eval`.
 - **Out:** accounts, a database or any persistence beyond the tab, Excel files, multi-file joins, collaboration, free-form cell editing (every change is a suggestion).
-- **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one task per commit, submittable at every checkpoint.
+- **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one commit per epic, submittable at every checkpoint.
 
 ### Vocabulary
 
@@ -326,8 +326,8 @@ OPENROUTER_API_KEY=   # Server only — never prefix with NEXT_PUBLIC_
 ## Workflow
 
 - **Claude never commits and never stages.** The user is the only one who commits. No `git add`, `git commit`, `git stash` or anything else that changes the index or the history — and no `yarn prepare:commit`, because lint-staged stages files. When work is ready, say so and suggest a commit split and messages.
-- **Work follows [`plan/`](plan/README.md).** Take the next open task, build only its scope, tick it in the plan's status list, and report its title as the commit message. A task that turns out bigger than planned is split in the plan, not widened.
-- **Commits are small and single-purpose** with imperative subjects; the history is part of the submission.
+- **Work follows [`plan/`](plan/README.md), one epic at a time.** Build the epic's tasks in order without pausing between them, each to its own scope, and tick each in the plan's status list. A task that turns out bigger than planned is split in the plan, not widened.
+- **One commit per epic.** When the epic is done, report its commit message: the subject `Epic 1: A CSV becomes data`, and the task titles in the body, one per line. The history is part of the submission.
 - **The pre-commit hook runs `yarn prepare:commit`** when the user commits.
 - **CI repeats the checks on every push** — `.github/workflows/ci.yml` runs them on the whole repo, plus e2e.
 - **Done means:** `yarn verify` passes; UI changes are screenshotted at 1440px, 1280px and 390px; prompt changes come with their reviewed snapshot; accuracy claims cite `eval/results/`.

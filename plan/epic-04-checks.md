@@ -11,7 +11,7 @@
 - One file per check in `src/engine/checks/`, registered in `checks.ts`. A check is a pure function of the dataset and the profile.
 - A spec from both sides, fed by a small inline CSV: what the check must find, and what it must leave alone.
 - Each issue carries its rows, its `details`, and a `suggestion` or `null`. A check never invents a value.
-- Each task ends by running `yarn eval --checks-only`, committing the updated `eval/results/checks-only.json`, and reporting the table.
+- Each task ends by running `yarn eval --checks-only`, updating `eval/results/checks-only.json`, and reporting the table.
 
 ## T4.1 — Find exact and normalized duplicate rows
 
