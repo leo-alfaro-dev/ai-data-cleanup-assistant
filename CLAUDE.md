@@ -24,7 +24,7 @@ It should feel like a meticulous data analyst working beside you: it does the te
 
 - **In:** the four categories; review with accept, edit, reject, undo and bulk decisions; export of the cleaned CSV, a change log and a recipe; replaying a recipe; a transparency panel; built-in sample data; an optional own OpenRouter key; `yarn eval`.
 - **Out:** accounts, a database or any persistence beyond the tab, Excel files, multi-file joins, collaboration, free-form cell editing (every change is a suggestion).
-- **Delivery order** — the app is submittable after each step: 1) engine: parse, profile, checks · 2) review and export · 3) AI tasks · 4) deploy with sample data, rate limit and spend cap · 5) optional own key · 6) recipe · 7) eval results in the README.
+- **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one task per commit, submittable at every checkpoint.
 
 ### Vocabulary
 
@@ -34,11 +34,12 @@ Use these words in code and UI; don't introduce synonyms (finding, anomaly, fix)
 - **Issue** — something wrong in the data, in one of the four categories.
 - **Suggestion** — a proposed change that resolves an issue, from a check or the AI.
 - **Decision** — the user's verdict on a suggestion: accepted, edited or rejected; pending until made, undoable after.
+- **Change** — what a suggestion proposes, expressed as data.
 - **Rule** — a row-independent change (map values, trim, standardize a format, drop exact duplicates); one rule can touch many rows.
 - **Recipe** — the accepted rules, saved as versioned JSON to replay on another file without AI.
 - **Change log** — every cell change the accepted decisions produce.
 - **Profile** — per-column statistics that checks and AI tasks work from.
-- **Run** — one analysis of the loaded file. **Task** — one kind of AI request within a run.
+- **Run** — one analysis of the loaded file. **Task** — one kind of AI request within a run. In `plan/` a task is a unit of work, so there the AI kind is always written "AI task".
 
 ## Stack
 
@@ -107,6 +108,8 @@ eval/                   # Clean datasets, seeded corruption, runner, committed r
 e2e/                    # Playwright specs and recorded AI responses
 public/samples/         # Demo CSVs
 scripts/                # Repo tooling (scanKeys.ts)
+plan/                   # Epics and tasks: what gets built, in what order, and how it is proven
+docs/                   # README images, demo script, submission checklist
 ```
 
 ```
@@ -119,7 +122,7 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 
 - **The engine is pure.** `src/engine/` imports nothing from React, Next, `src/features`, `src/ai` or browser globals, so the worker, the specs and `yarn eval` run the same code. `src/lib/` follows the same rule, so the engine can use it. Lint-enforced.
 - **Checks share one signature** — pure functions from dataset and profile to issues, one per file, registered in one list. Adding a check is a file and a list entry.
-- **One worker owns the data.** `dataset.worker.ts` only wires engine functions with `defineWorker` (from `easy-web-worker/defineWorker`); the page imports its type alone and calls it through `getDatasetWorker()`, which builds it with `createWorker` (from `easy-web-worker/createWorker`) on first use in the browser. The worker stays single and alive and keeps the parsed rows: parsing, profiling, checks, export and recipe replay run there, and the rows cross to the page once, for the grid.
+- **One worker owns the data.** `dataset.worker.ts` only wires engine functions with `defineWorker` (from `easy-web-worker/defineWorker`); the page imports its type alone and calls it through `getDatasetWorker()`, which builds it with `createWorker` (from `easy-web-worker/createWorker`) on first use in the browser. The worker stays single and alive and keeps the parsed rows: parsing, profiling, checks, AI request building, export and recipe replay run there. The rows cross to the page once, in chunks of 10,000 that the page pulls, so the first screen appears while the rest arrive.
 - **Next.js needs a native Worker.** Pass `new Worker(new URL('./dataset.worker.ts', import.meta.url), { type: 'module' })` to `createWorker`, written literally. A bare `new URL(...)` works in dev but hangs every call in production, so verify any change to the setup with `yarn build && yarn start`. This source can't be force-restarted: no `reboot`, `force` or `maxWorkers`.
 - **Long worker methods work in chunks.** Between chunks they pause with `setTimeout` (not `await Promise.resolve()`), stop when `message.isPending()` is false, and report progress; a worker inside a synchronous loop never hears a cancel.
 - **Only plain data crosses.** Payloads and results are structured-cloned: no functions or class instances, and a result that can't be cloned hangs the call silently. Errors lose their class, so expected failures come back as a result union, not a throw. The `File` goes to the worker as is and is read there.
@@ -127,31 +130,33 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 
 ### Data Invariants
 
-- **The original is immutable.** Parsed rows are never mutated; the cleaned view is derived from the original plus accepted decisions, so undo is flipping a decision.
+- **The original is immutable.** Parsed rows are never mutated; the cleaned value of a cell is derived when it is read, from the original plus accepted decisions. No cleaned copy of the data exists, so undo is flipping a decision.
+- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a removed row stays removed.
+- **Issues are data, not sentences.** Checks return structured details and the UI words them in `issueCopy`; the model's reason is the only free text.
 - **Identity is stable.** Each row keeps its `RowId` from parsing for life — an index into a filtered or sorted array never leaves the component that made it. Columns are keyed by position (`ColumnKey`), never by header text: headers can be empty or repeated.
 - **Cells are strings as parsed.** Typed readings (number, date) are derived and never written back unless a decision says so.
-- **Nothing is dropped silently.** Ragged rows, empty or duplicate headers and parse errors become issues.
+- **Nothing is dropped silently.** Ragged rows, empty or duplicate headers and parse errors become issues. A file that is not UTF-8 is decoded as Windows-1252, and the screen says so.
 - **Never invent a value.** A missing value is derived from data in the same row or left empty and flagged; neither checks nor the AI guess names, emails or numbers.
 - **Never resolve ambiguity silently.** `03/04/2024` (March or April?) is an issue for the user, not a conversion.
 - **Values are untrusted text.** Rendered as text only. Formula-like values (spreadsheet formula injection) are suspicious issues, never silently rewritten.
 - **Invisible differences are visible.** Cells and diffs show leading and trailing spaces, non-breaking spaces, and empty versus placeholder distinctly.
 - **Export is faithful.** Column order, header text and delimiter are preserved; with no accepted decisions, the export reproduces the input rows.
 - **Recipes hold only rules.** Row-specific changes go to the change log, not the recipe. Recipes key columns by header text so they replay on files with reordered columns; replay skips a rule whose column is missing and reports it.
-- **Repo data is synthetic or openly licensed** — no real personal data in samples, fixtures or eval sets.
+- **Repo data is synthetic** — no real personal data in samples, fixtures or eval sets. Names come from small pools, emails use reserved domains (`example.com`), phones use the fictional `555-01xx` range.
 
 What checks find, and what the AI adds:
 
-| Category            | Checks (whole file)                                                                                             | AI (summaries only)                                                                                                              |
-| ------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Duplicates          | Exact and normalized-equal rows; near-duplicate candidate pairs by blocking key and similarity                  | Confirms candidate pairs and picks the values to keep                                                                            |
-| Inconsistent values | Mixed formats and types within a column (dates, numbers, phones); whitespace and casing variants                | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                                               |
-| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                             | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                                          |
-| Suspicious records  | Out-of-range values, robust outliers, invalid emails and dates, cross-field contradictions, formula-like values | Reviews flagged rows and a capped sample: explains each, spots implausible combinations, suggests a change only when unambiguous |
+| Category            | Checks (whole file)                                                                                            | AI (summaries only)                                                                                                                                     |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Duplicates          | Exact and normalized-equal rows; rows sharing an identifier; near-duplicate candidate pairs by name similarity | Confirms candidate pairs and picks, per column, which row's value to keep                                                                               |
+| Inconsistent values | Whitespace and casing variants; mixed date formats; values of the wrong type for their column                  | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                                                                      |
+| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                            | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                                                                 |
+| Suspicious records  | Robust outliers, invalid emails, formula-like values, structural issues (ragged rows, repeated headers)        | Reviews flagged rows and a sample, or every row of a small file: explains each, spots implausible combinations, suggests a change only when unambiguous |
 
 ### AI Layer
 
 - **The model proposes rules; code applies them.** A task returns value mappings, duplicate verdicts or row-level assessments — never a rewritten file. Code turns them into suggestions.
-- **Summaries, not files.** Requests carry distinct values with counts, candidate pairs, or flagged rows and a sample — every list and string capped by named constants in the task's contract. No model call per row or per value: calls per run scale with column count and are capped.
+- **Summaries, not files.** Requests carry distinct values with counts, candidate pairs, or flagged rows and a sample — every list and string capped by named constants in the task's contract. No model call per row or per value: calls per run scale with column count and are capped. A file smaller than a cap is sent whole, so small files are read in full.
 - **Model output is untrusted.** Ask for JSON with the response schema (`z.toJSONSchema`) and validate the reply with the same Zod schema whatever the provider promises. Every row id, column and value the reply cites must exist in the request — anything else is dropped and counted. One retry on invalid output, then the task fails with `invalidModelOutput`.
 - **Cell values are data, not instructions.** Prompts put them inside a delimited data block and say so.
 - **Verify the request, not just the code.** Prompt builders are pure and each has a snapshot spec; read the snapshot in review the way you would read SQL.
@@ -159,7 +164,7 @@ What checks find, and what the AI adds:
 - **Every call is accounted.** Model, tokens, cost and latency are recorded per call, shown in the transparency panel, and reused by `yarn eval`.
 - **Server-only access.** `openRouterClient.ts` is the only file that imports `openai`; it and the task runners import `server-only`, so the hosted key never reaches the browser. Contracts and `models.ts` are shared with the browser.
 - **A visitor's own key stays in the tab.** It is held in memory, or in `sessionStorage` to survive a refresh — never `localStorage`. It travels per request in the `x-openrouter-key` header, is used for that call only, and is never stored, logged or displayed. Routes use it when present and the hosted key otherwise.
-- **One folder per task** in `src/ai/tasks/` (`normalizeValues`, `confirmDuplicates`, `assessSuspiciousRows`): `<task>Contract.ts` (request and response schemas, caps), `build<Task>Prompt.ts`, and `run<Task>.ts`, which takes the client as a parameter so specs pass a fake.
+- **One folder per task** in `src/ai/tasks/` (`normalizeValues`, `confirmDuplicates`, `assessSuspiciousRows`): `<task>Contract.ts` (request and response schemas, caps), `build<Task>Requests.ts` (profile and check results to capped requests, run in the worker), `build<Task>Prompt.ts`, `run<Task>.ts`, which takes the client as a parameter so specs pass a fake, and `to<Task>Issues.ts` (a validated reply to issues).
 - **Route handlers are thin.** `/api/ai/<task-name>` (kebab-case) parses the body with the contract (`400 invalidRequest`), runs the task with `request.signal` so an aborted run stops billing, and returns JSON. Each exports `maxDuration`.
 - **Hosted-key calls are rate-limited per visitor** (by IP) in the route handler, returning `429 rateLimited`. The limiter counts per serverless instance, so it is best effort; calls on a visitor's own key skip it.
 - **Failures carry a reason, never a message.** Responses use `{ reason }` from the `AiFailureReason` union with a matching status; the provider's message never reaches the client. OpenRouter's out-of-credit response maps to `budgetExhausted`. The UI words each reason once, in a `Record<AiFailureReason, string>`.
@@ -172,12 +177,13 @@ What checks find, and what the AI adds:
 - **One run at a time.** Each run has a `RunId`, an `AbortController` for its AI requests, and the `CancelablePromise` of its worker call. Loading a new file cancels both, and results whose `runId` isn't current are discarded. A canceled worker call rejects: check `status === 'canceled'` before treating it as an error. The model picker is disabled while a run is in flight.
 - **The app works without AI.** With no key, or when a task fails, check suggestions still work and the failed task shows its reason and a retry. When the hosted key is out of budget (`budgetExhausted`) or rate-limited (`rateLimited`), the message also offers the visitor's own key.
 - **Long work shows real progress** — parsing and checks a percentage from `.onProgress`, AI tasks their state (queued, running, done, failed) — never a bare spinner.
+- **No competing suggestions.** An AI issue that contains a check issue's values absorbs it. A check issue that is already decided is never absorbed.
 
 ### State
 
 - **Client state lives in `react-global-state-hooks` stores**, one per concern at `src/features/<feature>/state/<name>Store.ts`: `const <name>Store$ = createGlobalState(makeInitialState(), { actions })`, exporting `<name>Actions = <name>Store$.actions` and slice hooks made with `createSelectorHook`. Loading a new file calls `reset()`.
 - **Read the store where the behavior lives.** A component that acts on store state imports its slice hooks and actions directly; a parent never reads the store to thread values or callbacks down as props. Move a cluster all at once — half props, half store is worse than either.
-- **Large data stays by reference.** Rows arrive from the worker once and are never spread or copied; decisions live in their own map keyed by `SuggestionId`, so accepting one never touches the rows. Derived data is a selector, not a stored copy.
+- **Large data stays by reference.** Rows arrive from the worker once and are never spread or copied; decisions live in their own map keyed by `IssueId`, so accepting one never touches the rows. Derived data is a selector, not a stored copy.
 - **No `React.createContext`.** When a subtree needs its own copy of state, use `createContext` from `react-global-state-hooks/createContext`; the variable takes a `$` suffix, the file a `Context` suffix.
 - **Linear async.** Async work runs in store actions started by user events (load, run, retry), as one readable `async` sequence — never fetch-on-mount or effects reacting to state. `useEffect` is for lifecycle only (subscriptions, listeners), at most one per component or hook; split into named hooks otherwise.
 
@@ -185,8 +191,8 @@ What checks find, and what the AI adds:
 
 ### TypeScript
 
-- **Branded types** for ids and domain primitives (`RowId`, `ColumnKey`, `SuggestionId`, `RunId`) — never plain `string` or `number`.
-- **Discriminated unions over optional properties** — a decision is `{ status: 'pending' } | { status: 'accepted' } | { status: 'edited'; value: string } | { status: 'rejected' }`, not `{ status: string; value?: string }`.
+- **Branded types** for ids and domain primitives (`RowId`, `ColumnKey`, `IssueId`, `RunId`) — never plain `string` or `number`.
+- **Discriminated unions over optional properties** — a decision is `{ status: 'pending' } | { status: 'accepted' } | { status: 'edited'; change: Change } | { status: 'rejected' }`, not `{ status: string; change?: Change }`.
 - **External data is parsed at the boundary** — files in the worker, request bodies in route handlers, model output in task runners — with Zod or a type guard. TypeScript runs with `noUncheckedIndexedAccess`; `any`, non-null `!` and `as` never silence the compiler.
 - **`type` over `interface`** — `interface` only for class contracts or overloaded signatures.
 - **`import type`** for type-only imports.
@@ -319,6 +325,7 @@ OPENROUTER_API_KEY=   # Server only — never prefix with NEXT_PUBLIC_
 ## Workflow
 
 - **Claude never commits and never stages.** The user is the only one who commits. No `git add`, `git commit`, `git stash` or anything else that changes the index or the history — and no `yarn prepare:commit`, because lint-staged stages files. When work is ready, say so and suggest a commit split and messages.
+- **Work follows [`plan/`](plan/README.md).** Take the next open task, build only its scope, tick it in the plan's status list, and report its title as the commit message. A task that turns out bigger than planned is split in the plan, not widened.
 - **Commits are small and single-purpose** with imperative subjects; the history is part of the submission.
 - **The pre-commit hook runs `yarn prepare:commit`** when the user commits.
 - **CI repeats the checks on every push** — `.github/workflows/ci.yml` runs them on the whole repo, plus e2e.

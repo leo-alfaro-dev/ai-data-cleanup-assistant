@@ -15,10 +15,15 @@
     "affordances",
     "demoable",
     "destructures",
+    "jaro",
+    "NFKC",
+    "opengraph",
     "openrouter",
     "papaparse",
+    "recompiles",
     "screenshotted",
     "turbopack",
-    "undoable"
+    "undoable",
+    "Winkler"
   ]
 }

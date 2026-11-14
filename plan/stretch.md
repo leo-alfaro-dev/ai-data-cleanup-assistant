@@ -1,0 +1,15 @@
+# Stretch
+
+Ideas that are worth building and are not in the plan. They are first to be cut and last to be started: none begins before checkpoint D. Each would be one task and one commit, added to the status list in [README.md](README.md) when it starts.
+
+| #   | Idea                                                                                                                                                                       | Why it is worth it                                                                                | Plugs into |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------- |
+| S1  | **Column dependencies.** Learn from the file that one column determines another (zip → city). Fill a missing city from its zip, and flag rows that contradict the pattern. | Missing values filled from the file's own evidence, never invented; contradictions found for free | Epic 4     |
+| S2  | **Second pass.** Run the checks again on the cleaned data, to catch duplicates that only appear once values are normalized.                                                | Closes the one gap that D1 leaves open                                                            | T5.3       |
+| S3  | **Dataset summary.** One AI call that says in two sentences what the file is and what each column means, shown on screen and fed to the other AI tasks as context.         | The clearest on-screen proof that the AI "read through the data"; better prompts                  | Epic 6     |
+| S4  | **Stress sample.** A 100,000-row sample one click away.                                                                                                                    | Scale shown live instead of claimed                                                               | T7.4       |
+| S5  | **Number formats.** Standardize `1,234.50`, `$1,234` and `1234.5` within a column.                                                                                         | A common mess in financial exports                                                                | T4.2       |
+| S6  | **Dark theme.** A second set of token values.                                                                                                                              | Cheap, because components only use tokens                                                         | T0.1       |
+| S7  | **Connect OpenRouter.** Sign in with OpenRouter instead of pasting a key.                                                                                                  | No key ever copied by hand                                                                        | T7.2       |
+
+If there is time for only one, it is S3: it is the one a viewer notices in the first minute of the video.
