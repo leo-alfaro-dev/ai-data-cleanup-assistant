@@ -20,13 +20,15 @@ Next.js 16, React 19 and Tailwind 4 with the design tokens, a minimal workspace 
 
 ## T0.3 — Add the development plan and update CLAUDE.md
 
-**Status:** built, waiting for your commit
+**Status:** done, committed in `684f16d`
 
 **Files:** `plan/`, `CLAUDE.md` and `cspell.json`. The `CLAUDE.md` changes are the pointer to this plan and the decisions made while planning (D1, D3, D4, D5, D7, D8 and D10 in [README.md](README.md)), plus `IssueId` as the key for decisions and the five files of an AI task folder.
 
 ## T0.4 — Deploy the walking skeleton to Vercel
 
 **After:** T0.1 · **Needs you**
+
+**Status:** done. Live at https://ai-data-cleanup-assistant.vercel.app from `main`. The project sets `ENABLE_EXPERIMENTAL_COREPACK=1`, and the build log shows Yarn 4.12.0 through Corepack. The log does not print the Node version; `engines.node` pins 24.x.
 
 **Why:** Vercel with Yarn 4, Node 24 and Next.js 16.4 is untested. Finding out with a one-screen app costs minutes; finding out on submission day costs the demo.
 

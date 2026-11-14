@@ -320,6 +320,7 @@ OPENROUTER_API_KEY=   # Server only — never prefix with NEXT_PUBLIC_
 - **Without a key the app still runs** — checks work and AI tasks report `aiNotConfigured`.
 - **Separate keys** for production and for development and `yarn eval`, so either can be revoked on its own.
 - **Production runs on Vercel**, with its key set in the project's environment variables. That key carries a credit limit set in OpenRouter — the public demo's spend cap — sized from the cost per run that `yarn eval` measures.
+- **Vercel builds with the pinned toolchain.** The project sets `ENABLE_EXPERIMENTAL_COREPACK=1`, without which Vercel runs Yarn 1 instead of the `packageManager` version; Node 24 comes from `engines.node`, which overrides the project setting. No `vercel.json`.
 - **A Vercel Firewall rate-limit rule** on `/api/ai/*` adds a hard per-visitor limit where the plan includes one; the in-route limiter stays as the baseline.
 
 ## Workflow

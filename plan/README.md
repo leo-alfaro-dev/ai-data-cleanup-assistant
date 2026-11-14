@@ -138,7 +138,7 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 - [x] **T0.1** Scaffold the Next.js app with tests, lint and pre-commit checks
 - [x] **T0.2** Add CI workflow running the checks and e2e on push
 - [x] **T0.3** Add the development plan and update CLAUDE.md
-- [ ] **T0.4** Deploy the walking skeleton to Vercel · _needs you_
+- [x] **T0.4** Deploy the walking skeleton to Vercel · _needs you_
 
 ### Epic 1 — A CSV becomes data
 
