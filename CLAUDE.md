@@ -42,43 +42,46 @@ Use these words in code and UI; don't introduce synonyms (finding, anomaly, fix)
 
 ## Stack
 
-| Concern         | Choice                                                                     |
-| --------------- | -------------------------------------------------------------------------- |
-| App             | Next.js 16 (App Router) + React 19, TypeScript strict — deployed on Vercel |
-| Package manager | Yarn 4 (`nodeLinker: node-modules`)                                        |
-| Styling         | Tailwind CSS 4, `tailwind-variants` 4 (`tv` and `twMerge`)                 |
-| UI primitives   | `radix-ui`                                                                 |
-| Icons           | `react-icons`                                                              |
-| State           | `react-global-state-hooks` 16                                              |
-| CSV             | `papaparse`, inside a Web Worker                                           |
-| Web Worker      | `easy-web-worker` 8 (`defineWorker`, `createWorker`)                       |
-| Grid            | Own component on `@tanstack/react-virtual`                                 |
-| Validation      | `zod` 4                                                                    |
-| AI              | OpenRouter through the `openai` SDK (Chat Completions); `server-only`      |
-| Tests           | Vitest (unit), Playwright (e2e)                                            |
-| Quality         | ESLint, Prettier, cspell; `tsx` for scripts                                |
+| Concern         | Choice                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------- |
+| App             | Next.js 16 (App Router) + React 19, TypeScript strict — deployed on Vercel              |
+| Package manager | Yarn 4 (`nodeLinker: node-modules`)                                                     |
+| Styling         | Tailwind CSS 4, `tailwind-variants` 4 (`tv` and `twMerge`)                              |
+| UI primitives   | `radix-ui`                                                                              |
+| Icons           | `react-icons`                                                                           |
+| State           | `react-global-state-hooks` 16                                                           |
+| CSV             | `papaparse`, inside a Web Worker                                                        |
+| Web Worker      | `easy-web-worker` 8 (`defineWorker`, `createWorker`)                                    |
+| Grid            | Own component on `@tanstack/react-virtual`                                              |
+| Validation      | `zod` 4                                                                                 |
+| AI              | OpenRouter through the `openai` SDK (Chat Completions); `server-only`                   |
+| Tests           | Vitest (Node for `.spec.ts`, jsdom + Testing Library for `.spec.tsx`), Playwright (e2e) |
+| Quality         | ESLint, Prettier, cspell, husky + lint-staged; `tsx` for scripts                        |
 
 Majors are listed so code targets the right APIs; `package.json` is the source of truth. **This table is the dependency list** — a new package needs a stated reason, and never a second library for a concern already covered here.
+
+**Next.js 16 changed its APIs.** Before writing Next.js code, read the matching guide in `node_modules/next/dist/docs/` (`AGENTS.md`, which `next dev` maintains, says the same). The 16.4 defaults stay on: `cacheComponents`, `partialPrefetching`, and Tailwind through the `@tailwindcss/turbopack` loader instead of PostCSS. With `cacheComponents` on, the route segment options `dynamic`, `dynamicParams`, `revalidate` and `fetchCache` no longer exist; `maxDuration` does.
 
 ## Commands
 
 ```bash
-yarn dev                     # Next.js dev server on http://localhost:3000
+yarn dev                     # Next.js dev server on http://localhost:3000 (next free port if taken)
 yarn build                   # Production build
 yarn start                   # Serve the production build
 
 yarn test                    # Unit specs (Vitest, no watch)
 yarn test src/engine/checks/findExactDuplicates.spec.ts   # One file
-yarn integrations            # Dev server + headless Playwright, AI routes mocked
+yarn integrations            # Production build + headless Playwright on port 3100, AI routes mocked
 yarn integrations --headed   # Headed mode
 yarn eval                    # Accuracy benchmark against real models — costs money, ask first
 
 yarn lint                    # ESLint
-yarn typecheck               # tsc --noEmit
+yarn typecheck               # next typegen + tsc --noEmit
 yarn prettier                # Format all files
 yarn spellcheck              # cspell
 yarn scan:keys               # Fails if a tracked or staged file contains an OpenRouter key
-yarn prepare:commit          # Everything before a commit: format, spellcheck, key scan, lint, typecheck, unit tests
+yarn verify                  # Read-only check of the whole repo: format, spellcheck, key scan, lint, typecheck, unit tests
+yarn prepare:commit          # Pre-commit hook only, because lint-staged stages files: then key scan, lint, typecheck, unit tests
 ```
 
 Path alias: `@/*` → `src/*` (the only one).
@@ -99,10 +102,11 @@ src/
     state/
   components/           # Shared UI primitives (Modal, Button, Kbd, …)
   hooks/                # Shared hooks
-  lib/                  # Generic, domain-free helpers (tryCatch, …)
+  lib/                  # Generic, domain-free, pure helpers (tryCatch, …)
 eval/                   # Clean datasets, seeded corruption, runner, committed results
 e2e/                    # Playwright specs and recorded AI responses
 public/samples/         # Demo CSVs
+scripts/                # Repo tooling (scanKeys.ts)
 ```
 
 ```
@@ -113,7 +117,7 @@ CSV ──▶ worker: parse → profile → checks ──▶ check suggestions, 
 decisions ──▶ cleaned view (original + accepted changes) ──▶ export: CSV · change log · recipe
 ```
 
-- **The engine is pure.** `src/engine/` imports nothing from React, Next, `src/features`, `src/ai` or browser globals, so the worker, the specs and `yarn eval` run the same code. Lint-enforced.
+- **The engine is pure.** `src/engine/` imports nothing from React, Next, `src/features`, `src/ai` or browser globals, so the worker, the specs and `yarn eval` run the same code. `src/lib/` follows the same rule, so the engine can use it. Lint-enforced.
 - **Checks share one signature** — pure functions from dataset and profile to issues, one per file, registered in one list. Adding a check is a file and a list entry.
 - **One worker owns the data.** `dataset.worker.ts` only wires engine functions with `defineWorker` (from `easy-web-worker/defineWorker`); the page imports its type alone and calls it through `getDatasetWorker()`, which builds it with `createWorker` (from `easy-web-worker/createWorker`) on first use in the browser. The worker stays single and alive and keeps the parsed rows: parsing, profiling, checks, export and recipe replay run there, and the rows cross to the page once, for the grid.
 - **Next.js needs a native Worker.** Pass `new Worker(new URL('./dataset.worker.ts', import.meta.url), { type: 'module' })` to `createWorker`, written literally. A bare `new URL(...)` works in dev but hangs every call in production, so verify any change to the setup with `yarn build && yarn start`. This source can't be force-restarted: no `reboot`, `force` or `maxWorkers`.
@@ -137,11 +141,11 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 
 What checks find, and what the AI adds:
 
-| Category            | Checks (whole file)                                                                                           | AI (summaries only)                                                                                           |
-| ------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Duplicates          | Exact and normalized-equal rows; near-duplicate candidate pairs by blocking key and similarity                | Confirms candidate pairs and picks the values to keep                                                         |
-| Inconsistent values | Mixed formats and types within a column (dates, numbers, phones); whitespace and casing variants              | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                            |
-| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                           | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                       |
+| Category            | Checks (whole file)                                                                                             | AI (summaries only)                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Duplicates          | Exact and normalized-equal rows; near-duplicate candidate pairs by blocking key and similarity                  | Confirms candidate pairs and picks the values to keep                                                                            |
+| Inconsistent values | Mixed formats and types within a column (dates, numbers, phones); whitespace and casing variants                | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                                               |
+| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                             | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                                          |
 | Suspicious records  | Out-of-range values, robust outliers, invalid emails and dates, cross-field contradictions, formula-like values | Reviews flagged rows and a capped sample: explains each, spots implausible combinations, suggests a change only when unambiguous |
 
 ### AI Layer
@@ -236,8 +240,14 @@ Every new component, hook, calculation or helper starts with two questions: **do
     category: IssueCategory;
   };
 
-  export function CategoryBadge({ category, className = '', ...props }: CategoryBadgeProps) {
-    return <span className={categoryBadge({ category, className })} {...props} />;
+  export function CategoryBadge({
+    category,
+    className = '',
+    ...props
+  }: CategoryBadgeProps) {
+    return (
+      <span className={categoryBadge({ category, className })} {...props} />
+    );
   }
 
   const categoryBadge = tv({
@@ -264,7 +274,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 ### Styling
 
 - **Tailwind for all styling**; inline `style` only for values computed at runtime (virtualizer offsets, column widths).
-- **Tokens only.** Colors come from the `@theme` tokens in `src/app/globals.css` — surfaces, text, primary, danger, one per category, added and removed for diffs. No hex values and no palette classes (`bg-blue-500`) in components; a missing color becomes a token first.
+- **Tokens only.** Colors come from the `@theme` tokens in `src/app/globals.css` — surfaces, text, primary (with `on-primary`), danger, one per category, added and removed for diffs. Tailwind's default palette is switched off there (`--color-*: initial`), so palette classes like `bg-blue-500` don't exist; no hex values in components either. A missing color becomes a token first.
 - **Custom tokens are colors only** — sizes, spacing and radii use Tailwind's scale. A custom `text-*` size collides with `text-*` colors in `twMerge`, which then drops one of them.
 - **`tv` for variants** instead of conditional class strings; **`twMerge` for merging**. Both come from `tailwind-variants` — no `tailwind-merge`, `clsx`, `cva` or `cn`.
 - **No Tailwind `group` classes.**
@@ -282,11 +292,11 @@ Every new component, hook, calculation or helper starts with two questions: **do
 
 ## Testing
 
-- **Specs sit beside the code** as `<name>.spec.ts(x)`. No spec touches the network.
+- **Specs sit beside the code**: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
 - **Workers don't exist in Vitest** — specs call the engine functions directly; the worker wiring is covered by e2e.
 - **Checks are tested from both sides** — each spec feeds a small inline CSV with what the check must find and what it must leave alone.
 - **Round-trips** — exporting with no accepted decisions reproduces the input rows; replaying a recipe on its source file reproduces the accepted rule changes.
-- **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output.
+- **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.
 - **Absence after presence** — assert that something is not shown only after something that is shown has rendered; before that, absence proves nothing.
 - **E2E mocks the AI routes** (`page.route`) with recorded responses — deterministic, offline, free. The happy path: load the sample → review → accept → export.
@@ -308,5 +318,8 @@ OPENROUTER_API_KEY=   # Server only — never prefix with NEXT_PUBLIC_
 
 ## Workflow
 
-- **Small, single-purpose commits** with imperative subjects; the history is part of the submission.
-- **Done means:** `yarn prepare:commit` passes; UI changes are screenshotted at 1440px, 1280px and 390px; prompt changes come with their reviewed snapshot; accuracy claims cite `eval/results/`.
+- **Claude never commits and never stages.** The user is the only one who commits. No `git add`, `git commit`, `git stash` or anything else that changes the index or the history — and no `yarn prepare:commit`, because lint-staged stages files. When work is ready, say so and suggest a commit split and messages.
+- **Commits are small and single-purpose** with imperative subjects; the history is part of the submission.
+- **The pre-commit hook runs `yarn prepare:commit`** when the user commits.
+- **CI repeats the checks on every push** — `.github/workflows/ci.yml` runs them on the whole repo, plus e2e.
+- **Done means:** `yarn verify` passes; UI changes are screenshotted at 1440px, 1280px and 390px; prompt changes come with their reviewed snapshot; accuracy claims cite `eval/results/`.

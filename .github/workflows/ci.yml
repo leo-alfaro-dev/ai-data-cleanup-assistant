@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Before setup-node: its Yarn cache needs the Yarn version that packageManager pins.
+      - run: corepack enable
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: yarn
+
+      - run: yarn install --immutable
+
+      - run: yarn prettier --check .
+      - run: yarn spellcheck
+      - run: yarn scan:keys
+      - run: yarn lint
+      - run: yarn typecheck
+      - run: yarn test
+
+      - run: yarn playwright install --with-deps chromium
+      - run: yarn integrations

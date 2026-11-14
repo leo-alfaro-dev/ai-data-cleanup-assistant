@@ -1,0 +1,69 @@
+{
+  "name": "ai-data-cleanup-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@4.12.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "integrations": "playwright test",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "prettier": "prettier --write .",
+    "spellcheck": "cspell \"**/*.{ts,tsx,js,jsx,mjs,json,md}\" --config ./cspell.json --no-progress",
+    "scan:keys": "tsx scripts/scanKeys.ts",
+    "verify": "prettier --check . && yarn spellcheck && yarn scan:keys && yarn lint && yarn typecheck && yarn test",
+    "prepare:commit": "lint-staged && yarn scan:keys && yarn lint && yarn typecheck && yarn test",
+    "postinstall": "husky || true"
+  },
+  "dependencies": {
+    "@tanstack/react-virtual": "^3.14.26",
+    "easy-cancelable-promise": "^3.0.1",
+    "easy-web-worker": "^8.0.3",
+    "json-storage-formatter": "^4.0.0",
+    "next": "16.4.6",
+    "openai": "^7.57.0",
+    "papaparse": "^5.7.1",
+    "radix-ui": "^1.8.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-global-state-hooks": "^16.0.7",
+    "react-icons": "^5.7.0",
+    "server-only": "^0.0.1",
+    "tailwind-variants": "^4.0.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/turbopack": "4.3.5",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.10",
+    "@types/node": "^24",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "cspell": "^10.5.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.6",
+    "husky": "^9.1.7",
+    "jsdom": "^31.0.1",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.10.1",
+    "tailwindcss": "4.3.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,cjs,mjs,json,md,css,yml,yaml}": "prettier --write",
+    "*.{ts,tsx,js,jsx,mjs,json,md}": "cspell --config ./cspell.json --no-must-find-files --no-progress"
+  }
+}
