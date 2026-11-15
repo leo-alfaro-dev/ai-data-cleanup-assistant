@@ -67,9 +67,10 @@ describe('IssueDetail', () => {
       counts: { cells: 1, rows: 1, removedRows: 0 },
       examples: [{ before: ' Ada ', after: 'Ada', cells: 1 }],
     };
-    previewStore$.setState({
+    previewStore$.setState((state) => ({
+      ...state,
       previews: new Map([[trim.id, { status: 'ready', preview }]]),
-    });
+    }));
 
     render(<IssueDetail issue={trim} />);
 

@@ -1,5 +1,6 @@
 import type { ColumnKey, RowId } from '@/engine/dataset/dataset';
 import { normalizeWhitespace } from '@/engine/values/normalizeWhitespace';
+import type { Change } from '@/engine/changes/change';
 import type { Issue } from './issue';
 
 export type Coverage = {
@@ -8,11 +9,18 @@ export type Coverage = {
 };
 
 // What the suggestions of these issues would change: the values they map and the rows they merge.
-export function listCoverage(issues: readonly Issue[]): Coverage {
+export function listCoverage({
+  issues,
+  changeOf,
+}: {
+  issues: readonly Issue[];
+  changeOf: (issue: Issue) => Change | null;
+}): Coverage {
   const mappedValues = new Map<ColumnKey, Set<string>>();
   const mergedRows: ReadonlySet<RowId>[] = [];
 
-  for (const { suggestion } of issues) {
+  for (const issue of issues) {
+    const suggestion = changeOf(issue);
     if (suggestion?.kind === 'mergeRows') {
       mergedRows.push(new Set([suggestion.keep, ...suggestion.remove]));
     }

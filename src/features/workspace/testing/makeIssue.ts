@@ -1,13 +1,14 @@
 import type { ColumnKey, RowId } from '@/engine/dataset/dataset';
 import { toRowId } from '@/engine/dataset/toRowId';
 import type { Change } from '@/engine/changes/change';
-import type { Issue, IssueCategory } from '@/engine/issues/issue';
+import type { Confidence, Issue, IssueCategory } from '@/engine/issues/issue';
 import type { IssueDetails } from '@/engine/issues/issueDetails';
 import { toIssueId } from '@/engine/issues/toIssueId';
 
 export function makeIssue({
   id,
   category = 'inconsistent',
+  confidence = 'high',
   rows = [0],
   column = null,
   suggestion = null,
@@ -15,6 +16,7 @@ export function makeIssue({
 }: {
   id: string;
   category?: IssueCategory;
+  confidence?: Confidence;
   rows?: readonly number[];
   column?: ColumnKey | null;
   suggestion?: Change | null;
@@ -24,7 +26,7 @@ export function makeIssue({
     id: toIssueId(id),
     category,
     source: 'check',
-    confidence: 'high',
+    confidence,
     rows: rows.map((row): RowId => toRowId(row)),
     column,
     suggestion,

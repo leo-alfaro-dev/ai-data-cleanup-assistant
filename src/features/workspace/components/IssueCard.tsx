@@ -30,6 +30,7 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
     <article
       aria-labelledby={titleId}
       aria-current={isSelected ? 'true' : undefined}
+      data-issue-id={issue.id}
       className={issueCard({ isSelected, className })}
       {...props}
     >

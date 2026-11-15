@@ -8,7 +8,8 @@ import { toIssueId } from '@/engine/issues/toIssueId';
 import { makeIssue } from '../testing/makeIssue';
 import { seedWorkspace } from '../testing/seedWorkspace';
 import { analysisStore$ } from './analysisStore';
-import { reviewActions } from './reviewStore';
+import { readIssue } from './readIssue';
+import { reviewActions, reviewStore$ } from './reviewStore';
 import { useCleanPlan } from './useCleanPlan';
 import { ROW_CHUNK_SIZE, workspaceStore$ } from './workspaceStore';
 
@@ -77,6 +78,34 @@ describe('useCleanPlan', () => {
     expect(cleanedPaddedCity(result.current)).toMatchObject({
       isChanged: true,
       value: 'Paris',
+      origin: { issueId: casing },
+    });
+  });
+
+  it('applies the edit instead of the suggestion once an edited issue is decided', () => {
+    const { result } = renderHook(() => useCleanPlan());
+    const suggestion = readIssue({
+      issueId: casing,
+      decisions: reviewStore$.getState().decisions,
+    })?.suggestion;
+    if (suggestion?.kind !== 'mapValues') throw new Error('Expected a mapping');
+
+    act(() =>
+      reviewActions.edit({
+        issueId: casing,
+        change: {
+          ...suggestion,
+          groups: suggestion.groups.map((group) => ({
+            ...group,
+            canonical: 'Paris City',
+          })),
+        },
+      })
+    );
+
+    expect(cleanedPaddedCity(result.current)).toMatchObject({
+      isChanged: true,
+      value: 'Paris City',
       origin: { issueId: casing },
     });
   });

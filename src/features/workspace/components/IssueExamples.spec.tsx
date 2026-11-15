@@ -108,7 +108,10 @@ describe('IssueExamples', () => {
 });
 
 function showPreview(entry: PreviewEntry): void {
-  previewStore$.setState({ previews: new Map([[issue.id, entry]]) });
+  previewStore$.setState((state) => ({
+    ...state,
+    previews: new Map([[issue.id, entry]]),
+  }));
 }
 
 function preview(value: ChangePreview): ChangePreview {

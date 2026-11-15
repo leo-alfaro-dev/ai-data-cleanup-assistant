@@ -3,10 +3,13 @@ import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import { useHasAiCalls } from '../state/aiStore';
 import { useAnalysisPhase } from '../state/analysisStore';
+import { ariaKeysOf } from '../shortcuts';
+import { helpActions } from '../state/helpStore';
 import { exportActions } from '../state/exportStore';
 import { useWorkspacePhase, workspaceActions } from '../state/workspaceStore';
 import { AiCallSummary } from './AiCallSummary';
 import { DatasetFacts } from './DatasetFacts';
+import { ShortcutHint } from './ShortcutHint';
 
 export type WorkspaceHeaderProps = React.ComponentProps<'header'>;
 
@@ -36,6 +39,14 @@ export function WorkspaceHeader({
           <DatasetFacts className="order-last w-full sm:order-none sm:w-auto sm:flex-1" />
           <div className="flex flex-wrap items-center gap-2">
             {hasAiCalls && <AiCallSummary />}
+            <Button
+              variant="ghost"
+              aria-keyshortcuts={ariaKeysOf('help')}
+              onClick={() => helpActions.open()}
+            >
+              Shortcuts
+              <ShortcutHint action="help" />
+            </Button>
             <Button onClick={() => workspaceActions.reset()}>
               Load another file
             </Button>

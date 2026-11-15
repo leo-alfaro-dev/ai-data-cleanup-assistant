@@ -100,7 +100,7 @@ describe('IssueCard', () => {
     expect(screen.getByRole('button', { name: 'Accept' })).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
     expect(
-      screen.queryByRole('button', { name: 'Undo' })
+      screen.queryByRole('button', { name: 'Clear decision' })
     ).not.toBeInTheDocument();
   });
 
@@ -119,7 +119,9 @@ describe('IssueCard', () => {
     await user.click(screen.getByRole('button', { name: 'Accept' }));
 
     expect(screen.getByText('Accepted')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Undo' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Clear decision' })
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Accept' })
     ).not.toBeInTheDocument();
@@ -147,7 +149,7 @@ describe('IssueCard', () => {
       screen.getByRole('progressbar', { name: '1 of 2 decided' })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Undo' }));
+    await user.click(screen.getByRole('button', { name: 'Clear decision' }));
 
     expect(screen.getByRole('button', { name: 'Accept' })).toBeInTheDocument();
     expect(screen.queryByText('Rejected')).not.toBeInTheDocument();
@@ -185,7 +187,9 @@ describe('IssueCard', () => {
       expect(screen.getByRole('button', { name: 'Accept' })).toHaveFocus();
 
       await user.keyboard('{Enter}');
-      expect(screen.getByRole('button', { name: 'Undo' })).toHaveFocus();
+      expect(
+        screen.getByRole('button', { name: 'Clear decision' })
+      ).toHaveFocus();
 
       await user.keyboard('{Enter}');
       expect(screen.getByRole('button', { name: 'Accept' })).toHaveFocus();
@@ -197,7 +201,9 @@ describe('IssueCard', () => {
 
       await user.click(screen.getByRole('button', { name: 'Reject' }));
 
-      expect(screen.getByRole('button', { name: 'Undo' })).toHaveFocus();
+      expect(
+        screen.getByRole('button', { name: 'Clear decision' })
+      ).toHaveFocus();
     });
 
     it('stays on the main button after Dismiss, which becomes Undo', async () => {
@@ -206,7 +212,9 @@ describe('IssueCard', () => {
 
       await user.click(screen.getByRole('button', { name: 'Dismiss' }));
 
-      expect(screen.getByRole('button', { name: 'Undo' })).toHaveFocus();
+      expect(
+        screen.getByRole('button', { name: 'Clear decision' })
+      ).toHaveFocus();
     });
   });
 

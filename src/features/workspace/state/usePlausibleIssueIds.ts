@@ -1,11 +1,8 @@
 import type { IssueId } from '@/engine/issues/issue';
-import { memoizeLast } from '@/lib/memoizeLast';
 import { useAiNotes } from './aiStore';
-import { listPlausibleIssueIds } from './listPlausibleIssueIds';
+import { readPlausibleIssueIds } from './readPlausibleIssueIds';
 import { useIssues } from './useIssues';
 
-const plausibleIds = memoizeLast(listPlausibleIssueIds);
-
 export function usePlausibleIssueIds(): ReadonlySet<IssueId> {
-  return plausibleIds({ issues: useIssues(), notes: useAiNotes() });
+  return readPlausibleIssueIds({ issues: useIssues(), notes: useAiNotes() });
 }

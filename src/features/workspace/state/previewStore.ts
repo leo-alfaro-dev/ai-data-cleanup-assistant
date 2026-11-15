@@ -14,36 +14,95 @@ export const previewStore$ = createGlobalState(makeInitialState(), {
   actions: {
     load({ issueId, change }: { issueId: IssueId; change: Change }) {
       return async (store) => {
-        const existing = store.getState().previews.get(issueId);
-        if (existing && existing.status !== 'failed') return;
+        const { previews, loadedChanges } = store.getState();
+        const existing = previews.get(issueId);
+        const isCurrent = loadedChanges.get(issueId) === change;
+        if (existing && existing.status !== 'failed' && isCurrent) return;
 
         store.metadata.call?.cancel(SUPERSEDED);
         const call = getDatasetWorker().preview(change);
-        store.setMetadata({ call });
-        store.setState(({ previews }) => ({
-          previews: withEntry({ map: previews, key: issueId, value: LOADING }),
+        store.setMetadata((metadata) => ({ ...metadata, call }));
+        store.setState((state) => ({
+          ...state,
+          previews: withEntry({
+            map: state.previews,
+            key: issueId,
+            value: LOADING,
+          }),
+          loadedChanges: withEntry({
+            map: state.loadedChanges,
+            key: issueId,
+            value: change,
+          }),
         }));
 
         const { result, error } = await tryCatch(() => call);
+        const isSuperseded = () =>
+          store.getState().loadedChanges.get(issueId) !== change;
         if (call.status === 'canceled') {
-          return store.setState(({ previews }) => ({
-            previews: withEntry({ map: previews, key: issueId, value: null }),
+          if (isSuperseded()) return;
+
+          return store.setState((state) => ({
+            ...state,
+            previews: withEntry({
+              map: state.previews,
+              key: issueId,
+              value: null,
+            }),
+            loadedChanges: withEntry({
+              map: state.loadedChanges,
+              key: issueId,
+              value: null,
+            }),
           }));
         }
+        if (isSuperseded()) return;
 
         const entry: PreviewEntry =
           error || result === null
             ? { status: 'failed' }
             : { status: 'ready', preview: result };
-        store.setState(({ previews }) => ({
-          previews: withEntry({ map: previews, key: issueId, value: entry }),
+        store.setState((state) => ({
+          ...state,
+          previews: withEntry({
+            map: state.previews,
+            key: issueId,
+            value: entry,
+          }),
         }));
+      };
+    },
+
+    loadDraft(change: Change) {
+      return async (store) => {
+        store.metadata.draftCall?.cancel(SUPERSEDED);
+        const call = getDatasetWorker().preview(change);
+        store.setMetadata((metadata) => ({ ...metadata, draftCall: call }));
+        store.setState((state) => ({ ...state, draft: LOADING }));
+
+        const { result, error } = await tryCatch(() => call);
+        if (call.status === 'canceled') return;
+
+        const draft: PreviewEntry =
+          error || result === null
+            ? { status: 'failed' }
+            : { status: 'ready', preview: result };
+        store.setState((state) => ({ ...state, draft }));
+      };
+    },
+
+    clearDraft() {
+      return (store) => {
+        store.metadata.draftCall?.cancel(SUPERSEDED);
+        store.setMetadata((metadata) => ({ ...metadata, draftCall: null }));
+        store.setState((state) => ({ ...state, draft: null }));
       };
     },
 
     reset() {
       return (store) => {
         store.metadata.call?.cancel(SUPERSEDED);
+        store.metadata.draftCall?.cancel(SUPERSEDED);
         store.setMetadata(makeInitialMetadata());
         store.setState(makeInitialState());
       };
@@ -52,6 +111,10 @@ export const previewStore$ = createGlobalState(makeInitialState(), {
 });
 
 export const previewActions = previewStore$.actions;
+
+export const useDraftPreview = previewStore$.createSelectorHook(
+  (state) => state.draft
+);
 
 export function usePreview(issueId: IssueId): PreviewEntry | undefined {
   return usePreviews((previews) => previews.get(issueId), [issueId]);
@@ -63,10 +126,17 @@ const SUPERSEDED = 'superseded';
 
 const LOADING: PreviewEntry = { status: 'loading' };
 
-function makeInitialState(): { previews: Previews } {
-  return { previews: new Map() };
+function makeInitialState(): {
+  previews: Previews;
+  loadedChanges: ReadonlyMap<IssueId, Change>;
+  draft: PreviewEntry | null;
+} {
+  return { previews: new Map(), loadedChanges: new Map(), draft: null };
 }
 
-function makeInitialMetadata(): { call: CancelablePromise<unknown> | null } {
-  return { call: null };
+function makeInitialMetadata(): {
+  call: CancelablePromise<unknown> | null;
+  draftCall: CancelablePromise<unknown> | null;
+} {
+  return { call: null, draftCall: null };
 }

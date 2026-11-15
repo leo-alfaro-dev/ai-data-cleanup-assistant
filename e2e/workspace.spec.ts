@@ -97,6 +97,91 @@ test.describe('the first screen', () => {
   });
 });
 
+test.describe('the keyboard', () => {
+  test('reviews every issue of the sample without the mouse, then undoes a step', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    const label = await page.getByText(/^0 of [\d,]+ decided$/).textContent();
+    const total = Number(label?.match(/of ([\d,]+)/)?.[1]?.replaceAll(',', ''));
+    expect(total).toBeGreaterThan(50);
+
+    for (let step = 0; step < total; step += 1) {
+      await page.keyboard.press('j');
+      const selected = page.locator('article[aria-current="true"]');
+      const hasSuggestion =
+        (await selected.getByRole('button', { name: 'Accept' }).count()) > 0;
+      await page.keyboard.press(hasSuggestion ? 'a' : 'r');
+    }
+
+    await expect(
+      page.getByRole('progressbar', {
+        name: new RegExp(`^${total} of ${total} decided$`),
+      })
+    ).toBeVisible();
+
+    await page.keyboard.press('u');
+
+    await expect(
+      page.getByRole('progressbar', {
+        name: new RegExp(`^${total - 1} of ${total} decided$`),
+      })
+    ).toBeVisible();
+  });
+
+  test('opens the shortcut help with ?', async ({ page }) => {
+    await loadSample(page);
+
+    await page.keyboard.press('?');
+
+    await expect(
+      page.getByRole('dialog', { name: 'Keyboard shortcuts' })
+    ).toContainText('Next issue');
+  });
+});
+
+test.describe('editing a suggestion', () => {
+  test('a typed canonical value reaches the grid and the export', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    await filterTo(page, 'Inconsistent values');
+    const card = page.getByRole('article', { name: /^Spellings of/ }).first();
+    await card.getByRole('button').first().click();
+    const detail = page.getByRole('region', { name: 'Issue detail' });
+    const firstRow = detail
+      .getByRole('list', { name: 'Affected rows' })
+      .getByRole('button')
+      .first();
+    const rowNumber =
+      ((await firstRow.getAttribute('aria-label')) ?? '').match(
+        /row (\d+)/
+      )?.[1] ?? '';
+
+    await page.keyboard.press('e');
+    const spelling = detail
+      .getByRole('textbox', {
+        name: /Common spelling for/,
+      })
+      .first();
+    await spelling.fill('Typed Value');
+    await expect(detail.getByText(/^Changes \d+ cells? in/)).toBeVisible();
+    await detail.getByRole('button', { name: 'Save and accept' }).click();
+
+    await expect(card).toContainText('Edited and accepted');
+    await jumpTo({ page, rowNumber });
+    await expect(
+      page.getByRole('row', { name: new RegExp(`^${rowNumber}`) })
+    ).toContainText('Typed Value');
+
+    await page.getByRole('button', { name: 'Export', exact: true }).click();
+    const cleaned = await download({ page, button: 'Download cleaned CSV' });
+    expect(cleaned.text).toContain('Typed Value');
+  });
+});
+
 test.describe('the data grid', () => {
   test('lists the fixture rows with spreadsheet row numbers', async ({
     page,
@@ -203,6 +288,40 @@ test.describe('reviewing', () => {
 
     await expect(row).not.toContainText('changed from');
     await expect(row.getByRole('img', { name: 'space' }).first()).toBeVisible();
+  });
+
+  test('accepts a whole category in one step and undoes it in one step', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    await filterTo(page, 'Inconsistent values');
+    const accept = page.getByRole('button', {
+      name: /^Accept all certain and high · \d+$/,
+    });
+    const count = Number(((await accept.textContent()) ?? '').split('· ')[1]);
+    expect(count).toBeGreaterThan(1);
+
+    await accept.click();
+
+    await expect(
+      page.getByRole('progressbar', {
+        name: new RegExp(`^${count} of \\d+ decided$`),
+      })
+    ).toBeVisible();
+
+    await page
+      .getByRole('group', { name: 'Decision history' })
+      .getByRole('button', { name: 'Undo' })
+      .click();
+
+    await expect(
+      page.getByRole('progressbar', { name: /^0 of \d+ decided$/ })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', {
+        name: `Accept all certain and high · ${count}`,
+      })
+    ).toBeEnabled();
   });
 
   test('shows how many issues are decided', async ({ page }) => {

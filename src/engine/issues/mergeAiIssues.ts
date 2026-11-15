@@ -1,4 +1,5 @@
 import { normalizeWhitespace } from '@/engine/values/normalizeWhitespace';
+import type { Change } from '@/engine/changes/change';
 import type { Issue, IssueId } from './issue';
 import type { Coverage } from './listCoverage';
 import { listCoverage } from './listCoverage';
@@ -15,15 +16,21 @@ export function mergeAiIssues({
   aiIssues,
   isDecided,
   isRejected,
+  changeOf = (issue) => issue.suggestion,
 }: {
   checkIssues: readonly Issue[];
   aiIssues: readonly Issue[];
   isDecided: (issueId: IssueId) => boolean;
   isRejected: (issueId: IssueId) => boolean;
+  // The change an issue applies as decided: its edit when it has one.
+  changeOf?: (issue: Issue) => Change | null;
 }): readonly Issue[] {
   if (aiIssues.length === 0) return checkIssues;
 
-  const coverage = listCoverage(aiIssues.filter(({ id }) => !isRejected(id)));
+  const coverage = listCoverage({
+    issues: aiIssues.filter(({ id }) => !isRejected(id)),
+    changeOf,
+  });
   const kept = checkIssues.filter(
     (issue) => isDecided(issue.id) || !isAbsorbed({ issue, coverage })
   );

@@ -2,11 +2,18 @@ import { RxCross2 } from 'react-icons/rx';
 import { tv, twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import type { Issue } from '@/engine/issues/issue';
+import { ariaKeysOf } from '../shortcuts';
 import { describeChange } from '../changeCopy';
 import { confidenceLabels } from '../confidenceLabels';
 import { describeIssue } from '../issueCopy';
 import { listIssueGroups } from '../listIssueGroups';
-import { reviewActions } from '../state/reviewStore';
+import { effectiveChange } from '@/engine/decisions/effectiveChange';
+import { isEditable } from '@/engine/changes/isEditable';
+import {
+  reviewActions,
+  useDecision,
+  useEditingIssueId,
+} from '../state/reviewStore';
 import { useIssueNotes } from '../state/useIssueNotes';
 import { useFacts } from '../state/workspaceStore';
 import { sourceLabels } from '../sourceLabels';
@@ -14,7 +21,9 @@ import { AffectedRows } from './AffectedRows';
 import { AiReview } from './AiReview';
 import { CategoryBadge } from './CategoryBadge';
 import { DuplicateGroup } from './DuplicateGroup';
+import { IssueEditor } from './IssueEditor';
 import { IssueExamples } from './IssueExamples';
+import { ShortcutHint } from './ShortcutHint';
 
 export type IssueDetailProps = React.ComponentProps<'section'> & {
   issue: Issue;
@@ -31,6 +40,10 @@ export function IssueDetail({
   const { title, summary } = describeIssue({ issue, columns });
   const groups = listIssueGroups(issue);
   const hasAiReview = useIssueNotes(issue.id).length > 0;
+  const decision = useDecision(issue.id);
+  const change = effectiveChange({ suggestion: issue.suggestion, decision });
+  const isEditing = useEditingIssueId() === issue.id;
+  const canEdit = isEditable(issue.suggestion) && isEditable(change);
 
   return (
     <section
@@ -65,16 +78,36 @@ export function IssueDetail({
       <div className={detailBody({ hasRows: issue.rows.length > 0 })}>
         <div className="flex min-w-0 flex-col gap-3">
           <div className="flex flex-col gap-1">
-            <h4 className="text-xs font-medium text-text-secondary">
-              What changes
-            </h4>
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-xs font-medium text-text-secondary">
+                What changes
+                {decision?.status === 'edited' && ' · edited'}
+              </h4>
+              {canEdit && !isEditing && (
+                <Button
+                  variant="ghost"
+                  aria-keyshortcuts={ariaKeysOf('edit')}
+                  onClick={() => reviewActions.startEdit()}
+                >
+                  Edit
+                  <ShortcutHint action="edit" />
+                </Button>
+              )}
+            </div>
             <p className="text-sm">
-              {issue.suggestion
-                ? describeChange({ change: issue.suggestion, columns })
+              {change
+                ? describeChange({ change, columns })
                 : 'No change is suggested. Dismiss the issue once you have checked the values.'}
             </p>
           </div>
-          {issue.suggestion && <IssueExamples issue={issue} />}
+          {isEditing && issue.suggestion && change && (
+            <IssueEditor
+              issue={issue}
+              suggestion={issue.suggestion}
+              initial={change}
+            />
+          )}
+          {!isEditing && issue.suggestion && <IssueExamples issue={issue} />}
           {hasAiReview && <AiReview issue={issue} />}
           {groups.slice(0, MAX_SHOWN_GROUPS).map((group) => (
             <DuplicateGroup key={group.join(',')} rows={group} />

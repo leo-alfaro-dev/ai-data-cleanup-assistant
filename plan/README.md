@@ -193,9 +193,9 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 8 — Review at volume
 
-- [ ] **T8.1** Decide in bulk and undo any step
-- [ ] **T8.2** Review from the keyboard
-- [ ] **T8.3** Edit a suggestion before accepting it
+- [x] **T8.1** Decide in bulk and undo any step
+- [x] **T8.2** Review from the keyboard
+- [x] **T8.3** Edit a suggestion before accepting it
 
 ### Epic 9 — Recipe
 

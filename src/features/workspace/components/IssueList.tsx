@@ -1,6 +1,8 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-variants';
+import { focusIssueCard } from '../focusIssueCard';
+import { reviewActions } from '../state/reviewStore';
 import { useVisibleIssues } from '../state/useVisibleIssues';
 import { IssueCard } from './IssueCard';
 
@@ -25,6 +27,18 @@ export function IssueList({ className = '', ...props }: IssueListProps) {
     overscan: 6,
     getItemKey,
   });
+
+  useEffect(
+    () =>
+      reviewActions.registerIssueList((issueId) => {
+        const index = issues.findIndex(({ id }) => id === issueId);
+        if (index === -1) return;
+
+        virtualizer.scrollToIndex(index);
+        focusIssueCard(issueId);
+      }),
+    [issues, virtualizer]
+  );
 
   return (
     <div

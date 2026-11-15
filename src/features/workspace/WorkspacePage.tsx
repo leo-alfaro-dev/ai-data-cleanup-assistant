@@ -6,6 +6,7 @@ import { FileDropzone } from './components/FileDropzone';
 import { LoadFailure } from './components/LoadFailure';
 import { LoadProgress } from './components/LoadProgress';
 import { ReviewWorkspace } from './components/ReviewWorkspace';
+import { ShortcutHelp } from './components/ShortcutHelp';
 import { TransparencyPanel } from './components/TransparencyPanel';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { WorkspaceHeader } from './components/WorkspaceHeader';
@@ -29,6 +30,7 @@ export function WorkspacePage({
         <ReviewWorkspace />
         <ExportDialog />
         <TransparencyPanel />
+        <ShortcutHelp />
       </main>
     );
   }

@@ -113,6 +113,54 @@ describe('previewStore', () => {
     expect(previews.get(second)).toMatchObject({ status: 'ready' });
   });
 
+  it('does not let a canceled load wipe out a newer load of the same issue', async () => {
+    const slow = defer<ChangePreview | null>();
+    const edited: Change = { kind: 'trimWhitespace', column: toColumnKey(2) };
+    worker.preview
+      .mockReturnValueOnce(slow.promise)
+      .mockReturnValueOnce(CancelablePromise.resolve(preview));
+    const issueId = toIssueId('a');
+
+    const first = previewActions.load({ issueId, change });
+    await previewActions.load({ issueId, change: edited });
+    await first;
+
+    const state = previewStore$.getState();
+    expect(state.previews.get(issueId)).toMatchObject({ status: 'ready' });
+    expect(state.loadedChanges.get(issueId)).toBe(edited);
+  });
+
+  it('loads again for the same issue when its change is another one, and not when it is the same', async () => {
+    const edited: Change = { kind: 'trimWhitespace', column: toColumnKey(2) };
+    worker.preview.mockReturnValue(CancelablePromise.resolve(preview));
+    const issueId = toIssueId('a');
+
+    await previewActions.load({ issueId, change });
+    await previewActions.load({ issueId, change });
+    await previewActions.load({ issueId, change: edited });
+    await previewActions.load({ issueId, change: edited });
+
+    expect(worker.preview).toHaveBeenCalledTimes(2);
+  });
+
+  it('builds a draft preview, supersedes one still being built, and clears it', async () => {
+    const slow = defer<ChangePreview | null>();
+    worker.preview
+      .mockReturnValueOnce(slow.promise)
+      .mockReturnValueOnce(CancelablePromise.resolve(preview));
+
+    const first = previewActions.loadDraft(change);
+    expect(previewStore$.getState().draft).toEqual({ status: 'loading' });
+    await previewActions.loadDraft(change);
+    await first;
+
+    expect(slow.promise.status).toBe('canceled');
+    expect(previewStore$.getState().draft).toMatchObject({ status: 'ready' });
+
+    previewActions.clearDraft();
+    expect(previewStore$.getState().draft).toBeNull();
+  });
+
   it('forgets everything and cancels the call in flight on reset', async () => {
     const call = defer<ChangePreview | null>();
     worker.preview.mockReturnValue(call.promise);

@@ -68,7 +68,9 @@ function merge({
   aiIssues,
   decided = [],
   rejected = [],
+  changeOf,
 }: {
+  changeOf?: (issue: Issue) => Issue['suggestion'];
   checkIssues: Issue[];
   aiIssues: Issue[];
   decided?: IssueId[];
@@ -80,6 +82,7 @@ function merge({
     isDecided: (issueId) =>
       decided.includes(issueId) || rejected.includes(issueId),
     isRejected: (issueId) => rejected.includes(issueId),
+    changeOf,
   }).map(({ id }) => id);
 }
 
@@ -94,6 +97,23 @@ describe('mergeAiIssues', () => {
     expect(merge({ checkIssues: [casing], aiIssues: [aiMinnesota] })).toEqual([
       'casing-variants:6',
       'normalize-values:6:0',
+    ]);
+  });
+
+  it('absorbs by the change an AI issue applies once edited, so a value taken out of its group is not hidden', () => {
+    const withoutMn = map(state, ['MN', ['Minn.', 'Minnesota']]);
+
+    expect(
+      merge({
+        checkIssues: [casing],
+        aiIssues: [aiMinnesota, aiColorado],
+        changeOf: (issue) =>
+          issue.id === aiMinnesota.id ? withoutMn : issue.suggestion,
+      })
+    ).toEqual([
+      'casing-variants:6',
+      'normalize-values:6:0',
+      'normalize-values:6:1',
     ]);
   });
 

@@ -1,4 +1,5 @@
 import type { Decision } from '@/engine/decisions/decision';
+import { effectiveChange } from '@/engine/decisions/effectiveChange';
 import type { Issue, IssueId } from '@/engine/issues/issue';
 import { mergeAiIssues } from '@/engine/issues/mergeAiIssues';
 import { memoizeLast } from '@/lib/memoizeLast';
@@ -20,5 +21,7 @@ export const mergeIssues = memoizeLast(
       aiIssues,
       isDecided: (issueId) => decisions.has(issueId),
       isRejected: (issueId) => decisions.get(issueId)?.status === 'rejected',
+      changeOf: ({ id, suggestion }) =>
+        effectiveChange({ suggestion, decision: decisions.get(id) }),
     })
 );

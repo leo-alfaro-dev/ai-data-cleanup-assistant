@@ -26,6 +26,17 @@ describe('listAcceptedChanges', () => {
     ]);
   });
 
+  it('lists the edit instead of the suggestion for an edited issue', () => {
+    const edit: Change = { kind: 'trimWhitespace', column: toColumnKey(2) };
+
+    expect(
+      listAcceptedChanges({
+        issues: [issue('a', trim)],
+        decisions: decisions({ a: { status: 'edited', change: edit } }),
+      })
+    ).toEqual([{ issueId: 'a', change: edit }]);
+  });
+
   it('leaves out pending and rejected issues', () => {
     const issues = [issue('a', trim), issue('b', trim)];
 
