@@ -97,6 +97,13 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    files: ['src/features/**', 'src/components/**'],
+    rules: {
+      // The grid and the lists are built on TanStack Virtual, and the React Compiler is not enabled.
+      'react-hooks/incompatible-library': 'off',
+    },
+  },
+  {
     files: ['src/engine/**', 'src/lib/**'],
     rules: {
       'no-restricted-imports': [

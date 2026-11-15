@@ -7,7 +7,7 @@ export function compileCellValues({
   dataset,
 }: {
   entries: readonly PlanEntry[];
-  dataset: Dataset;
+  dataset: Pick<Dataset, 'rows'>;
 }): { explicitCells: CellReplacements; filledCells: CellReplacements } {
   const explicitCells = new Map<RowId, Map<ColumnKey, Replacement>>();
   const filledCells = new Map<RowId, Map<ColumnKey, Replacement>>();

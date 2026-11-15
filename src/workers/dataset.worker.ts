@@ -1,5 +1,11 @@
 import { defineWorker } from 'easy-web-worker/defineWorker';
 import type { WorkerMethodMessage } from 'easy-web-worker/types';
+import type { AcceptedChange } from '@/engine/changes/acceptedChange';
+import type { Change } from '@/engine/changes/change';
+import type { ChangePreview } from '@/engine/changes/changePreview';
+import { previewChange } from '@/engine/changes/previewChange';
+import type { AnalysisResult } from '@/engine/analysis/analysisResult';
+import { CHECKS } from '@/engine/checks/checks';
 import type { Dataset, Row } from '@/engine/dataset/dataset';
 import { decodeText } from '@/engine/dataset/decodeText';
 import type { FileFacts } from '@/engine/dataset/fileFacts';
@@ -7,9 +13,16 @@ import { isBinaryFile } from '@/engine/dataset/isBinaryFile';
 import type { LoadFailureReason } from '@/engine/dataset/loadFailure';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { parseCsv } from '@/engine/dataset/parseCsv';
+import type { CleanedFiles } from '@/engine/export/cleanedFiles';
+import { exportCleanedFiles } from '@/engine/export/exportCleanedFiles';
+import type { Issue } from '@/engine/issues/issue';
+import { findNearDuplicateCandidates } from '@/engine/matching/findNearDuplicateCandidates';
+import { profileDataset } from '@/engine/profile/profileDataset';
 import { tryCatch } from '@/lib/tryCatch';
 import type { LoadStage } from './loadStage';
 import { LOAD_STAGES } from './loadStage';
+import { pauseForCancel } from './pauseForCancel';
+import { toAnalysisProgress } from './toAnalysisProgress';
 
 let dataset: Dataset | null = null;
 
@@ -47,7 +60,7 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
         facts: {
           fileName: file.name,
           rowCount: dataset.rows.length,
-          columnCount: dataset.columns.length,
+          columns: dataset.columns,
           format: dataset.format,
         },
       };
@@ -56,12 +69,49 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
 
   rows: ({ offset, limit }: { offset: number; limit: number }): Row[] =>
     dataset?.rows.slice(offset, offset + limit) ?? [],
+
+  analyze: onMessage(
+    async (_payload: null, message): Promise<AnalysisResult | null> => {
+      const current = dataset;
+      if (!current) return null;
+
+      const finishStep = async (completed: number) => {
+        await pauseForCancel(message);
+        const { percentage, stage } = toAnalysisProgress({
+          completed,
+          checkCount: CHECKS.length,
+        });
+        message.reportProgress(percentage, stage);
+      };
+
+      const profile = profileDataset(current);
+      await finishStep(1);
+
+      const issues: Issue[] = [];
+      for (const [index, check] of CHECKS.entries()) {
+        issues.push(...check.find({ dataset: current, profile }));
+        await finishStep(index + 2);
+      }
+
+      const candidates = findNearDuplicateCandidates({
+        dataset: current,
+        profile,
+      });
+      await finishStep(CHECKS.length + 2);
+
+      return { profile, issues, candidates };
+    }
+  ),
+
+  preview: (change: Change): ChangePreview | null =>
+    dataset ? previewChange({ change, dataset }) : null,
+
+  exportFiles: (accepted: AcceptedChange[]): CleanedFiles | null =>
+    dataset ? exportCleanedFiles({ dataset, accepted }) : null,
 }));
 
 export type DatasetWorker = typeof datasetWorker;
 
-// Yields so a cancel can arrive. A canceled call ignores whatever its method does next,
-// so throwing is only how the work stops.
 async function enterStage({
   stage,
   message,
@@ -69,8 +119,7 @@ async function enterStage({
   stage: LoadStage;
   message: WorkerMethodMessage<File>;
 }) {
-  await new Promise((resolve) => setTimeout(resolve));
-  if (!message.isPending()) throw new Error('Load canceled');
+  await pauseForCancel(message);
 
   message.reportProgress(
     (LOAD_STAGES.indexOf(stage) / LOAD_STAGES.length) * 100,

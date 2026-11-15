@@ -273,7 +273,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 
 - **No margins on a component's root** — the parent spaces its children with flex/grid `gap`.
 - **Parent owns visibility** — a component never conditionally returns `null`; the parent decides whether to render it (`{isVisible && <Component />}`).
-- **`<Activity>` to hide while keeping state** — `<Activity mode={isVisible ? 'visible' : 'hidden'}>`, never `display: none`.
+- **`<Activity>` to hide while keeping state** — `<Activity mode={isVisible ? 'visible' : 'hidden'}>`, never `display: none`. Not around a subtree that reads a `react-global-state-hooks` store: a hook drops its subscription while hidden and returns a stale value when shown again. Keep such a panel mounted and hide it with `hidden`.
 - **Composition over configuration** — `children` and named sub-components (`ReviewPanel.Header`) instead of boolean props that change structure or behavior.
 - **Small, focused, composable.**
 - **Dialogs** — every dialog uses `src/components/Modal.tsx`, built on Radix Dialog.
@@ -304,6 +304,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **Workers don't exist in Vitest** — specs call the engine functions directly; the worker wiring is covered by e2e.
 - **Checks are tested from both sides** — each spec feeds a small inline CSV with what the check must find and what it must leave alone.
 - **Shared spec helpers live in `src/engine/testing/`** — `toDataset(...lines)` gives a deep-frozen dataset from inline CSV lines, `accept` and `cleanEveryCell` drive the clean plan; ids are minted with `toRowId` and `toColumnKey`, never `as`. A helper a second spec needs moves there.
+- **UI spec helpers live in `src/features/workspace/testing/`** — `seedWorkspace(...lines)` puts a CSV and the real checks' issues into the stores, `seedIssues` swaps in chosen issues, and `mockLayout()` gives elements a size so virtualized lists render in jsdom.
 - **Round-trips** — exporting with no accepted decisions reproduces the input rows; replaying a recipe on its source file reproduces the accepted rule changes.
 - **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.

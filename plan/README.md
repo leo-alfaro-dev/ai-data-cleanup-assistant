@@ -168,11 +168,11 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 5 — Review workspace
 
-- [ ] **T5.1** Show the data in a virtualized grid
-- [ ] **T5.2** Run the checks in the worker and list issues by category
-- [ ] **T5.3** Accept or reject suggestions and show the cleaned data
-- [ ] **T5.4** Inspect an issue: examples, affected rows and grid focus
-- [ ] **T5.5** Download the cleaned CSV and the change log
+- [x] **T5.1** Show the data in a virtualized grid
+- [x] **T5.2** Run the checks in the worker and list issues by category
+- [x] **T5.3** Accept or reject suggestions and show the cleaned data
+- [x] **T5.4** Inspect an issue: examples, affected rows and grid focus
+- [x] **T5.5** Download the cleaned CSV and the change log
 
 ### Epic 6 — AI proposes rules
 

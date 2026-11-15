@@ -21,7 +21,7 @@
 └─────────────────────────────┴────────────────────────────────────────────────┘
 ```
 
-Below the `lg` breakpoint the two columns become two tabs, Issues and Data, switched with `<Activity>` so neither loses its scroll position.
+Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both stay mounted and the inactive one is `hidden`, so neither loses its scroll position and both keep following the stores.
 
 ## T5.1 — Show the data in a virtualized grid
 

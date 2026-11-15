@@ -1,8 +1,13 @@
 import { CancelablePromise, defer } from 'easy-cancelable-promise';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { AnalysisResult } from '@/engine/analysis/analysisResult';
 import type { Row } from '@/engine/dataset/dataset';
 import type { FileFacts } from '@/engine/dataset/fileFacts';
 import type { LoadFailureReason } from '@/engine/dataset/loadFailure';
+import { toColumnKey } from '@/engine/dataset/toColumnKey';
+import { toIssueId } from '@/engine/issues/toIssueId';
+import { analysisStore$ } from './analysisStore';
+import { reviewActions, reviewStore$ } from './reviewStore';
 import {
   ROW_CHUNK_SIZE,
   workspaceActions,
@@ -18,6 +23,7 @@ const { worker } = vi.hoisted(() => ({
     rows: vi.fn<
       (range: { offset: number; limit: number }) => CancelablePromise<Row[]>
     >(),
+    analyze: vi.fn<() => CancelablePromise<AnalysisResult | null>>(),
   },
 }));
 
@@ -31,6 +37,8 @@ describe('workspaceStore', () => {
     worker.load.mockReset();
     worker.rows.mockReset();
     worker.rows.mockReturnValue(CancelablePromise.resolve([]));
+    worker.analyze.mockReset();
+    worker.analyze.mockReturnValue(defer<AnalysisResult | null>().promise);
   });
 
   it('loads a file and pulls its rows in chunks, first chunk first', async () => {
@@ -195,6 +203,86 @@ describe('workspaceStore', () => {
     });
   });
 
+  it('starts the analysis once the first chunk is in, while the others are still arriving', async () => {
+    worker.load.mockReturnValue(
+      CancelablePromise.resolve(
+        loaded({ fileName: 'big.csv', rowCount: 25_000 })
+      )
+    );
+    const secondChunk = defer<Row[]>();
+    worker.rows
+      .mockReturnValueOnce(CancelablePromise.resolve([['Ada']]))
+      .mockReturnValueOnce(secondChunk.promise)
+      .mockReturnValue(CancelablePromise.resolve([['Bo']]));
+
+    const loading = workspaceActions.loadFile(csvFile('big.csv'));
+    await vi.waitFor(() => expect(worker.rows).toHaveBeenCalledTimes(2));
+
+    expect(worker.analyze).toHaveBeenCalledOnce();
+    expect(analysisStore$.getState().phase.status).toBe('running');
+
+    secondChunk.resolve([['Cy']]);
+    await loading;
+  });
+
+  it('does not analyze a file that failed to load', async () => {
+    worker.load.mockReturnValue(
+      CancelablePromise.resolve({ ok: false, reason: 'empty' })
+    );
+
+    await workspaceActions.loadFile(csvFile('empty.csv'));
+
+    expect(worker.analyze).not.toHaveBeenCalled();
+  });
+
+  it('cancels the analysis in flight and drops the decisions when another file is loaded', async () => {
+    const analysis = defer<AnalysisResult | null>();
+    worker.analyze.mockReturnValue(analysis.promise);
+    worker.load.mockReturnValue(
+      CancelablePromise.resolve(loaded({ fileName: 'first.csv', rowCount: 1 }))
+    );
+    worker.rows.mockReturnValue(CancelablePromise.resolve([['Ada']]));
+    await workspaceActions.loadFile(csvFile('first.csv'));
+    reviewActions.select(null);
+    reviewStore$.setState((state) => ({
+      ...state,
+      decisions: new Map([[toIssueId('whitespace:1'), { status: 'rejected' }]]),
+    }));
+
+    const second = defer<LoadResult>();
+    worker.load.mockReturnValue(second.promise);
+    const secondLoading = workspaceActions.loadFile(csvFile('second.csv'));
+
+    expect(analysis.promise.status).toBe('canceled');
+    expect(analysisStore$.getState().phase.status).toBe('idle');
+    expect(reviewStore$.getState().decisions.size).toBe(0);
+
+    second.resolve({ ok: false, reason: 'empty' });
+    await secondLoading;
+  });
+
+  it('stops the analysis when a later chunk of rows fails to arrive', async () => {
+    const analysis = defer<AnalysisResult | null>();
+    worker.analyze.mockReturnValue(analysis.promise);
+    worker.load.mockReturnValue(
+      CancelablePromise.resolve(
+        loaded({ fileName: 'big.csv', rowCount: 25_000 })
+      )
+    );
+    worker.rows
+      .mockReturnValueOnce(CancelablePromise.resolve([['Ada']]))
+      .mockReturnValueOnce(CancelablePromise.reject(new Error('crashed')));
+
+    await workspaceActions.loadFile(csvFile('big.csv'));
+
+    expect(workspaceStore$.getState().phase).toMatchObject({
+      status: 'failed',
+      reason: 'unreadable',
+    });
+    expect(analysis.promise.status).toBe('canceled');
+    expect(analysisStore$.getState().phase.status).toBe('idle');
+  });
+
   it('returns to empty and cancels the load in flight on reset', () => {
     const load = defer<LoadResult>();
     worker.load.mockReturnValue(load.promise);
@@ -223,7 +311,7 @@ function loaded({
     facts: {
       fileName,
       rowCount,
-      columnCount: 1,
+      columns: [{ key: toColumnKey(0), header: 'name' }],
       format: {
         delimiter: ',',
         lineBreak: '\n',

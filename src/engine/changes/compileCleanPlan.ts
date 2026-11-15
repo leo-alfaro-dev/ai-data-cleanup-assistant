@@ -11,7 +11,7 @@ export function compileCleanPlan({
   dataset,
 }: {
   accepted: readonly AcceptedChange[];
-  dataset: Dataset;
+  dataset: Pick<Dataset, 'columns' | 'rows'>;
 }): CleanPlan {
   const entries = toOrderedEntries(accepted);
 

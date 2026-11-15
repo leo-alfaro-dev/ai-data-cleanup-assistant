@@ -1,9 +1,13 @@
 import type { CancelablePromise } from 'easy-cancelable-promise';
 import { createGlobalState } from 'react-global-state-hooks';
+import type { FileFacts } from '@/engine/dataset/fileFacts';
 import type { LoadFailureReason } from '@/engine/dataset/loadFailure';
 import { tryCatch } from '@/lib/tryCatch';
 import { getDatasetWorker } from '@/workers/getDatasetWorker';
 import { LOAD_STAGES } from '@/workers/loadStage';
+import { analysisActions } from './analysisStore';
+import { NO_FILE_FACTS } from './noFileFacts';
+import { resetReview } from './resetReview';
 import type { WorkspacePhase } from './workspacePhase';
 
 export const ROW_CHUNK_SIZE = 10_000;
@@ -14,6 +18,7 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
     loadFile(file: File) {
       return async (store) => {
         store.metadata.workerCall?.cancel(SUPERSEDED);
+        resetReview();
 
         const load = Symbol(file.name);
         const isCurrent = () => store.metadata.load === load;
@@ -21,10 +26,12 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
           store.setMetadata({ load, workerCall: call });
           return call;
         };
-        const fail = (reason: LoadFailureReason) =>
+        const fail = (reason: LoadFailureReason) => {
+          resetReview();
           store.setState({
             phase: { status: 'failed', fileName: file.name, reason },
           });
+        };
 
         store.setMetadata({ load, workerCall: null });
         store.setState({
@@ -78,6 +85,7 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
               phase: { ...phase, rowChunks: [...phase.rowChunks, chunk] },
             };
           });
+          if (offset === 0) void analysisActions.run();
         }
       };
     },
@@ -85,6 +93,7 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
     reset() {
       return (store) => {
         store.metadata.workerCall?.cancel(SUPERSEDED);
+        resetReview();
         store.setMetadata(makeInitialMetadata());
         store.setState(makeInitialState());
       };
@@ -96,6 +105,11 @@ export const workspaceActions = workspaceStore$.actions;
 
 export const useWorkspacePhase = workspaceStore$.createSelectorHook(
   (state) => state.phase
+);
+
+export const useFacts = workspaceStore$.createSelectorHook(
+  (state): FileFacts =>
+    state.phase.status === 'ready' ? state.phase.facts : NO_FILE_FACTS
 );
 
 const SUPERSEDED = 'superseded';
