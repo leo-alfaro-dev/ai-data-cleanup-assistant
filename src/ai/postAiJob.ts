@@ -4,15 +4,18 @@ import type { AiJobRequest } from './aiJobRequest';
 import { aiRouteResponse } from './aiRouteResponse';
 import { AI_TASKS } from './aiTasks';
 import type { AiModelId } from './models';
+import { OWN_KEY_HEADER } from './ownKeyHeader';
 
 /** The body the browser sends, as text, and how the route answered. Nothing is thrown. */
 export async function postAiJob({
   job,
   model,
+  ownKey,
   signal,
 }: {
   job: AiJobRequest;
   model: AiModelId;
+  ownKey: string | null;
   signal: AbortSignal;
 }): Promise<{ body: string; outcome: AiJobOutcome }> {
   const body = JSON.stringify({ model, request: job.request });
@@ -20,7 +23,10 @@ export async function postAiJob({
   const { result: response, error } = await tryCatch(() =>
     fetch(path, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        ...(ownKey !== null && { [OWN_KEY_HEADER]: ownKey }),
+      },
       body,
       signal,
     })

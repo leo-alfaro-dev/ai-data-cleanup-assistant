@@ -5,6 +5,7 @@ import type { LoadFailureReason } from '@/engine/dataset/loadFailure';
 import { tryCatch } from '@/lib/tryCatch';
 import { getDatasetWorker } from '@/workers/getDatasetWorker';
 import { LOAD_STAGES } from '@/workers/loadStage';
+import { SAMPLE_FILE_NAME, SAMPLE_URL } from '../sampleFile';
 import { analysisActions } from './analysisStore';
 import { NO_FILE_FACTS } from './noFileFacts';
 import { resetReview } from './resetReview';
@@ -87,6 +88,43 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
           });
           if (offset === 0) void analysisActions.run();
         }
+      };
+    },
+
+    loadSample() {
+      return async (store) => {
+        store.metadata.workerCall?.cancel(SUPERSEDED);
+        const load = Symbol(SAMPLE_FILE_NAME);
+        store.setMetadata({ load, workerCall: null });
+        store.setState({
+          phase: {
+            status: 'loading',
+            fileName: SAMPLE_FILE_NAME,
+            stage: 'reading',
+            percentage: 0,
+          },
+        });
+
+        const { result: file, error } = await tryCatch(async () => {
+          const response = await fetch(SAMPLE_URL);
+          if (!response.ok) throw new Error('sample not served');
+
+          return new File([await response.blob()], SAMPLE_FILE_NAME, {
+            type: 'text/csv',
+          });
+        });
+        if (store.metadata.load !== load) return;
+        if (error) {
+          return store.setState({
+            phase: {
+              status: 'failed',
+              fileName: SAMPLE_FILE_NAME,
+              reason: 'unreadable',
+            },
+          });
+        }
+
+        await store.actions.loadFile?.(file);
       };
     },
 

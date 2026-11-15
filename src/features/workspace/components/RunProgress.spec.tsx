@@ -74,7 +74,9 @@ describe('RunProgress', () => {
     render(<RunProgress />);
 
     expect(screen.getByText('1 of 2 failed')).toBeInTheDocument();
-    expect(screen.getByText(aiFailureCopy.rateLimited)).toBeInTheDocument();
+    expect(
+      screen.getByText(aiFailureCopy.rateLimited, { exact: false })
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Retry' })).toBeEnabled();
   });
 

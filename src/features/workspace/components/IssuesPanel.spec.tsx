@@ -1,6 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { aiFailureCopy } from '../aiFailureCopy';
+import { aiStore$ } from '../state/aiStore';
+import { settingsActions } from '../state/settingsStore';
+import { toRunId } from '../state/runId';
 import { analysisStore$ } from '../state/analysisStore';
 import { makeIssue } from '../testing/makeIssue';
 import { mockLayout } from '../testing/mockLayout';
@@ -89,5 +93,71 @@ describe('IssuesPanel', () => {
     expect(
       await screen.findByRole('progressbar', { name: 'Profiling columns' })
     ).toBeInTheDocument();
+  });
+
+  it.each(['rateLimited', 'budgetExhausted', 'aiNotConfigured'] as const)(
+    'shows why the AI stopped on %s and keeps the issues of the checks on screen',
+    (reason) => {
+      aiStore$.setState((state) => ({
+        ...state,
+        run: {
+          runId: toRunId(1),
+          model: 'anthropic/claude-haiku-5.5',
+          jobs: [
+            {
+              key: 'confirmDuplicates:0',
+              request: {
+                task: 'confirmDuplicates',
+                request: { pairs: [], columns: [] },
+              },
+              state: { status: 'failed', reason },
+            },
+          ],
+        },
+      }));
+
+      render(<IssuesPanel />);
+
+      expect(
+        screen.getByText(aiFailureCopy[reason], { exact: false })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('article', { name: 'Blank rows' })
+      ).toBeInTheDocument();
+    }
+  );
+
+  it('offers the own key on a spent budget, but not to a visitor already using one', () => {
+    const showBudgetFailure = () =>
+      aiStore$.setState((state) => ({
+        ...state,
+        run: {
+          runId: toRunId(1),
+          model: 'anthropic/claude-haiku-5.5',
+          jobs: [
+            {
+              key: 'confirmDuplicates:0',
+              request: {
+                task: 'confirmDuplicates',
+                request: { pairs: [], columns: [] },
+              },
+              state: { status: 'failed', reason: 'budgetExhausted' },
+            },
+          ],
+        },
+      }));
+    showBudgetFailure();
+    const { unmount } = render(<IssuesPanel />);
+    expect(screen.getByText(/use your own OpenRouter key/)).toBeInTheDocument();
+    unmount();
+
+    settingsActions.saveOwnKey('sk-or-visitor');
+    render(<IssuesPanel />);
+
+    expect(screen.getByText(/budget is used up/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/use your own OpenRouter key/)
+    ).not.toBeInTheDocument();
+    settingsActions.removeOwnKey();
   });
 });

@@ -7,6 +7,7 @@ import { LoadFailure } from './components/LoadFailure';
 import { LoadProgress } from './components/LoadProgress';
 import { ReviewWorkspace } from './components/ReviewWorkspace';
 import { TransparencyPanel } from './components/TransparencyPanel';
+import { WelcomeScreen } from './components/WelcomeScreen';
 import { WorkspaceHeader } from './components/WorkspaceHeader';
 import { useWorkspacePhase } from './state/workspaceStore';
 
@@ -40,14 +41,8 @@ export function WorkspacePage({
       )}
       {...props}
     >
-      <div className="flex flex-col gap-2">
-        <WorkspaceHeader />
-        <p className="max-w-prose text-sm text-text-secondary">
-          Finds duplicates, inconsistent values, missing data and suspicious
-          records in a CSV, and lets you decide what changes.
-        </p>
-      </div>
-      {phase.status === 'empty' && <FileDropzone />}
+      <WorkspaceHeader />
+      {phase.status === 'empty' && <WelcomeScreen />}
       {phase.status === 'loading' && (
         <LoadProgress
           fileName={phase.fileName}

@@ -54,6 +54,49 @@ test('a workbook gets the message to export it as CSV', async ({ page }) => {
   await expect(failure).toContainText('save it as CSV first');
 });
 
+test.describe('the first screen', () => {
+  test('runs the whole flow from the sample button alone: load, issues, accept, export', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await expect(page.getByLabel('How your data is handled')).toContainText(
+      'The file stays in the browser'
+    );
+
+    await page.getByRole('button', { name: 'Load sample data' }).click();
+    await expect(
+      page.getByRole('group', { name: 'Filter issues by category' })
+    ).toBeVisible();
+    await page
+      .getByRole('region', { name: 'AI tasks' })
+      .getByText('Done', { exact: true })
+      .first()
+      .waitFor();
+    await filterTo(page, 'Inconsistent values');
+    await page
+      .getByRole('article', { name: 'Extra spaces in “first_name”' })
+      .getByRole('button', { name: 'Accept' })
+      .click();
+    await page.getByRole('button', { name: 'Export', exact: true }).click();
+
+    const cleaned = await download({ page, button: 'Download cleaned CSV' });
+    expect(cleaned.name).toBe('customers.cleaned.csv');
+    expect(cleaned.text).not.toBe(readFileSync(SAMPLE, 'utf8'));
+  });
+
+  test('has a link preview image', async ({ page }) => {
+    await page.goto('/');
+
+    const imageUrl = await page
+      .locator('meta[property="og:image"]')
+      .getAttribute('content');
+    const response = await page.request.get(new URL(imageUrl ?? '').pathname);
+
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('image/png');
+  });
+});
+
 test.describe('the data grid', () => {
   test('lists the fixture rows with spreadsheet row numbers', async ({
     page,
@@ -353,7 +396,7 @@ test.describe('the AI tasks', () => {
 
     const tasks = page.getByRole('region', { name: 'AI tasks' });
     await expect(
-      tasks.getByText('No OpenRouter key is set, so the AI cannot run.')
+      tasks.getByText(/No OpenRouter key is set, so the AI cannot run/)
     ).toBeVisible();
     await expect(tasks.getByText('Failed', { exact: true })).toBeVisible();
     await expect(
@@ -393,6 +436,60 @@ test.describe('what was sent to the AI', () => {
     );
     await expect(panel.locator('pre')).toContainText('"pairs"');
     expect(await panel.textContent()).not.toMatch(/sk-or-/);
+  });
+});
+
+test.describe('the visitor key', () => {
+  test('travels in a header once set, and is gone from the next run when removed', async ({
+    page,
+  }) => {
+    const sent: (string | undefined)[] = [];
+    page.on('request', (request) => {
+      if (request.url().includes('/api/ai/')) {
+        sent.push(request.headers()['x-openrouter-key']);
+      }
+    });
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    expect(sent.length).toBeGreaterThan(0);
+    expect(sent.every((key) => key === undefined)).toBe(true);
+    sent.length = 0;
+
+    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
+    await page.getByRole('button', { name: 'Use this key' }).click();
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Run again' }).click();
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    expect(sent.length).toBeGreaterThan(0);
+    expect(sent.every((key) => key === 'sk-or-e2e-visitor')).toBe(true);
+    sent.length = 0;
+
+    await page.getByRole('button', { name: 'Own key in use' }).click();
+    await page.getByRole('button', { name: 'Remove key' }).click();
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Run again' }).click();
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    expect(sent.length).toBeGreaterThan(0);
+    expect(sent.every((key) => key === undefined)).toBe(true);
+  });
+
+  test('survives a refresh in the same tab but is never put in localStorage', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
+    await page.getByRole('button', { name: 'Use this key' }).click();
+
+    await page.reload();
+    await page.getByLabel('Choose a CSV file').setInputFiles(SAMPLE);
+
+    await expect(
+      page.getByRole('button', { name: 'Own key in use' })
+    ).toBeVisible();
+    expect(await page.evaluate(() => window.localStorage.length)).toBe(0);
   });
 });
 

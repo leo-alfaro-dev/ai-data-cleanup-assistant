@@ -20,10 +20,22 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   );
 }
 
+const DESCRIPTION =
+  'Find duplicates, inconsistent values, missing data and suspicious records in a CSV, and decide what changes.';
+
 export const metadata: Metadata = {
   title: 'AI Data Cleanup Assistant',
-  description:
-    'Find duplicates, inconsistent values, missing data and suspicious records in a CSV, and decide what changes.',
+  description: DESCRIPTION,
+  openGraph: {
+    title: 'AI Data Cleanup Assistant',
+    description: DESCRIPTION,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Data Cleanup Assistant',
+    description: DESCRIPTION,
+  },
 };
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });

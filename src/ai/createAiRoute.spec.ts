@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import type { AiClient } from './aiClient';
 import { createAiRoute } from './createAiRoute';
+import { createRateLimiter } from './rateLimiter';
 import type { AiTaskOutcome } from './aiTaskOutcome';
 
 const requestSchema = z.object({ text: z.string() });
@@ -13,7 +14,9 @@ const MODEL = 'anthropic/claude-haiku-5.5';
 function makeRoute({
   outcome,
   run,
+  limit = 1000,
 }: {
+  limit?: number;
   outcome?: AiTaskOutcome<{ answer: string }>;
   run?: (args: {
     signal: AbortSignal;
@@ -30,6 +33,7 @@ function makeRoute({
     requestSchema,
     run: runTask,
     createClient,
+    rateLimiter: createRateLimiter({ limit, windowMs: 60_000 }),
   });
 
   return { route, createClient, runTask };
@@ -145,6 +149,30 @@ describe('createAiRoute', () => {
     expect(await response.text()).not.toContain('visitor-secret');
   });
 
+  it('never passes the visitor key to a log call, whether the task answers or throws', async () => {
+    const logs = [
+      vi.spyOn(console, 'info').mockImplementation(() => {}),
+      vi.spyOn(console, 'warn').mockImplementation(() => {}),
+      vi.spyOn(console, 'log').mockImplementation(() => {}),
+      vi.mocked(console.error),
+    ];
+    const headers = { 'x-openrouter-key': 'visitor-secret' };
+    const body = { model: MODEL, request: { text: 'a' } };
+    const failing = makeRoute({
+      run: async () => {
+        throw new Error('visitor-secret');
+      },
+    });
+
+    await makeRoute().route(post({ body, headers }));
+    await failing.route(post({ body, headers }));
+
+    expect(logs[3]).toHaveBeenCalled();
+    expect(JSON.stringify(logs.flatMap((log) => log.mock.calls))).not.toContain(
+      'visitor-secret'
+    );
+  });
+
   it('works with the visitor key when the server has none', async () => {
     vi.stubEnv('OPENROUTER_API_KEY', '');
     const { route, createClient } = makeRoute();
@@ -238,5 +266,52 @@ describe('createAiRoute', () => {
 
     expect(response.status).toBe(499);
     expect(runTask).toHaveBeenCalledOnce();
+  });
+
+  describe('the rate limit on the hosted key', () => {
+    const body = { model: MODEL, request: { text: 'a' } };
+
+    it('answers 429 rateLimited past the limit, per visitor address, without running the task', async () => {
+      const { route, runTask } = makeRoute({ limit: 1 });
+      const visitor = { 'x-forwarded-for': '203.0.113.7' };
+      await route(post({ body, headers: visitor }));
+
+      const refused = await route(post({ body, headers: visitor }));
+      const other = await route(
+        post({ body, headers: { 'x-forwarded-for': '203.0.113.8' } })
+      );
+
+      expect(refused.status).toBe(429);
+      expect(await refused.json()).toEqual({
+        ok: false,
+        reason: 'rateLimited',
+        calls: [],
+      });
+      expect(other.status).toBe(200);
+      expect(runTask).toHaveBeenCalledTimes(2);
+    });
+
+    it('does not count or refuse calls made on the visitor key', async () => {
+      const { route, runTask } = makeRoute({ limit: 1 });
+      const headers = { 'x-openrouter-key': 'visitor-secret' };
+
+      const statuses = [
+        (await route(post({ body, headers }))).status,
+        (await route(post({ body, headers }))).status,
+        (await route(post({ body }))).status,
+      ];
+
+      expect(statuses).toEqual([200, 200, 200]);
+      expect(runTask).toHaveBeenCalledTimes(3);
+    });
+
+    it('does not count a request the contract refused', async () => {
+      const { route } = makeRoute({ limit: 1 });
+      await route(post({ body: { model: MODEL } }));
+
+      const response = await route(post({ body }));
+
+      expect(response.status).toBe(200);
+    });
   });
 });

@@ -3,8 +3,10 @@ import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import { aiFailureCopy } from '../aiFailureCopy';
 import { aiTaskLabels } from '../aiTaskLabels';
+import { ownKeyOffer } from '../ownKeyOffer';
 import { aiActions, useIsAiRunning } from '../state/aiStore';
 import type { AiTaskSummary } from '../state/aiTaskSummary';
+import { useHasOwnKey } from '../state/settingsStore';
 
 export type AiTaskRowProps = React.ComponentProps<'li'> & {
   summary: AiTaskSummary;
@@ -16,6 +18,7 @@ export function AiTaskRow({
   ...props
 }: AiTaskRowProps) {
   const isRunning = useIsAiRunning();
+  const hasOwnKey = useHasOwnKey();
 
   return (
     <li
@@ -42,7 +45,10 @@ export function AiTaskRow({
       </div>
       {summary.status === 'failed' && (
         <div className="flex flex-col gap-2">
-          <p className="text-text-secondary">{aiFailureCopy[summary.reason]}</p>
+          <p className="text-text-secondary">
+            {aiFailureCopy[summary.reason]}{' '}
+            {!hasOwnKey && ownKeyOffer(summary.reason)}
+          </p>
           <Button
             className="self-start"
             disabled={isRunning}

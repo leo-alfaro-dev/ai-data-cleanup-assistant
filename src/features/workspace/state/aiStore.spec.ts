@@ -7,7 +7,7 @@ import type { NormalizeValuesRequest } from '@/ai/tasks/normalizeValues/normaliz
 import type { Issue } from '@/engine/issues/issue';
 import { toIssueId } from '@/engine/issues/toIssueId';
 import { aiActions, aiStore$ } from './aiStore';
-import { settingsActions } from './settingsStore';
+import { settingsActions, settingsStore$ } from './settingsStore';
 import { summarizeAiTasks } from './summarizeAiTasks';
 
 const { worker } = vi.hoisted(() => ({
@@ -334,6 +334,35 @@ describe('aiStore', () => {
       'anthropic/claude-haiku-5.5',
     ]);
     settingsActions.selectModel('anthropic/claude-haiku-5.5');
+  });
+
+  it('records which key was rejected, and a retry after a new key carries the new key', async () => {
+    worker.buildAiRequests.mockReturnValue(
+      CancelablePromise.resolve(requests(1))
+    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(failedResponse('invalidKey', 401))
+      .mockResolvedValueOnce(okResponse(0));
+    vi.stubGlobal('fetch', fetchMock);
+    settingsActions.saveOwnKey('sk-or-wrong');
+    await aiActions.startRun();
+
+    expect(aiStore$.getState().rejectedKeyRevision).toBe(
+      settingsStore$.getState().ownKeyRevision
+    );
+
+    settingsActions.saveOwnKey('sk-or-right');
+    await aiActions.retryTask('normalizeValues');
+
+    const keys = fetchMock.mock.calls.map(([, init]) =>
+      new Headers(init.headers).get('x-openrouter-key')
+    );
+    expect(keys).toEqual(['sk-or-wrong', 'sk-or-right']);
+    expect(aiStore$.getState().rejectedKeyRevision).not.toBe(
+      settingsStore$.getState().ownKeyRevision
+    );
+    settingsActions.removeOwnKey();
   });
 
   it('does not retry a task while any request of the run is still in flight', async () => {

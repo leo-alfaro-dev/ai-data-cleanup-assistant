@@ -186,10 +186,10 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 7 — Safe live demo
 
-- [ ] **T7.1** Rate-limit hosted-key calls and explain limit and budget failures
-- [ ] **T7.2** Let visitors use their own OpenRouter key
-- [ ] **T7.3** Set up the production key and spend cap, and link the live demo · _needs you_
-- [ ] **T7.4** Design the first screen: sample data, privacy facts and metadata
+- [x] **T7.1** Rate-limit hosted-key calls and explain limit and budget failures
+- [x] **T7.2** Let visitors use their own OpenRouter key
+- [ ] **T7.3** Set up the production key and spend cap, and link the live demo · _needs you_ (limits sized and README note written; the key, cap and live check remain)
+- [x] **T7.4** Design the first screen: sample data, privacy facts and metadata
 
 ### Epic 8 — Review at volume
 

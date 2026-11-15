@@ -39,6 +39,7 @@ export const aiStore$ = createGlobalState(makeInitialState(), {
           run: null,
           issues: [],
           notes: [],
+          rejectedKeyRevision: null,
           isPreparing: true,
         }));
 
@@ -81,12 +82,19 @@ export const aiStore$ = createGlobalState(makeInitialState(), {
         if (runId === null || controller === null || model === undefined)
           return;
 
+        const { ownKey, ownKeyRevision } = settingsStore$.getState();
+
         await runAiJobs({
           jobs,
           signal: controller.signal,
           isCurrent: () => store.metadata.runId === runId,
           post: (request) =>
-            postAiJob({ job: request, model, signal: controller.signal }),
+            postAiJob({
+              job: request,
+              model,
+              ownKey,
+              signal: controller.signal,
+            }),
           buildIssues: (taskResult) =>
             getDatasetWorker().buildAiIssues(taskResult),
           onState: ({ key, state }) =>
@@ -97,6 +105,10 @@ export const aiStore$ = createGlobalState(makeInitialState(), {
           onSettled: ({ job, body, outcome, issues, notes }) =>
             store.setState((current) => ({
               ...current,
+              rejectedKeyRevision:
+                !outcome.ok && outcome.reason === 'invalidKey'
+                  ? ownKeyRevision
+                  : current.rejectedKeyRevision,
               issues: [...current.issues, ...issues],
               notes: [...current.notes, ...notes],
               calls: [
@@ -142,6 +154,10 @@ export const useHasAiCalls = aiStore$.createSelectorHook((state) =>
   state.calls.some(({ records }) => records.length > 0)
 );
 
+export const useRejectedKeyRevision = aiStore$.createSelectorHook(
+  (state) => state.rejectedKeyRevision
+);
+
 // True from the start of a run until its last request has settled.
 export const useIsAiRunning = aiStore$.createSelectorHook(isAiRunInFlight);
 
@@ -158,10 +174,18 @@ function makeInitialState(): {
   run: AiRun | null;
   issues: readonly Issue[];
   notes: readonly AiNote[];
+  rejectedKeyRevision: number | null;
   calls: readonly AiCallEntry[];
   isPreparing: boolean;
 } {
-  return { run: null, issues: [], notes: [], calls: [], isPreparing: false };
+  return {
+    run: null,
+    issues: [],
+    notes: [],
+    rejectedKeyRevision: null,
+    calls: [],
+    isPreparing: false,
+  };
 }
 
 function makeInitialMetadata(): {

@@ -5,9 +5,13 @@ import type { AiClient } from './aiClient';
 import type { AiFailureReason } from './aiFailureReason';
 import { AI_FAILURE_STATUS } from './aiFailureStatus';
 import type { AiModelId } from './models';
+import { OWN_KEY_HEADER } from './ownKeyHeader';
 import { isAiModelId } from './models';
 import { createOpenRouterClient } from './openRouterClient';
 import type { AiTaskOutcome } from './aiTaskOutcome';
+import type { RateLimiter } from './rateLimiter';
+import { hostedRateLimiter } from './rateLimiter';
+import { readVisitorAddress } from './readVisitorAddress';
 
 // Closed by the client, which is no longer listening for an answer.
 const CLIENT_CLOSED_STATUS = 499;
@@ -18,6 +22,7 @@ export function createAiRoute<Payload, Result>({
   requestSchema,
   run,
   createClient = createOpenRouterClient,
+  rateLimiter = hostedRateLimiter,
 }: {
   task: string;
   requestSchema: z.ZodType<Payload>;
@@ -28,6 +33,7 @@ export function createAiRoute<Payload, Result>({
     signal: AbortSignal;
   }) => Promise<AiTaskOutcome<Result>>;
   createClient?: (args: { apiKey: string }) => AiClient;
+  rateLimiter?: RateLimiter;
 }): (request: Request) => Promise<Response> {
   const bodySchema = z.object({
     model: z.custom<AiModelId>(isAiModelId),
@@ -46,10 +52,14 @@ export function createAiRoute<Payload, Result>({
     const body = unreadable ? null : bodySchema.safeParse(json);
     if (!body?.success) return fail('invalidRequest');
 
-    const apiKey =
-      request.headers.get('x-openrouter-key')?.trim() ||
-      process.env.OPENROUTER_API_KEY;
+    const visitorKey = request.headers.get(OWN_KEY_HEADER)?.trim();
+    const apiKey = visitorKey || process.env.OPENROUTER_API_KEY;
     if (!apiKey) return fail('aiNotConfigured');
+
+    const isWithinLimit =
+      Boolean(visitorKey) ||
+      rateLimiter.take(readVisitorAddress(request.headers));
+    if (!isWithinLimit) return fail('rateLimited');
 
     const { result: outcome, error } = await tryCatch(() =>
       run({

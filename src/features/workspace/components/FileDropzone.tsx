@@ -1,33 +1,18 @@
-import { useState } from 'react';
 import { RxUpload } from 'react-icons/rx';
 import { tv } from 'tailwind-variants';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
+import { useFileDrop } from '../state/useFileDrop';
 import { workspaceActions } from '../state/workspaceStore';
 
 export type FileDropzoneProps = React.ComponentProps<'label'>;
 
 export function FileDropzone({ className = '', ...props }: FileDropzoneProps) {
-  const [isDragging, setIsDragging] = useState(false);
+  const { isDragging, handlers } = useFileDrop();
 
   return (
     <label
       className={fileDropzone({ isDragging, className })}
-      onDragOver={(event) => {
-        event.preventDefault();
-        setIsDragging(true);
-      }}
-      onDragLeave={(event) => {
-        const isStillInside =
-          event.relatedTarget instanceof Node &&
-          event.currentTarget.contains(event.relatedTarget);
-        if (!isStillInside) setIsDragging(false);
-      }}
-      onDrop={(event) => {
-        event.preventDefault();
-        setIsDragging(false);
-        const file = event.dataTransfer.files[0];
-        if (file) void workspaceActions.loadFile(file);
-      }}
+      {...handlers}
       {...props}
     >
       <RxUpload aria-hidden className="size-5 text-text-secondary" />

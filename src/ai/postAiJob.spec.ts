@@ -42,10 +42,11 @@ function answerWith(body: unknown, status = 200) {
   return fetchMock;
 }
 
-function post() {
+function post(ownKey: string | null = null) {
   return postAiJob({
     job,
     model: 'anthropic/claude-haiku-5.5',
+    ownKey,
     signal: new AbortController().signal,
   });
 }
@@ -131,5 +132,26 @@ describe('postAiJob', () => {
     const { outcome } = await post();
 
     expect(outcome).toEqual({ ok: false, reason: 'unexpected', calls: [] });
+  });
+
+  it('sends the visitor key in a header only when there is one', async () => {
+    const fetchMock = answerWith({ ok: true, result, calls: [call] });
+
+    await post('visitor-secret');
+    await post();
+
+    const [withKey, withoutKey] = fetchMock.mock.calls.map(
+      ([, init]) => new Headers(init?.headers)
+    );
+    expect(withKey?.get('x-openrouter-key')).toBe('visitor-secret');
+    expect(withoutKey?.has('x-openrouter-key')).toBe(false);
+  });
+
+  it('keeps the visitor key out of the body it returns', async () => {
+    answerWith({ ok: true, result, calls: [call] });
+
+    const { body } = await post('visitor-secret');
+
+    expect(body).not.toContain('visitor-secret');
   });
 });

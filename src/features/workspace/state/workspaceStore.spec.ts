@@ -1,5 +1,5 @@
 import { CancelablePromise, defer } from 'easy-cancelable-promise';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AnalysisResult } from '@/engine/analysis/analysisResult';
 import type { Row } from '@/engine/dataset/dataset';
 import type { FileFacts } from '@/engine/dataset/fileFacts';
@@ -292,6 +292,56 @@ describe('workspaceStore', () => {
 
     expect(load.promise.status).toBe('canceled');
     expect(workspaceStore$.getState().phase).toEqual({ status: 'empty' });
+  });
+
+  describe('loadSample', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it('fetches the sample file and loads it like a chosen file', async () => {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response('name\nAda\n'))
+      );
+      worker.load.mockReturnValue(
+        CancelablePromise.resolve(
+          loaded({ fileName: 'customers.csv', rowCount: 1 })
+        )
+      );
+
+      await workspaceActions.loadSample();
+
+      const [file] = worker.load.mock.calls[0] ?? [];
+      expect(fetch).toHaveBeenCalledWith('/samples/customers.csv');
+      expect(file?.name).toBe('customers.csv');
+      expect(await file?.text()).toBe('name\nAda\n');
+      expect(workspaceStore$.getState().phase.status).toBe('ready');
+    });
+
+    it.each([
+      [
+        'answers with an error status',
+        async () => new Response('', { status: 404 }),
+      ],
+      [
+        'cannot be reached',
+        async () => {
+          throw new TypeError('offline');
+        },
+      ],
+    ])('fails as unreadable when the sample %s', async (_name, answer) => {
+      vi.stubGlobal('fetch', vi.fn(answer));
+
+      await workspaceActions.loadSample();
+
+      expect(workspaceStore$.getState().phase).toEqual({
+        status: 'failed',
+        fileName: 'customers.csv',
+        reason: 'unreadable',
+      });
+      expect(worker.load).not.toHaveBeenCalled();
+    });
   });
 });
 
