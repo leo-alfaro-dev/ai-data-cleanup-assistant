@@ -7,9 +7,11 @@ import { confidenceLabels } from '../confidenceLabels';
 import { describeIssue } from '../issueCopy';
 import { listIssueGroups } from '../listIssueGroups';
 import { reviewActions } from '../state/reviewStore';
+import { useIssueNotes } from '../state/useIssueNotes';
 import { useFacts } from '../state/workspaceStore';
 import { sourceLabels } from '../sourceLabels';
 import { AffectedRows } from './AffectedRows';
+import { AiReview } from './AiReview';
 import { CategoryBadge } from './CategoryBadge';
 import { DuplicateGroup } from './DuplicateGroup';
 import { IssueExamples } from './IssueExamples';
@@ -28,6 +30,7 @@ export function IssueDetail({
   const { columns } = useFacts();
   const { title, summary } = describeIssue({ issue, columns });
   const groups = listIssueGroups(issue);
+  const hasAiReview = useIssueNotes(issue.id).length > 0;
 
   return (
     <section
@@ -72,6 +75,7 @@ export function IssueDetail({
             </p>
           </div>
           {issue.suggestion && <IssueExamples issue={issue} />}
+          {hasAiReview && <AiReview issue={issue} />}
           {groups.slice(0, MAX_SHOWN_GROUPS).map((group) => (
             <DuplicateGroup key={group.join(',')} rows={group} />
           ))}

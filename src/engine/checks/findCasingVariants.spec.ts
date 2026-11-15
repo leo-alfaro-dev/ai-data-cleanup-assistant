@@ -9,6 +9,25 @@ import { watchRowReads } from '@/engine/testing/watchRowReads';
 import { findCasingVariants } from './findCasingVariants';
 
 describe('findCasingVariants', () => {
+  it.each(['customer', 'client', 'owner'])(
+    'still finds spellings in a column headed %s, since only person-name headers are skipped',
+    (header) => {
+      const dataset = toDataset(
+        `id,${header}`,
+        '1,Acme Corp',
+        '2,ACME CORP',
+        '3,Acme Corp',
+        '4,Acme Corp',
+        '5,Boston Group',
+        '6,Boston Group',
+        '7,Boston Group',
+        '8,Boston Group'
+      );
+
+      expect(findCasing(dataset)).toHaveLength(1);
+    }
+  );
+
   it('finds spellings of one value in a categorical column and maps them to the most frequent one', () => {
     const dataset = toDataset(
       'id,city',

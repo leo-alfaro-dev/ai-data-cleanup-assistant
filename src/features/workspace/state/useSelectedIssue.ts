@@ -1,6 +1,6 @@
 import type { Issue } from '@/engine/issues/issue';
 import { memoizeLast } from '@/lib/memoizeLast';
-import { useIssues } from './analysisStore';
+import { useIssues } from './useIssues';
 import { useSelectedIssueId } from './reviewStore';
 
 export function useSelectedIssue(): Issue | undefined {

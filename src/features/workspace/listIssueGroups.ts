@@ -8,6 +8,7 @@ export function listIssueGroups(issue: Issue): readonly (readonly RowId[])[] {
     case 'normalizedDuplicates':
       return issue.details.groups;
     case 'sharedIdentifiers':
+    case 'confirmedDuplicate':
       return [issue.rows];
     default:
       return [];

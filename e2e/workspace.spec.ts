@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
-import type { Page } from '@playwright/test';
-import { expect, test } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import { mockAiRoutes } from './aiRoutes';
+import { expect, test } from './test';
 
 const SAMPLE = 'public/samples/customers.csv';
 const SAMPLE_ROW_COUNT = 1150;
@@ -255,6 +256,200 @@ test.describe('exporting', () => {
   });
 });
 
+test.describe('the AI tasks', () => {
+  test('land after the check issues, and the task shows as done', async ({
+    page,
+  }) => {
+    let release: () => void = () => {};
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await mockAiRoutes(page, { beforeAnswer: () => gate });
+    await loadSample(page);
+
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText(/^Running|^Queued/).first()).toBeVisible();
+    const categories = page.getByRole('group', {
+      name: 'Filter issues by category',
+    });
+    const inconsistent = categories.getByRole('button', {
+      name: /^Inconsistent values \d+$/,
+    });
+    const before = await countOf(inconsistent);
+    await filterTo(page, 'Inconsistent values');
+    await expect(
+      page.getByRole('article', { name: 'Inconsistent casing in “state”' })
+    ).toBeVisible();
+
+    release();
+
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    expect(await countOf(inconsistent)).toBeGreaterThan(before);
+    const group = await findIssueCard({
+      page,
+      name: 'Spellings of “MN” in “state”',
+    });
+    await expect(group).toBeVisible();
+    await expect(group).toContainText('AI · Certain');
+    await expect(
+      page.getByRole('article', { name: 'Inconsistent casing in “state”' })
+    ).toHaveCount(0);
+  });
+
+  test('turn a confirmed pair of rows into a merge suggestion that can be accepted', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+
+    await filterTo(page, 'Duplicates');
+    const card = await findIssueCard({
+      page,
+      name: 'Rows 47 and 169 are the same record',
+    });
+    await expect(card).toContainText('AI · High');
+    await card.getByRole('button', { name: 'Accept' }).click();
+    await expect(card.getByText('Accepted')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Export', exact: true }).click();
+    const dialog = page.getByRole('dialog', { name: 'Export' });
+    await expect(dialog.getByText('1 row', { exact: true })).toBeVisible();
+  });
+
+  test('add what the AI made of the rows a check flagged, without changing the check issue', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+
+    await filterTo(page, 'Suspicious records');
+    const card = await findIssueCard({
+      page,
+      name: 'Unusual numbers in “monthly_spend”',
+    });
+    await expect(card).toContainText(/AI: \d+ of \d+ rows suspicious/);
+    await card.getByRole('button').first().click();
+
+    const review = page.getByRole('list', { name: 'AI review' });
+    await expect(review).toBeVisible();
+    await expect(review.getByText('Suspicious').first()).toBeVisible();
+    await expect(
+      review.getByText(/about 100 times the typical/).first()
+    ).toBeVisible();
+    await expect(
+      page.getByRole('region', { name: 'Issue detail' }).getByRole('heading', {
+        name: 'Unusual numbers in “monthly_spend”',
+      })
+    ).toBeVisible();
+  });
+
+  test('show the reason a task failed, with a retry that runs it again', async ({
+    page,
+  }) => {
+    await mockAiRoutes(page, { failFirst: 4 });
+    await loadSample(page);
+
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(
+      tasks.getByText('No OpenRouter key is set, so the AI cannot run.')
+    ).toBeVisible();
+    await expect(tasks.getByText('Failed', { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('group', { name: 'Filter issues by category' })
+    ).toBeVisible();
+
+    await tasks.getByRole('button', { name: 'Retry' }).click();
+
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await expect(tasks.getByRole('button', { name: 'Retry' })).toHaveCount(0);
+  });
+});
+
+test.describe('what was sent to the AI', () => {
+  test('is summed up in the header and listed, request by request, in the panel', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+
+    const summary = page.getByRole('button', {
+      name: /^\d+ AI calls · [\d.]+k tokens · \$/,
+    });
+    await expect(summary).toBeVisible();
+    await summary.click();
+
+    const panel = page.getByRole('dialog', { name: 'What was sent to the AI' });
+    await expect(panel.getByText('Group spellings of one value')).toHaveCount(
+      4
+    );
+    await expect(panel.getByText('Review suspicious rows')).toBeVisible();
+    await panel.getByRole('button', { name: /Confirm duplicate rows/ }).click();
+    await expect(panel.getByText('Request, exactly as sent')).toBeVisible();
+    await expect(panel.locator('pre')).toContainText(
+      '"model":"anthropic/claude-haiku-5.5"'
+    );
+    await expect(panel.locator('pre')).toContainText('"pairs"');
+    expect(await panel.textContent()).not.toMatch(/sk-or-/);
+  });
+});
+
+test.describe('the model', () => {
+  test('can be changed, and the next run sends its id and keeps the earlier calls', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    const picker = page.getByRole('combobox', { name: 'Model' });
+    await expect(picker).toBeEnabled();
+
+    await picker.selectOption({ label: 'Gemini 2.5 Flash Lite' });
+    const request = page.waitForRequest(
+      (sent) =>
+        sent.url().endsWith('/api/ai/normalize-values') &&
+        sent.postDataJSON().model === 'google/gemini-2.5-flash-lite'
+    );
+    await page.getByRole('button', { name: 'Run again' }).click();
+    await request;
+
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await expect(picker).toBeEnabled();
+    await page.getByRole('button', { name: /AI calls/ }).click();
+    const panel = page.getByRole('dialog', { name: 'What was sent to the AI' });
+    await expect(panel.getByText('Group spellings of one value')).toHaveCount(
+      8
+    );
+    await expect(
+      panel.getByText(/Gemini 2.5 Flash Lite · Answered/).first()
+    ).toBeVisible();
+    await expect(
+      panel.getByText(/Claude Haiku 5.5 · Answered/).first()
+    ).toBeVisible();
+  });
+
+  test('cannot be changed while the AI tasks run', async ({ page }) => {
+    let release: () => void = () => {};
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await mockAiRoutes(page, { beforeAnswer: () => gate });
+    await loadSample(page);
+
+    await expect(page.getByRole('combobox', { name: 'Model' })).toBeDisabled();
+    await expect(
+      page.getByRole('button', { name: 'Run again' })
+    ).toBeDisabled();
+
+    release();
+
+    await expect(page.getByRole('combobox', { name: 'Model' })).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'Run again' })).toBeEnabled();
+  });
+});
+
 test.describe('on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
@@ -283,6 +478,20 @@ test.describe('on a phone', () => {
       page.getByRole('group', { name: 'Filter issues by category' })
     ).toBeHidden();
     expect(await overflow()).toBe(0);
+  });
+
+  test('keeps every header button within the screen once the AI tasks have run', async ({
+    page,
+  }) => {
+    await loadSample(page);
+
+    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+
+    await expect(
+      page.getByRole('button', { name: /AI calls/ })
+    ).toBeInViewport();
+    await expect(page.getByRole('button', { name: /Export/ })).toBeInViewport();
   });
 
   test('keeps the issue chosen in the Issues tab open in the Data tab', async ({
@@ -316,6 +525,34 @@ async function loadSample(page: Page): Promise<void> {
 
 function firstNameOf(csv: string, lineIndex: number): string {
   return csv.split('\n')[lineIndex]?.split(',')[1] ?? '';
+}
+
+async function countOf(button: Locator): Promise<number> {
+  const text = (await button.textContent()) ?? '';
+
+  return Number(text.match(/(\d[\d,]*)$/)?.[1]?.replaceAll(',', ''));
+}
+
+async function findIssueCard({
+  page,
+  name,
+}: {
+  page: Page;
+  name: string;
+}): Promise<Locator> {
+  const card = page.getByRole('article', { name });
+  const scroller = page.getByRole('list', { name: 'Issues' });
+
+  for (let step = 0; step < 40 && (await card.count()) === 0; step += 1) {
+    await scroller.evaluate((list) => {
+      const container = list.parentElement;
+      if (container) container.scrollTop += 500;
+    });
+    await page.waitForTimeout(50);
+  }
+  await expect(card).toBeVisible();
+
+  return card;
 }
 
 async function filterTo(page: Page, category: string): Promise<void> {

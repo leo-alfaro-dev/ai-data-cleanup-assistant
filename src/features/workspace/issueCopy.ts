@@ -1,4 +1,5 @@
 import type { Column } from '@/engine/dataset/dataset';
+import { toRowNumber } from '@/engine/dataset/toRowNumber';
 import type { Issue } from '@/engine/issues/issue';
 import { countOf } from '@/lib/countOf';
 import { formatNumber } from '@/lib/formatNumber';
@@ -107,6 +108,39 @@ export function describeIssue({
         summary: `Spellings of a missing value: ${shown.join(', ')}${more}.`,
       };
     }
+    case 'normalizedSpellings': {
+      const note = details.isCanonicalInFile
+        ? ''
+        : ` ${quote(details.canonical)} is not in your file.`;
+
+      return {
+        title: `Spellings of ${quote(details.canonical)} in ${columnName}`,
+        summary: `${details.reason}${note}`,
+      };
+    }
+    case 'aiPlaceholders':
+      return {
+        title: `Placeholder values in ${columnName}`,
+        summary: details.placeholders
+          .map(({ value, reason }) => `${quote(value)}: ${reason}`)
+          .join(' '),
+      };
+    case 'confirmedDuplicate': {
+      const [first, second] = issue.rows;
+
+      return {
+        title: `Rows ${first === undefined ? '' : toRowNumber(first)} and ${second === undefined ? '' : toRowNumber(second)} are the same record`,
+        summary: details.reason,
+      };
+    }
+    case 'assessedRow':
+      return {
+        title:
+          issue.column === null
+            ? 'Suspicious row'
+            : `Suspicious value in ${columnName}`,
+        summary: details.reason,
+      };
     case 'numericOutliers':
       return {
         title: `Unusual numbers in ${columnName}`,

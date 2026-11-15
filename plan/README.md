@@ -176,13 +176,13 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 6 — AI proposes rules
 
-- [ ] **T6.1** Add the OpenRouter gateway with validated structured output
-- [ ] **T6.2** Add the normalize-values AI task
-- [ ] **T6.3** Run AI tasks from the browser with progress, abort and retry
-- [ ] **T6.4** Add the confirm-duplicates AI task
-- [ ] **T6.5** Add the assess-suspicious-rows AI task
-- [ ] **T6.6** Show what was sent to the AI and what it cost
-- [ ] **T6.7** Choose the model for a run
+- [x] **T6.1** Add the OpenRouter gateway with validated structured output
+- [x] **T6.2** Add the normalize-values AI task
+- [x] **T6.3** Run AI tasks from the browser with progress, abort and retry
+- [x] **T6.4** Add the confirm-duplicates AI task
+- [x] **T6.5** Add the assess-suspicious-rows AI task
+- [x] **T6.6** Show what was sent to the AI and what it cost
+- [x] **T6.7** Choose the model for a run
 
 ### Epic 7 — Safe live demo
 

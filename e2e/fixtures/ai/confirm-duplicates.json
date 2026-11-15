@@ -1,0 +1,1602 @@
+[
+  {
+    "request": {
+      "columns": [
+        "customer_id",
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "city",
+        "state",
+        "country",
+        "signup_date",
+        "plan",
+        "monthly_spend"
+      ],
+      "pairs": [
+        {
+          "id": 0,
+          "rows": [45, 167],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10046",
+            "Ava",
+            "Scott",
+            "ava.scott@example.com",
+            "(305) 555-0181",
+            "New York",
+            "NY",
+            "United States",
+            "2022-02-04",
+            "Starter",
+            "26.35"
+          ],
+          "second": [
+            "C-11001",
+            "AVA",
+            "Scott",
+            "ava.scott@example.com",
+            "(305) 555-0181",
+            "New York",
+            "NY",
+            "United States",
+            "2022-02-04",
+            "Starter",
+            "26.35"
+          ]
+        },
+        {
+          "id": 1,
+          "rows": [56, 922],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.98,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10057",
+            "Ava",
+            "Brown",
+            "ava.brown@example.org",
+            "(503) 555-0102",
+            "San Diego",
+            "CA",
+            "United States",
+            "2022-02-14",
+            "Pro",
+            "51.16"
+          ],
+          "second": [
+            "C-11051",
+            "Ava",
+            "Brow",
+            "ava.brown@example.org",
+            "(503) 555-0102",
+            "San Diego",
+            "CA",
+            "United States",
+            "2022-02-14",
+            "Pro",
+            "51.16"
+          ]
+        },
+        {
+          "id": 2,
+          "rows": [57, 770],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10058",
+            "Rosa",
+            "Lee",
+            "rosa.lee@example.org",
+            "(512) 555-0192",
+            "New York",
+            "NY",
+            "United States",
+            "2022-02-15",
+            "Starter",
+            "27.69"
+          ],
+          "second": [
+            "C-11031",
+            "Rosa",
+            "Lee",
+            "rosa.lee@example.org",
+            "512.555.0192",
+            "New York",
+            "NY",
+            "United States",
+            "2022-02-15",
+            "Starter",
+            "27.69"
+          ]
+        },
+        {
+          "id": 3,
+          "rows": [61, 676],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10062",
+            "Samuel",
+            "Allen",
+            "samuel.allen@example.org",
+            "(312) 555-0112",
+            "Seattle",
+            "WA",
+            "United States",
+            "2022-02-17",
+            "Starter",
+            "26.24"
+          ],
+          "second": [
+            "C-11020",
+            "Samuel",
+            "Allen",
+            "samuel.allen@example.org",
+            "312.555.0112",
+            "Seattle",
+            "WA",
+            "United States",
+            "2022-02-17",
+            "Starter",
+            "26.24"
+          ]
+        },
+        {
+          "id": 4,
+          "rows": [64, 978],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10065",
+            "Ethan",
+            "Taylor",
+            "ethan.taylor@example.net",
+            "(512) 555-0172",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-02-18",
+            "Business",
+            "109.84"
+          ],
+          "second": [
+            "C-11058",
+            "Ethan",
+            "Taylor",
+            "ethan.taylor@example.net",
+            "512-555-0172",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-02-18",
+            "Business",
+            "109.84"
+          ]
+        },
+        {
+          "id": 5,
+          "rows": [87, 218],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10087",
+            "Omar",
+            "Lopez",
+            "omar.lopez@example.org",
+            "(202) 555-0180",
+            "Boston",
+            "MA",
+            "United States",
+            "2022-03-14",
+            "Pro",
+            "64.40"
+          ],
+          "second": [
+            "C-11002",
+            "Omar",
+            "Lopez",
+            "omar.lopez@example.org",
+            "202.555.0180",
+            "Boston",
+            "MA",
+            "United States",
+            "2022-03-14",
+            "Pro",
+            "64.40"
+          ]
+        },
+        {
+          "id": 6,
+          "rows": [109, 602],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10109",
+            "Kwame",
+            "Clark",
+            "kwame.clark@example.net",
+            "(206) 555-0169",
+            "Austin",
+            "TX",
+            "United States",
+            "2022-04-08",
+            "Business",
+            "121.30"
+          ],
+          "second": [
+            "C-11014",
+            "Kwame",
+            "Clark",
+            "kwame.clark@example.net",
+            "206-555-0169",
+            "Austin",
+            "TX",
+            "United States",
+            "2022-04-08",
+            "Business",
+            "121.30"
+          ]
+        },
+        {
+          "id": 7,
+          "rows": [112, 786],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10112",
+            "Emma",
+            "Williams",
+            "emma.williams@example.com",
+            "(202) 555-0109",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-04-12",
+            "Pro",
+            "73.32"
+          ],
+          "second": [
+            "C-11033",
+            "Emma",
+            "Williams",
+            "emma.williams@example.com",
+            "202 555 0109",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-04-12",
+            "Pro",
+            "73.32"
+          ]
+        },
+        {
+          "id": 8,
+          "rows": [127, 728],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10127",
+            "Lucas",
+            "Miller",
+            "lucas.miller@example.org",
+            "(312) 555-0123",
+            "Chicago",
+            "IL",
+            "United States",
+            "2022-05-05",
+            "Business",
+            "123.04"
+          ],
+          "second": [
+            "C-11026",
+            "Lucas",
+            "Miller",
+            "LUCAS.MILLER@EXAMPLE.ORG",
+            "(312) 555-0123",
+            "Chicago",
+            "IL",
+            "United States",
+            "2022-05-05",
+            "Business",
+            "123.04"
+          ]
+        },
+        {
+          "id": 9,
+          "rows": [138, 811],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.91,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10138",
+            "Tara",
+            "Patel",
+            "tara.patel@example.net",
+            "(206) 555-0129",
+            "New York",
+            "NY",
+            "United States",
+            "2022-05-18",
+            "Pro",
+            "62.75"
+          ],
+          "second": [
+            "C-11036",
+            "Tra",
+            "Patel",
+            "tara.patel@example.net",
+            "(206) 555-0129",
+            "New York",
+            "NY",
+            "United States",
+            "2022-05-18",
+            "Pro",
+            "62.75"
+          ]
+        },
+        {
+          "id": 10,
+          "rows": [141, 1025],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10141",
+            "Daniel",
+            "Garcia",
+            "daniel.garcia@example.net",
+            "(612) 555-0195",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2022-05-23",
+            "Starter",
+            "27.36"
+          ],
+          "second": [
+            "C-11063",
+            "daniel",
+            "Garcia",
+            "daniel.garcia@example.net",
+            "(612) 555-0195",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2022-05-23",
+            "Starter",
+            "27.36"
+          ]
+        },
+        {
+          "id": 11,
+          "rows": [143, 618],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10143",
+            "Rosa",
+            "Williams",
+            "rosa.williams@example.net",
+            "(415) 555-0121",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2022-05-24",
+            "Pro",
+            "55.77"
+          ],
+          "second": [
+            "C-11015",
+            "Rosa",
+            "williams",
+            "rosa.williams@example.net",
+            "(415) 555-0121",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2022-05-24",
+            "Pro",
+            "55.77"
+          ]
+        },
+        {
+          "id": 12,
+          "rows": [192, 1107],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.91,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10191",
+            "Zoe",
+            "Johnson",
+            "zoe.johnson@example.net",
+            "(619) 555-0152",
+            "Portland",
+            "OR",
+            "United States",
+            "2022-07-22",
+            "Pro",
+            "63.08"
+          ],
+          "second": [
+            "C-11072",
+            "Zob",
+            "Johnson",
+            "zoe.johnson@example.net",
+            "(619) 555-0152",
+            "Portland",
+            "OR",
+            "United States",
+            "2022-07-22",
+            "Pro",
+            "63.08"
+          ]
+        },
+        {
+          "id": 13,
+          "rows": [207, 570],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10206",
+            "Jamal",
+            "Hall",
+            "jamal.hall@example.com",
+            "(212) 555-0131",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-08-04",
+            "Starter",
+            "24.53"
+          ],
+          "second": [
+            "C-11011",
+            "Jamal",
+            "HALL",
+            "jamal.hall@example.com",
+            "(212) 555-0131",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-08-04",
+            "Starter",
+            "24.53"
+          ]
+        },
+        {
+          "id": 14,
+          "rows": [212, 523],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10211",
+            "Ava",
+            "Kim",
+            "ava.kim@example.net",
+            "(206) 555-0137",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2022-08-10",
+            "Pro",
+            "49.73"
+          ],
+          "second": [
+            "C-11005",
+            "ava",
+            "Kim",
+            "ava.kim@example.net",
+            "(206) 555-0137",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2022-08-10",
+            "Pro",
+            "49.73"
+          ]
+        },
+        {
+          "id": 15,
+          "rows": [236, 878],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.96,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10233",
+            "Nia",
+            "Lee",
+            "nia.lee@example.net",
+            "(212) 555-0145",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2022-08-28",
+            "Business",
+            "110.91"
+          ],
+          "second": [
+            "C-11046",
+            "Nia",
+            "Le",
+            "nia.lee@example.net",
+            "(212) 555-0145",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2022-08-28",
+            "Business",
+            "110.91"
+          ]
+        },
+        {
+          "id": 16,
+          "rows": [283, 959],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10280",
+            "Marcus",
+            "Harris",
+            "marcus.harris@example.org",
+            "(713) 555-0150",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-10-11",
+            "Business",
+            "111.88"
+          ],
+          "second": [
+            "C-11055",
+            "Marcus",
+            "Harris",
+            "marcus.harris@example.org",
+            "713 555 0150",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-10-11",
+            "Business",
+            "111.88"
+          ]
+        },
+        {
+          "id": 17,
+          "rows": [307, 367],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10303",
+            "Elena",
+            "Walker",
+            "elena.walker@example.org",
+            "(404) 555-0126",
+            "Seattle",
+            "WA",
+            "United States",
+            "2022-11-13",
+            "Starter",
+            "23.90"
+          ],
+          "second": [
+            "C-11003",
+            "Elena",
+            "Walker",
+            "ELENA.WALKER@EXAMPLE.ORG",
+            "(404) 555-0126",
+            "Seattle",
+            "WA",
+            "United States",
+            "2022-11-13",
+            "Starter",
+            "23.90"
+          ]
+        },
+        {
+          "id": 18,
+          "rows": [335, 569],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10330",
+            "Liam",
+            "Nguyen",
+            "liam.nguyen@example.com",
+            "(303) 555-0174",
+            "Portland",
+            "OR",
+            "United States",
+            "2022-12-17",
+            "Starter",
+            "26.20"
+          ],
+          "second": [
+            "C-11010",
+            "Liam",
+            "Nguyen",
+            "liam.nguyen@example.com",
+            "303.555.0174",
+            "Portland",
+            "OR",
+            "United States",
+            "2022-12-17",
+            "Starter",
+            "26.20"
+          ]
+        },
+        {
+          "id": 19,
+          "rows": [377, 807],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.97,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10370",
+            "Mei",
+            "Martinez",
+            "mei.martinez@example.org",
+            "(619) 555-0141",
+            "Portland",
+            "OR",
+            "United States",
+            "2023-01-26",
+            "Starter",
+            "24.42"
+          ],
+          "second": [
+            "C-11035",
+            "Mei",
+            "Marsinez",
+            "mei.martinez@example.org",
+            "(619) 555-0141",
+            "Portland",
+            "OR",
+            "United States",
+            "2023-01-26",
+            "Starter",
+            "24.42"
+          ]
+        },
+        {
+          "id": 20,
+          "rows": [388, 749],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10381",
+            "Tara",
+            "Rossi",
+            "tara.rossi@example.net",
+            "(404) 555-0115",
+            "Chicago",
+            "IL",
+            "United States",
+            "2023-02-06",
+            "Business",
+            "120.86"
+          ],
+          "second": [
+            "C-11029",
+            "Tara",
+            "Rossi",
+            "tara.rossi@example.net",
+            "(404) 555-0115",
+            "Chicago",
+            "IL",
+            "",
+            "2023-02-06",
+            "Business",
+            "120.86"
+          ]
+        },
+        {
+          "id": 21,
+          "rows": [389, 1137],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10382",
+            "Omar",
+            "Johnson",
+            "omar.johnson@example.com",
+            "(713) 555-0136",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-02-06",
+            "Pro",
+            "73.53"
+          ],
+          "second": [
+            "C-11078",
+            "Omar",
+            "Johnson",
+            "omar.johnson@example.com",
+            "713-555-0136",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-02-06",
+            "Pro",
+            "73.53"
+          ]
+        },
+        {
+          "id": 22,
+          "rows": [421, 841],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10412",
+            "Victor",
+            "Martin",
+            "victor.martin@example.net",
+            "(212) 555-0127",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2023-03-15",
+            "Business",
+            "109.50"
+          ],
+          "second": [
+            "C-11039",
+            "Victor",
+            "Martin",
+            "victor.martin@example.net",
+            "(212) 555-0127",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2023-03-15",
+            "",
+            "109.50"
+          ]
+        },
+        {
+          "id": 23,
+          "rows": [513, 650],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10499",
+            "Isabella",
+            "Lopez",
+            "isabella.lopez@example.org",
+            "(415) 555-0195",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-06-18",
+            "Starter",
+            "22.06"
+          ],
+          "second": [
+            "C-11018",
+            "Isabella",
+            "Lopez",
+            "isabella.lopez@example.org",
+            "415.555.0195",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-06-18",
+            "Starter",
+            "22.06"
+          ]
+        },
+        {
+          "id": 24,
+          "rows": [613, 968],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10583",
+            "Henry",
+            "Chen",
+            "henry.chen@example.net",
+            "(212) 555-0117",
+            "New York",
+            "NY",
+            "United States",
+            "2023-09-25",
+            "Starter",
+            "27.48"
+          ],
+          "second": [
+            "C-11057",
+            "Henry",
+            "Chen",
+            "HENRY.CHEN@EXAMPLE.NET",
+            "(212) 555-0117",
+            "New York",
+            "NY",
+            "United States",
+            "2023-09-25",
+            "Starter",
+            "27.48"
+          ]
+        },
+        {
+          "id": 25,
+          "rows": [623, 716],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10591",
+            "Aarav",
+            "Allen",
+            "aarav.allen@example.org",
+            "(202) 555-0146",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2023-10-02",
+            "Business",
+            "117.56"
+          ],
+          "second": [
+            "C-11024",
+            "Aarav",
+            "Allen",
+            "aarav.allen@example.org",
+            "202-555-0146",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2023-10-02",
+            "Business",
+            "117.56"
+          ]
+        },
+        {
+          "id": 26,
+          "rows": [632, 837],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.96,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10599",
+            "Samuel",
+            "Wright",
+            "samuel.wright@example.org",
+            "(404) 555-0147",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-10-10",
+            "Business",
+            "118.64"
+          ],
+          "second": [
+            "C-11038",
+            "Samael",
+            "Wright",
+            "samuel.wright@example.org",
+            "(404) 555-0147",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-10-10",
+            "Business",
+            "118.64"
+          ]
+        },
+        {
+          "id": 27,
+          "rows": [664, 877],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10628",
+            "Jamal",
+            "King",
+            "jamal.king@example.net",
+            "(212) 555-0163",
+            "Seattle",
+            "WA",
+            "United States",
+            "2023-11-13",
+            "Pro",
+            "62.69"
+          ],
+          "second": [
+            "C-11045",
+            "Jamal",
+            "King",
+            "jamal.king@example.net",
+            "212-555-0163",
+            "Seattle",
+            "WA",
+            "United States",
+            "2023-11-13",
+            "Pro",
+            "62.69"
+          ]
+        },
+        {
+          "id": 28,
+          "rows": [690, 751],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 1,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10648",
+            "Kwame",
+            "Jones",
+            "kwame.jones@example.org",
+            "(617) 555-0192",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-11-27",
+            "Business",
+            "118.13"
+          ],
+          "second": [
+            "C-11030",
+            "Kwame",
+            "Jones",
+            "kwame.jones@example.org",
+            "617-555-0192",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-11-27",
+            "Business",
+            "118.13"
+          ]
+        },
+        {
+          "id": 29,
+          "rows": [768, 780],
+          "similarity": 1,
+          "evidence": {
+            "nameSimilarity": 0.99,
+            "agreeingColumns": [3, 4, 5, 6, 8, 10],
+            "sharedIdentifierColumns": [3, 4]
+          },
+          "first": [
+            "C-10711",
+            "Ava",
+            "Nguyen",
+            "ava.nguyen@example.net",
+            "(602) 555-0161",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2024-01-29",
+            "Business",
+            "99.78"
+          ],
+          "second": [
+            "C-11032",
+            "Ava",
+            "Nguyuen",
+            "ava.nguyen@example.net",
+            "(602) 555-0161",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2024-01-29",
+            "Business",
+            "99.78"
+          ]
+        }
+      ]
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "duplicates": [
+          {
+            "rows": [45, 167],
+            "confidence": "high",
+            "reason": "Same email, phone, address, date, plan and spend; only name capitalization differs.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [56, 922],
+            "confidence": "high",
+            "reason": "Same email, phone, address and spend; last name 'Brow' looks like a truncated 'Brown'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [57, 770],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [61, 676],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [64, 978],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [87, 218],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [109, 602],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [112, 786],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [127, 728],
+            "confidence": "certain",
+            "reason": "Same person; email differs only in capitalization.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 3,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [138, 811],
+            "confidence": "high",
+            "reason": "Same email, phone and address; first name 'Tra' is a typo of 'Tara'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [141, 1025],
+            "confidence": "certain",
+            "reason": "Same person; first name capitalization differs only.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [143, 618],
+            "confidence": "certain",
+            "reason": "Same person; last name capitalization differs only.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [192, 1107],
+            "confidence": "high",
+            "reason": "Same email, phone and address; first name 'Zob' is a typo of 'Zoe'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [207, 570],
+            "confidence": "certain",
+            "reason": "Same person; last name capitalization differs only.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [212, 523],
+            "confidence": "certain",
+            "reason": "Same person; first name capitalization differs only.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [236, 878],
+            "confidence": "high",
+            "reason": "Same email, phone and address; last name 'Le' is a truncated 'Lee'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [283, 959],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [307, 367],
+            "confidence": "certain",
+            "reason": "Same person; email differs only in capitalization.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 3,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [335, 569],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [377, 807],
+            "confidence": "high",
+            "reason": "Same email, phone and address; last name 'Marsinez' is a typo of 'Martinez'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [388, 749],
+            "confidence": "high",
+            "reason": "Same person; second row has a blank country where the first has United States.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 7,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [389, 1137],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [421, 841],
+            "confidence": "high",
+            "reason": "Same person; second row has a blank plan where the first has Business.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 9,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [513, 650],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [613, 968],
+            "confidence": "certain",
+            "reason": "Same person; email differs only in capitalization.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 3,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [623, 716],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [632, 837],
+            "confidence": "high",
+            "reason": "Same email, phone and address; first name 'Samael' is a typo of 'Samuel'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 1,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [664, 877],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [690, 751],
+            "confidence": "certain",
+            "reason": "Same person; phone differs only in formatting.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 4,
+                "keep": "first"
+              }
+            ]
+          },
+          {
+            "rows": [768, 780],
+            "confidence": "high",
+            "reason": "Same email, phone and address; last name 'Nguyuen' is a typo of 'Nguyen'.",
+            "keep": "first",
+            "choices": [
+              {
+                "column": 0,
+                "keep": "first"
+              },
+              {
+                "column": 2,
+                "keep": "first"
+              }
+            ]
+          }
+        ],
+        "claimCount": 90,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "confirmDuplicates",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 7107,
+          "completionTokens": 4846,
+          "totalTokens": 11953,
+          "cost": 0.0031337,
+          "latencyMs": 17977,
+          "outcome": "valid"
+        }
+      ]
+    }
+  }
+]

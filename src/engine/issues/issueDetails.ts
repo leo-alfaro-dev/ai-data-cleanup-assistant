@@ -77,5 +77,29 @@ export type IssueDetails =
     }
   | { kind: 'emptyHeaders'; columns: readonly ColumnKey[] }
   | { kind: 'repeatedHeaders'; groups: readonly (readonly ColumnKey[])[] }
+  | {
+      kind: 'normalizedSpellings';
+      canonical: string;
+      // False when the model chose a spelling that is not in the file.
+      isCanonicalInFile: boolean;
+      variants: readonly { value: string; count: number }[];
+      // The model's own words, the only free text of an issue.
+      reason: string;
+    }
+  | {
+      kind: 'aiPlaceholders';
+      placeholders: readonly { value: string; count: number; reason: string }[];
+    }
+  | {
+      kind: 'confirmedDuplicate';
+      keptRow: RowId;
+      // The model's own words.
+      reason: string;
+    }
+  | {
+      kind: 'assessedRow';
+      // The model's own words.
+      reason: string;
+    }
   | { kind: 'blankRows' }
   | { kind: 'skippedBlankLines'; count: number };

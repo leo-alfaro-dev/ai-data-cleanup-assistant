@@ -2,10 +2,14 @@ import { CancelablePromise, defer } from 'easy-cancelable-promise';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AnalysisResult } from '@/engine/analysis/analysisResult';
 import { toIssueId } from '@/engine/issues/toIssueId';
+import { aiActions } from './aiStore';
 import { analysisActions, analysisStore$ } from './analysisStore';
 
 const { worker } = vi.hoisted(() => ({
-  worker: { analyze: vi.fn<() => CancelablePromise<AnalysisResult | null>>() },
+  worker: {
+    analyze: vi.fn<() => CancelablePromise<AnalysisResult | null>>(),
+    buildAiRequests: vi.fn(),
+  },
 }));
 
 vi.mock('@/workers/getDatasetWorker', () => ({
@@ -15,7 +19,10 @@ vi.mock('@/workers/getDatasetWorker', () => ({
 describe('analysisStore', () => {
   beforeEach(() => {
     analysisActions.reset();
+    aiActions.reset();
     worker.analyze.mockReset();
+    worker.buildAiRequests.mockReset();
+    worker.buildAiRequests.mockReturnValue(CancelablePromise.resolve(null));
   });
 
   it('lands the issues, the profile and the candidates', async () => {
@@ -25,6 +32,27 @@ describe('analysisStore', () => {
     await analysisActions.run();
 
     expect(analysisStore$.getState().phase).toEqual({ status: 'done', result });
+  });
+
+  it('starts the AI run once the checks are done, and not before', async () => {
+    const call = defer<AnalysisResult | null>();
+    worker.analyze.mockReturnValue(call.promise);
+
+    const running = analysisActions.run();
+    expect(worker.buildAiRequests).not.toHaveBeenCalled();
+
+    call.resolve(analysis());
+    await running;
+
+    expect(worker.buildAiRequests).toHaveBeenCalledOnce();
+  });
+
+  it('does not start the AI run when the checks fail', async () => {
+    worker.analyze.mockReturnValue(CancelablePromise.reject(new Error('x')));
+
+    await analysisActions.run();
+
+    expect(worker.buildAiRequests).not.toHaveBeenCalled();
   });
 
   it('shows the stage and percentage the worker reports', async () => {

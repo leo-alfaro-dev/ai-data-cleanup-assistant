@@ -1,6 +1,6 @@
 import { ProgressBar } from '@/components/ProgressBar';
 import { formatCount } from '@/lib/formatCount';
-import { useIssues } from '../state/analysisStore';
+import { useIssues } from '../state/useIssues';
 import { useDecisions } from '../state/reviewStore';
 
 export type ReviewProgressProps = Omit<

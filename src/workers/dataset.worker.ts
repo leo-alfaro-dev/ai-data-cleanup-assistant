@@ -15,9 +15,20 @@ import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { parseCsv } from '@/engine/dataset/parseCsv';
 import type { CleanedFiles } from '@/engine/export/cleanedFiles';
 import { exportCleanedFiles } from '@/engine/export/exportCleanedFiles';
+import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { findNearDuplicateCandidates } from '@/engine/matching/findNearDuplicateCandidates';
 import { profileDataset } from '@/engine/profile/profileDataset';
+import type { AiRequests } from '@/ai/aiRequests';
+import type { AiTaskResult } from '@/ai/aiTaskResult';
+import { buildAssessSuspiciousRowsRequests } from '@/ai/tasks/assessSuspiciousRows/buildAssessSuspiciousRowsRequests';
+import { toAssessSuspiciousRowsIssues } from '@/ai/tasks/assessSuspiciousRows/toAssessSuspiciousRowsIssues';
+import { buildConfirmDuplicatesRequests } from '@/ai/tasks/confirmDuplicates/buildConfirmDuplicatesRequests';
+import { toConfirmDuplicatesIssues } from '@/ai/tasks/confirmDuplicates/toConfirmDuplicatesIssues';
+import { buildNormalizeValuesRequests } from '@/ai/tasks/normalizeValues/buildNormalizeValuesRequests';
+import { toNormalizeValuesIssues } from '@/ai/tasks/normalizeValues/toNormalizeValuesIssues';
+import type { NearDuplicateCandidate } from '@/engine/matching/nearDuplicateCandidate';
+import type { ColumnProfile } from '@/engine/profile/columnProfile';
 import { tryCatch } from '@/lib/tryCatch';
 import type { LoadStage } from './loadStage';
 import { LOAD_STAGES } from './loadStage';
@@ -25,6 +36,9 @@ import { pauseForCancel } from './pauseForCancel';
 import { toAnalysisProgress } from './toAnalysisProgress';
 
 let dataset: Dataset | null = null;
+let profile: readonly ColumnProfile[] | null = null;
+let candidates: readonly NearDuplicateCandidate[] | null = null;
+let checkIssues: readonly Issue[] | null = null;
 
 export const datasetWorker = defineWorker(({ onMessage }) => ({
   load: onMessage(
@@ -35,6 +49,9 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
       { ok: true; facts: FileFacts } | { ok: false; reason: LoadFailureReason }
     > => {
       dataset = null;
+      profile = null;
+      candidates = null;
+      checkIssues = null;
       if (file.size > MAX_FILE_BYTES) return { ok: false, reason: 'tooLarge' };
 
       await enterStage({ stage: 'reading', message });
@@ -84,24 +101,81 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
         message.reportProgress(percentage, stage);
       };
 
-      const profile = profileDataset(current);
+      const columnProfile = profileDataset(current);
+      if (dataset === current) profile = columnProfile;
       await finishStep(1);
 
       const issues: Issue[] = [];
       for (const [index, check] of CHECKS.entries()) {
-        issues.push(...check.find({ dataset: current, profile }));
+        issues.push(
+          ...check.find({ dataset: current, profile: columnProfile })
+        );
         await finishStep(index + 2);
       }
 
-      const candidates = findNearDuplicateCandidates({
+      const nearDuplicates = findNearDuplicateCandidates({
         dataset: current,
-        profile,
+        profile: columnProfile,
       });
+      if (dataset === current) {
+        candidates = nearDuplicates;
+        checkIssues = issues;
+      }
       await finishStep(CHECKS.length + 2);
 
-      return { profile, issues, candidates };
+      return { profile: columnProfile, issues, candidates: nearDuplicates };
     }
   ),
+
+  buildAiRequests: (): AiRequests | null =>
+    dataset && profile
+      ? {
+          normalizeValues: buildNormalizeValuesRequests({
+            profile,
+            headers: dataset.columns.map(({ header }) => header),
+            rowCount: dataset.rows.length,
+          }),
+          confirmDuplicates: buildConfirmDuplicatesRequests({
+            dataset,
+            candidates: candidates ?? [],
+          }),
+          assessSuspiciousRows: buildAssessSuspiciousRowsRequests({
+            dataset,
+            profile,
+            issues: checkIssues ?? [],
+          }),
+        }
+      : null,
+
+  buildAiIssues: (
+    taskResult: AiTaskResult
+  ): { issues: Issue[]; notes: AiNote[] } => {
+    if (!dataset) return { issues: [], notes: [] };
+
+    switch (taskResult.task) {
+      case 'normalizeValues':
+        return {
+          issues: toNormalizeValuesIssues({
+            result: taskResult.result,
+            dataset,
+          }),
+          notes: [],
+        };
+      case 'confirmDuplicates':
+        return {
+          issues: toConfirmDuplicatesIssues({
+            result: taskResult.result,
+            dataset,
+          }),
+          notes: [],
+        };
+      case 'assessSuspiciousRows':
+        return toAssessSuspiciousRowsIssues({
+          result: taskResult.result,
+          dataset,
+        });
+    }
+  },
 
   preview: (change: Change): ChangePreview | null =>
     dataset ? previewChange({ change, dataset }) : null,

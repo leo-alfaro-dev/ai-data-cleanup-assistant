@@ -1,5 +1,6 @@
 import { tv, twMerge } from 'tailwind-variants';
 import { useReviewPanel } from '../state/reviewStore';
+import { AiAnnouncement } from './AiAnnouncement';
 import { AnalysisAnnouncement } from './AnalysisAnnouncement';
 import { DataPanel } from './DataPanel';
 import { IssuesPanel } from './IssuesPanel';
@@ -19,6 +20,7 @@ export function ReviewWorkspace({
       {...props}
     >
       <AnalysisAnnouncement />
+      <AiAnnouncement />
       <PanelTabs className="lg:hidden" />
       <IssuesPanel
         className={panelVisibility({ isHidden: panel !== 'issues' })}

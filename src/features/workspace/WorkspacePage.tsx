@@ -6,6 +6,7 @@ import { FileDropzone } from './components/FileDropzone';
 import { LoadFailure } from './components/LoadFailure';
 import { LoadProgress } from './components/LoadProgress';
 import { ReviewWorkspace } from './components/ReviewWorkspace';
+import { TransparencyPanel } from './components/TransparencyPanel';
 import { WorkspaceHeader } from './components/WorkspaceHeader';
 import { useWorkspacePhase } from './state/workspaceStore';
 
@@ -26,6 +27,7 @@ export function WorkspacePage({
         <WorkspaceHeader className="border-b border-border bg-surface px-3 py-2" />
         <ReviewWorkspace />
         <ExportDialog />
+        <TransparencyPanel />
       </main>
     );
   }

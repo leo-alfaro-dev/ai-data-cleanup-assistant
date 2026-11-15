@@ -5,6 +5,7 @@ import type { ColumnProfile } from '@/engine/profile/columnProfile';
 import { tryCatch } from '@/lib/tryCatch';
 import { ANALYSIS_STAGES } from '@/workers/analysisStage';
 import { getDatasetWorker } from '@/workers/getDatasetWorker';
+import { aiActions } from './aiStore';
 import type { AnalysisPhase } from './analysisPhase';
 
 export const analysisStore$ = createGlobalState(makeInitialState(), {
@@ -40,6 +41,7 @@ export const analysisStore$ = createGlobalState(makeInitialState(), {
         }
 
         store.setState({ phase: { status: 'done', result } });
+        void aiActions.startRun();
       };
     },
 
@@ -64,7 +66,7 @@ export const useAnalysisPhase = analysisStore$.createSelectorHook(
   (state) => state.phase
 );
 
-export const useIssues = analysisStore$.createSelectorHook(
+export const useCheckIssues = analysisStore$.createSelectorHook(
   (state): readonly Issue[] =>
     state.phase.status === 'done' ? state.phase.result.issues : NO_ISSUES
 );

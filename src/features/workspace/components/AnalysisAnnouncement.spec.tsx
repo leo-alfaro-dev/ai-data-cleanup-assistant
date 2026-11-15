@@ -1,5 +1,6 @@
 import { act, render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { aiStore$ } from '../state/aiStore';
 import { analysisStore$ } from '../state/analysisStore';
 import { makeIssue } from '../testing/makeIssue';
 import { seedIssues } from '../testing/seedIssues';
@@ -43,6 +44,27 @@ describe('AnalysisAnnouncement', () => {
     );
 
     expect(container).toHaveTextContent('Checks finished. 2 issues found.');
+  });
+
+  it('counts the issues the checks found, and says nothing new when AI issues land', () => {
+    const checkIssue = makeIssue({ id: 'a' });
+    analysisStore$.setState({
+      phase: {
+        status: 'done',
+        result: { profile: [], candidates: [], issues: [checkIssue] },
+      },
+    });
+    const { container } = render(<AnalysisAnnouncement />);
+    expect(container).toHaveTextContent('Checks finished. 1 issue found.');
+
+    act(() =>
+      aiStore$.setState((state) => ({
+        ...state,
+        issues: [makeIssue({ id: 'b' }), makeIssue({ id: 'c' })],
+      }))
+    );
+
+    expect(container).toHaveTextContent('Checks finished. 1 issue found.');
   });
 
   it('says when the checks could not run', () => {

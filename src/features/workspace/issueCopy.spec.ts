@@ -141,6 +141,42 @@ describe('describeIssue', () => {
         'Spellings of a missing value: “N/A” (4), “-” (2), “null” (1), and 2 more.',
     },
     {
+      name: 'an AI group of spellings whose canonical is in the file',
+      details: {
+        kind: 'normalizedSpellings',
+        canonical: 'California',
+        isCanonicalInFile: true,
+        variants: [{ value: 'CA', count: 4 }],
+        reason: 'Both name the state.',
+      },
+      title: 'Spellings of “California” in “email”',
+      summary: 'Both name the state.',
+    },
+    {
+      name: 'an AI group whose canonical is not in the file',
+      details: {
+        kind: 'normalizedSpellings',
+        canonical: 'California',
+        isCanonicalInFile: false,
+        variants: [{ value: 'CA', count: 4 }],
+        reason: 'Both name the state.',
+      },
+      title: 'Spellings of “California” in “email”',
+      summary: 'Both name the state. “California” is not in your file.',
+    },
+    {
+      name: 'AI placeholders, each with the model reason',
+      details: {
+        kind: 'aiPlaceholders',
+        placeholders: [
+          { value: 'TBD', count: 3, reason: 'Means to be decided.' },
+          { value: 'no data', count: 1, reason: 'States there is none.' },
+        ],
+      },
+      title: 'Placeholder values in “email”',
+      summary: '“TBD”: Means to be decided. “no data”: States there is none.',
+    },
+    {
       name: 'numeric outliers',
       details: {
         kind: 'numericOutliers',

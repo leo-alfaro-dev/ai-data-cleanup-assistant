@@ -1,0 +1,612 @@
+[
+  {
+    "request": {
+      "column": {
+        "key": 7,
+        "header": "country",
+        "dominantType": "text"
+      },
+      "values": [
+        {
+          "value": "United States",
+          "count": 1141
+        },
+        {
+          "value": "N/A",
+          "count": 1
+        },
+        {
+          "value": "-",
+          "count": 1
+        },
+        {
+          "value": "unknown",
+          "count": 1
+        }
+      ],
+      "isComplete": true
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "column": {
+          "key": 7,
+          "header": "country",
+          "dominantType": "text"
+        },
+        "groups": [],
+        "placeholders": [],
+        "claimCount": 0,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "normalizeValues",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 1126,
+          "completionTokens": 238,
+          "totalTokens": 1364,
+          "cost": 0.0002316,
+          "latencyMs": 2451,
+          "outcome": "valid"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "column": {
+        "key": 9,
+        "header": "plan",
+        "dominantType": "text"
+      },
+      "values": [
+        {
+          "value": "Starter",
+          "count": 349
+        },
+        {
+          "value": "Free",
+          "count": 317
+        },
+        {
+          "value": "Pro",
+          "count": 302
+        },
+        {
+          "value": "Business",
+          "count": 166
+        },
+        {
+          "value": "business",
+          "count": 3
+        },
+        {
+          "value": "PRO",
+          "count": 2
+        },
+        {
+          "value": "TBD",
+          "count": 2
+        },
+        {
+          "value": "STARTER",
+          "count": 2
+        },
+        {
+          "value": "starter",
+          "count": 2
+        },
+        {
+          "value": "FREE",
+          "count": 1
+        },
+        {
+          "value": "free",
+          "count": 1
+        },
+        {
+          "value": "N/A",
+          "count": 1
+        }
+      ],
+      "isComplete": true
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "column": {
+          "key": 9,
+          "header": "plan",
+          "dominantType": "text"
+        },
+        "groups": [
+          {
+            "canonical": "Starter",
+            "isCanonicalInFile": true,
+            "variants": ["STARTER", "starter"],
+            "reason": "Same plan name differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Free",
+            "isCanonicalInFile": true,
+            "variants": ["FREE", "free"],
+            "reason": "Same plan name differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Pro",
+            "isCanonicalInFile": true,
+            "variants": ["PRO"],
+            "reason": "Same plan name differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Business",
+            "isCanonicalInFile": true,
+            "variants": ["business"],
+            "reason": "Same plan name differing only in letter case",
+            "confidence": "certain"
+          }
+        ],
+        "placeholders": [],
+        "claimCount": 14,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "normalizeValues",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 1235,
+          "completionTokens": 297,
+          "totalTokens": 1532,
+          "cost": 0.000272,
+          "latencyMs": 2596,
+          "outcome": "valid"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "column": {
+        "key": 5,
+        "header": "city",
+        "dominantType": "text"
+      },
+      "values": [
+        {
+          "value": "Denver",
+          "count": 107
+        },
+        {
+          "value": "New York",
+          "count": 104
+        },
+        {
+          "value": "Austin",
+          "count": 102
+        },
+        {
+          "value": "Boston",
+          "count": 102
+        },
+        {
+          "value": "Phoenix",
+          "count": 100
+        },
+        {
+          "value": "Portland",
+          "count": 99
+        },
+        {
+          "value": "Miami",
+          "count": 93
+        },
+        {
+          "value": "San Diego",
+          "count": 93
+        },
+        {
+          "value": "Atlanta",
+          "count": 89
+        },
+        {
+          "value": "Seattle",
+          "count": 83
+        },
+        {
+          "value": "Minneapolis",
+          "count": 81
+        },
+        {
+          "value": "Chicago",
+          "count": 80
+        },
+        {
+          "value": "N/A",
+          "count": 2
+        },
+        {
+          "value": "unknown",
+          "count": 2
+        },
+        {
+          "value": "ATLANTA",
+          "count": 2
+        },
+        {
+          "value": "BOSTON",
+          "count": 1
+        },
+        {
+          "value": "seattle",
+          "count": 1
+        },
+        {
+          "value": "phoenix",
+          "count": 1
+        },
+        {
+          "value": "-",
+          "count": 1
+        },
+        {
+          "value": "atlanta",
+          "count": 1
+        },
+        {
+          "value": "san diego",
+          "count": 1
+        },
+        {
+          "value": "austin",
+          "count": 1
+        },
+        {
+          "value": "SAN DIEGO",
+          "count": 1
+        }
+      ],
+      "isComplete": true
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "column": {
+          "key": 5,
+          "header": "city",
+          "dominantType": "text"
+        },
+        "groups": [
+          {
+            "canonical": "Atlanta",
+            "isCanonicalInFile": true,
+            "variants": ["ATLANTA", "atlanta"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Boston",
+            "isCanonicalInFile": true,
+            "variants": ["BOSTON"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Seattle",
+            "isCanonicalInFile": true,
+            "variants": ["seattle"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Phoenix",
+            "isCanonicalInFile": true,
+            "variants": ["phoenix"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "San Diego",
+            "isCanonicalInFile": true,
+            "variants": ["san diego", "SAN DIEGO"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Austin",
+            "isCanonicalInFile": true,
+            "variants": ["austin"],
+            "reason": "Same city, differing only in letter case",
+            "confidence": "certain"
+          }
+        ],
+        "placeholders": [],
+        "claimCount": 14,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "normalizeValues",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 1412,
+          "completionTokens": 691,
+          "totalTokens": 2103,
+          "cost": 0.0004867,
+          "latencyMs": 3894,
+          "outcome": "valid"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "column": {
+        "key": 6,
+        "header": "state",
+        "dominantType": "text"
+      },
+      "values": [
+        {
+          "value": "MA",
+          "count": 101
+        },
+        {
+          "value": "CO",
+          "count": 101
+        },
+        {
+          "value": "NY",
+          "count": 100
+        },
+        {
+          "value": "OR",
+          "count": 98
+        },
+        {
+          "value": "AZ",
+          "count": 98
+        },
+        {
+          "value": "TX",
+          "count": 97
+        },
+        {
+          "value": "FL",
+          "count": 91
+        },
+        {
+          "value": "GA",
+          "count": 90
+        },
+        {
+          "value": "CA",
+          "count": 89
+        },
+        {
+          "value": "WA",
+          "count": 82
+        },
+        {
+          "value": "IL",
+          "count": 75
+        },
+        {
+          "value": "MN",
+          "count": 74
+        },
+        {
+          "value": "N.Y.",
+          "count": 4
+        },
+        {
+          "value": "Ill.",
+          "count": 4
+        },
+        {
+          "value": "California",
+          "count": 4
+        },
+        {
+          "value": "Oregon",
+          "count": 3
+        },
+        {
+          "value": "Colo.",
+          "count": 3
+        },
+        {
+          "value": "Tex.",
+          "count": 3
+        },
+        {
+          "value": "mn",
+          "count": 3
+        },
+        {
+          "value": "co",
+          "count": 2
+        },
+        {
+          "value": "Minn.",
+          "count": 2
+        },
+        {
+          "value": "wa",
+          "count": 2
+        },
+        {
+          "value": "Calif.",
+          "count": 2
+        },
+        {
+          "value": "Minnesota",
+          "count": 2
+        },
+        {
+          "value": "tx",
+          "count": 2
+        },
+        {
+          "value": "Ore.",
+          "count": 2
+        },
+        {
+          "value": "Florida",
+          "count": 2
+        },
+        {
+          "value": "Arizona",
+          "count": 2
+        },
+        {
+          "value": "unknown",
+          "count": 1
+        },
+        {
+          "value": "Ariz.",
+          "count": 1
+        },
+        {
+          "value": "Massachusetts",
+          "count": 1
+        },
+        {
+          "value": "ma",
+          "count": 1
+        },
+        {
+          "value": "N/A",
+          "count": 1
+        },
+        {
+          "value": "Illinois",
+          "count": 1
+        },
+        {
+          "value": "Fla.",
+          "count": 1
+        },
+        {
+          "value": "Texas",
+          "count": 1
+        },
+        {
+          "value": "Georgia",
+          "count": 1
+        },
+        {
+          "value": "Colorado",
+          "count": 1
+        }
+      ],
+      "isComplete": true
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "column": {
+          "key": 6,
+          "header": "state",
+          "dominantType": "text"
+        },
+        "groups": [
+          {
+            "canonical": "MA",
+            "isCanonicalInFile": true,
+            "variants": ["ma", "Massachusetts"],
+            "reason": "Massachusetts abbreviation and full name, case variants",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "CO",
+            "isCanonicalInFile": true,
+            "variants": ["co", "Colo.", "Colorado"],
+            "reason": "Colorado abbreviation and full name, case variants",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "NY",
+            "isCanonicalInFile": true,
+            "variants": ["N.Y."],
+            "reason": "New York abbreviation with periods",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "IL",
+            "isCanonicalInFile": true,
+            "variants": ["Ill.", "Illinois"],
+            "reason": "Illinois abbreviation and full name",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "MN",
+            "isCanonicalInFile": true,
+            "variants": ["mn", "Minn.", "Minnesota"],
+            "reason": "Minnesota abbreviation and full name, case variants",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "OR",
+            "isCanonicalInFile": true,
+            "variants": ["Oregon", "Ore."],
+            "reason": "Oregon abbreviation and full name",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "AZ",
+            "isCanonicalInFile": true,
+            "variants": ["Arizona", "Ariz."],
+            "reason": "Arizona abbreviation and full name",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "TX",
+            "isCanonicalInFile": true,
+            "variants": ["tx", "Tex.", "Texas"],
+            "reason": "Texas abbreviation and full name, case variants",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "FL",
+            "isCanonicalInFile": true,
+            "variants": ["Florida", "Fla."],
+            "reason": "Florida abbreviation and full name",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "GA",
+            "isCanonicalInFile": true,
+            "variants": ["Georgia"],
+            "reason": "Georgia abbreviation and full name",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "CA",
+            "isCanonicalInFile": true,
+            "variants": ["California", "Calif."],
+            "reason": "California abbreviation and full name",
+            "confidence": "certain"
+          }
+        ],
+        "placeholders": [],
+        "claimCount": 45,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "normalizeValues",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 1606,
+          "completionTokens": 1097,
+          "totalTokens": 2703,
+          "cost": 0.0007091,
+          "latencyMs": 4964,
+          "outcome": "valid"
+        }
+      ]
+    }
+  }
+]

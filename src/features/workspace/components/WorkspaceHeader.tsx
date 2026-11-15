@@ -1,9 +1,11 @@
 import { useId } from 'react';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
+import { useHasAiCalls } from '../state/aiStore';
 import { useAnalysisPhase } from '../state/analysisStore';
 import { exportActions } from '../state/exportStore';
 import { useWorkspacePhase, workspaceActions } from '../state/workspaceStore';
+import { AiCallSummary } from './AiCallSummary';
 import { DatasetFacts } from './DatasetFacts';
 
 export type WorkspaceHeaderProps = React.ComponentProps<'header'>;
@@ -14,6 +16,7 @@ export function WorkspaceHeader({
 }: WorkspaceHeaderProps) {
   const isReady = useWorkspacePhase().status === 'ready';
   const hintId = useId();
+  const hasAiCalls = useHasAiCalls();
   const analysisStatus = useAnalysisPhase().status;
   const isChecking = analysisStatus === 'idle' || analysisStatus === 'running';
 
@@ -31,7 +34,8 @@ export function WorkspaceHeader({
       {isReady && (
         <>
           <DatasetFacts className="order-last w-full sm:order-none sm:w-auto sm:flex-1" />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {hasAiCalls && <AiCallSummary />}
             <Button onClick={() => workspaceActions.reset()}>
               Load another file
             </Button>

@@ -1,9 +1,15 @@
+import type { Decision } from '@/engine/decisions/decision';
 import type { Issue, IssueId } from '@/engine/issues/issue';
-import { analysisStore$ } from './analysisStore';
+import { readIssues } from './readIssues';
 
-export function readIssue(issueId: IssueId | null): Issue | undefined {
-  const { phase } = analysisStore$.getState();
-  if (issueId === null || phase.status !== 'done') return undefined;
+export function readIssue({
+  issueId,
+  decisions,
+}: {
+  issueId: IssueId | null;
+  decisions: ReadonlyMap<IssueId, Decision>;
+}): Issue | undefined {
+  if (issueId === null) return undefined;
 
-  return phase.result.issues.find((issue) => issue.id === issueId);
+  return readIssues(decisions).find((issue) => issue.id === issueId);
 }

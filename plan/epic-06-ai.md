@@ -6,7 +6,7 @@
 
 **Show after this epic:** the sample's fourteen spellings of one state arrive as one AI suggestion a few seconds after the checks, next to the request that produced it and what it cost.
 
-**Before starting, needs you:** a development OpenRouter key in `.env.local`. Each real call is announced before it is made.
+**Before starting, needs you:** a development OpenRouter key in `.env.local` or `.env`. Each real call is announced before it is made. `yarn ai:record <task>` makes the real calls that record a task's e2e fixture.
 
 **Every AI task in this epic** lives in `src/ai/tasks/<task>/` as five files:
 
@@ -38,6 +38,10 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 **Decisions**
 
 - The reply is validated with Zod whatever the provider promises about structured output.
+- Found in OpenRouter's docs and with one real call: structured output is `response_format` of type `json_schema` with `strict: true`, and `provider.require_parameters: true` routes only to endpoints that support it. No `temperature` is sent, because some models reject it and `require_parameters` then finds no endpoint (a 404).
+- Found: the SDK's usage type has no `cost`. OpenRouter returns it in `usage.cost`, so the whole reply is validated with Zod, and a 200 whose body is an error is read as that error.
+- Found: a spent key or workspace limit is a `403` whose `error.metadata.limit_source` names it, not only a `402`. Both are `budgetExhausted`; any other 403 is a guardrail block and is `unexpected`.
+- The SDK's own retries are off (`maxRetries: 0`): every call is one record with its own cost, and the only retry is the one for invalid output.
 - Aborting propagates through `signal`, and an aborted call is never retried.
 - Logs carry the AI task's name, the model, tokens, latency and the reason. Never a prompt, a cell value or a key.
 
@@ -49,7 +53,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 **After:** T6.1, T2.2
 
-**What it does:** given the distinct values of one column, the model groups spellings of the same real-world value (`CA`, `Calif.`, `California`) under one canonical form, and names placeholders that are particular to this file (`TBD`, `no data`).
+**What it does:** given the distinct values of one column, the model groups spellings of the same real-world value (`CA`, `Calif.`, `California`) under one canonical form, and names placeholders that are particular to this file (`no data`, `pending`). A placeholder a check already finds (`N/A`, `TBD`, `-`) is left to the check.
 
 **Build**
 
@@ -59,16 +63,16 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 **Request:** the column's header and dominant type, and its values with counts, most frequent first. Caps: 200 values per request, 80 characters per value, 12 columns per file.
 
-**Which columns are sent:** categorical text columns, most repeated first. D7: in a file under 200 rows, every short-text column is eligible, because repetition means nothing at that size and a reviewer's own test file is likely to be small.
+**Which columns are sent:** categorical text columns, most repeated first. Columns of names and identifiers are never sent: two spellings of a name may be two people. D7: in a file under 200 rows, every short-text column is eligible, because repetition means nothing at that size and a reviewer's own test file is likely to be small.
 
-**Reply:** groups, each with a canonical value, its variants, a reason and a confidence; and a list of placeholders with a reason.
+**Reply:** groups, each with a canonical value, its variants, a reason and a confidence; and a list of placeholders, each with a reason and a confidence.
 
 **Reference validation**
 
 - Every variant must be one of the values that were sent.
 - A value joins at most one group.
 - A group with fewer than two distinct spellings is dropped.
-- A canonical value that was not in the file is allowed, and marked so the UI can say "not in your file".
+- A canonical value that was not in the file is allowed, and marked so the UI can say "not in your file". It must fit a cell and cannot start a formula.
 - Every dropped claim is counted, and the count travels with the result.
 
 **Issues:** each group becomes an `inconsistent` issue suggesting `mapValues`; placeholders become a `missing` issue suggesting `mapValues` to empty.
@@ -90,7 +94,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - Store: `run` with its `RunId` and one entry per AI task (`queued`, `running`, `done`, or `failed` with a reason); actions `startRun` and `retryTask`.
 - `src/features/workspace/state/runAiTasks.ts`: a queue with at most `AI_CONCURRENCY` (3) calls in flight, each a `fetch` with the run's `AbortSignal`.
 - `src/engine/issues/mergeAiIssues.ts`: D8.
-- UI: `RunProgress` (one row per AI task, announced through `aria-live`), `AiFailure` with `aiFailureCopy` (`Record<AiFailureReason, string>`), and the AI source and confidence band on issue cards.
+- UI: `RunProgress` (one `AiTaskRow` per AI task, with its failure in words from `aiFailureCopy`, a `Record<AiFailureReason, string>`), `AiAnnouncement` (always mounted, announces each task that finishes through `aria-live`), and the AI source and confidence band on issue cards.
 
 **Decisions**
 
@@ -98,6 +102,8 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - A result whose `runId` is not the current one is discarded.
 - Loading a new file aborts the run and cancels the worker call.
 - A failed AI task leaves everything else intact and offers a retry.
+- D8 in code: an AI issue absorbs a check issue whose every mapped value (or merged row) it covers; one it covers only in part stays. An AI assessment of a single cell is left out where another issue already covers that cell.
+- A task has one request per column (normalize values) or one request for the file; it is failed once every request has settled and one failed, and the requests that succeeded have landed all the same. Retry runs only the failed ones.
 
 **Done when**
 
@@ -144,6 +150,10 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 **Reply, per row:** whether it is suspicious, the column if one stands out, a reason, a confidence, and a suggested value only when the right value is unambiguous.
 
+**Decisions**
+
+- A flagged row is a row of a suspicious-category check issue. The reply for it becomes an `AiNote` on that issue (`src/engine/issues/aiNote.ts`), shown on the card and in the detail, and an issue whose every row the model reviewed and found plausible sorts after the others of its category. A suggested value on a flagged row is shown, never applied.
+
 **Reference validation**
 
 - A row id must be one that was sent, and a column must be in range.
@@ -151,7 +161,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 **Issues**
 
-- A flagged row keeps its check issue and gains the model's reason. When the model finds it plausible, the issue gains that note and sorts lower. It is never deleted: the check's evidence stays visible.
+- A flagged row keeps its check issue and gains the model's reason. When the model reviewed every row of it and found them plausible, the issue gains that note and sorts lower. It is never deleted: the check's evidence stays visible.
 - A sampled row the model finds suspicious becomes a new `suspicious` issue, with `setCells` when a value was suggested.
 
 **Done when**
@@ -176,7 +186,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 - The panel shows the browser's own request bodies. That is the literal answer to "what left my machine".
 - A visitor's own key never appears anywhere in the panel.
-- Dropped claims are shown, not hidden: "2 of 14 claims were dropped because they cited values that were not sent".
+- Claims left out are shown, not hidden: "2 of 14 claims were left out: they cited rows or values that were not sent, or failed validation".
 
 **Done when**
 
@@ -193,6 +203,11 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - `settingsStore` with the model id.
 - `ModelPicker`, fed by `models.ts` and disabled while a run is in flight.
 - "Run again": reruns the AI tasks with the selected model. AI issues are replaced, decisions on check issues are kept, and the earlier run's calls stay in the panel, labeled by model.
+
+**Decisions**
+
+- `models.ts` lists two models. One real call showed that `google/gemini-2.5-flash-lite` accepts the strict structured request (0.8 s, a tenth of a cent); `openai/gpt-5-nano` accepts it too but spent 24 s and 3,600 hidden reasoning tokens on a five-value request, so it is not offered. `yarn eval` measures both in Epic 10.
+- A new run replaces the AI issues and forgets the decisions made on them; decisions on check issues, and the calls of earlier runs, stay.
 
 **Done when**
 

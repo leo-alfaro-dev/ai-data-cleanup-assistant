@@ -3,8 +3,10 @@ import { tv } from 'tailwind-variants';
 import type { Issue } from '@/engine/issues/issue';
 import { countOf } from '@/lib/countOf';
 import { confidenceLabels } from '../confidenceLabels';
+import { describeAiNotes } from '../aiNoteCopy';
 import { describeIssue } from '../issueCopy';
 import { reviewActions, useSelectedIssueId } from '../state/reviewStore';
+import { useIssueNotes } from '../state/useIssueNotes';
 import { useFacts } from '../state/workspaceStore';
 import { sourceLabels } from '../sourceLabels';
 import { CategoryBadge } from './CategoryBadge';
@@ -19,6 +21,10 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
   const { columns } = useFacts();
   const isSelected = useSelectedIssueId() === issue.id;
   const { title, summary } = describeIssue({ issue, columns });
+  const aiNote = describeAiNotes({
+    notes: useIssueNotes(issue.id),
+    rowCount: issue.rows.length,
+  });
 
   return (
     <article
@@ -44,6 +50,9 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
         <span className="line-clamp-2 text-xs text-text-secondary">
           {summary}
         </span>
+        {aiNote && (
+          <span className="text-xs text-text-secondary italic">{aiNote}</span>
+        )}
         {issue.rows.length > 0 && (
           <span className="text-xs text-text-secondary tabular-nums">
             {countOf({ count: issue.rows.length, noun: 'row' })}

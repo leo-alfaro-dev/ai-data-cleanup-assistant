@@ -448,6 +448,21 @@ describe('findNearDuplicateCandidates', () => {
   }, 60_000);
 });
 
+describe('an orders file', () => {
+  it('does not pair different orders of one customer, whose column is headed customer', () => {
+    const dataset = toDataset(
+      'order_id,customer,product,quantity,order_date,status',
+      ...Array.from(
+        { length: 12 },
+        (_, index) =>
+          `O-${100 + index},Nia Allen,Item ${index},${index + 1},2024-01-${String(index + 1).padStart(2, '0')},shipped`
+      )
+    );
+
+    expect(find(dataset)).toEqual([]);
+  });
+});
+
 function find(dataset: Dataset) {
   return findNearDuplicateCandidates({
     dataset,

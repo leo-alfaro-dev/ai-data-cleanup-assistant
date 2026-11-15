@@ -5,7 +5,7 @@ import type { Decision } from '@/engine/decisions/decision';
 import { listAcceptedChanges } from '@/engine/decisions/listAcceptedChanges';
 import type { Issue, IssueId } from '@/engine/issues/issue';
 import { memoizeLast } from '@/lib/memoizeLast';
-import { useIssues } from './analysisStore';
+import { useIssues } from './useIssues';
 import { flattenChunks } from './flattenChunks';
 import { useDecisions } from './reviewStore';
 import { useRowChunks } from './useRowChunks';

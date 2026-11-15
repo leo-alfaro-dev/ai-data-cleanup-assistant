@@ -5,6 +5,7 @@ import { tryCatch } from '@/lib/tryCatch';
 import { getDatasetWorker } from '@/workers/getDatasetWorker';
 import { analysisStore$ } from './analysisStore';
 import type { ExportPhase } from './exportPhase';
+import { readIssues } from './readIssues';
 import { reviewStore$ } from './reviewStore';
 
 export const exportStore$ = createGlobalState(makeInitialState(), {
@@ -15,8 +16,8 @@ export const exportStore$ = createGlobalState(makeInitialState(), {
         store.metadata.call?.cancel(SUPERSEDED);
 
         const { phase } = analysisStore$.getState();
-        const issues = phase.status === 'done' ? phase.result.issues : [];
         const { decisions } = reviewStore$.getState();
+        const issues = readIssues(decisions);
         const accepted = listAcceptedChanges({ issues, decisions });
         const pendingCount =
           phase.status === 'done'

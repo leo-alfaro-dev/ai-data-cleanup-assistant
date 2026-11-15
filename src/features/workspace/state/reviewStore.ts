@@ -18,7 +18,10 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
           focusedRow: null,
         }));
 
-        const issue = readIssue(issueId);
+        const issue = readIssue({
+          issueId,
+          decisions: store.getState().decisions,
+        });
         if (issue?.suggestion) {
           void previewActions.load({
             issueId: issue.id,
@@ -39,7 +42,11 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
 
     accept(issueId: IssueId) {
       return (store) => {
-        if (!readIssue(issueId)?.suggestion) return;
+        if (
+          !readIssue({ issueId, decisions: store.getState().decisions })
+            ?.suggestion
+        )
+          return;
 
         store.setState((state) => ({
           ...state,
@@ -54,7 +61,8 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
 
     reject(issueId: IssueId) {
       return (store) => {
-        if (!readIssue(issueId)) return;
+        if (!readIssue({ issueId, decisions: store.getState().decisions }))
+          return;
 
         store.setState((state) => ({
           ...state,
@@ -76,6 +84,24 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
             key: issueId,
             value: null,
           }),
+        }));
+      };
+    },
+
+    forgetDecisions(issueIds: readonly IssueId[]) {
+      return (store) => {
+        const forgotten = new Set(issueIds);
+
+        store.setState((state) => ({
+          ...state,
+          decisions: new Map(
+            [...state.decisions].filter(([issueId]) => !forgotten.has(issueId))
+          ),
+          selectedIssueId:
+            state.selectedIssueId !== null &&
+            forgotten.has(state.selectedIssueId)
+              ? null
+              : state.selectedIssueId,
         }));
       };
     },

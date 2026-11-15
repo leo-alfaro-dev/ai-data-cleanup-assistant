@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { twMerge } from 'tailwind-variants';
 import { countIssuesByCategory } from '@/engine/issues/countIssuesByCategory';
 import { ISSUE_CATEGORIES } from '@/engine/issues/issue';
-import { useIssues } from '../state/analysisStore';
+import { useIssues } from '../state/useIssues';
 import { reviewActions, useCategoryFilter } from '../state/reviewStore';
 import { CategoryFilterButton } from './CategoryFilterButton';
 

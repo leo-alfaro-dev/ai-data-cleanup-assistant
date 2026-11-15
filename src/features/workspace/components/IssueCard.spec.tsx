@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { toColumnKey } from '@/engine/dataset/toColumnKey';
+import { toRowId } from '@/engine/dataset/toRowId';
+import { aiStore$ } from '../state/aiStore';
 import { reviewStore$ } from '../state/reviewStore';
 import { makeIssue } from '../testing/makeIssue';
 import { seedIssues } from '../testing/seedIssues';
@@ -67,6 +69,29 @@ describe('IssueCard', () => {
       screen.getByRole('article', { name: 'Empty column headers' })
     ).toBeInTheDocument();
     expect(screen.queryByText(/rows?$/)).not.toBeInTheDocument();
+  });
+
+  it('says what the AI made of the reviewed rows of a check issue, and nothing before it reviewed any', () => {
+    const { rerender } = render(<IssueCard issue={unfixable} />);
+    expect(screen.queryByText(/AI found|AI:/)).not.toBeInTheDocument();
+
+    aiStore$.setState((state) => ({
+      ...state,
+      notes: [
+        {
+          issueId: unfixable.id,
+          rowId: toRowId(1),
+          isSuspicious: false,
+          column: null,
+          reason: 'Plausible.',
+          confidence: 'high',
+          suggestedValue: null,
+        },
+      ],
+    }));
+    act(() => rerender(<IssueCard issue={unfixable} />));
+
+    expect(screen.getByText('AI found it plausible')).toBeInTheDocument();
   });
 
   it('offers Accept and Reject on a pending issue with a suggestion', () => {

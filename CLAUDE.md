@@ -77,6 +77,7 @@ yarn integrations --headed   # Headed mode
 yarn eval:data               # Regenerate the seeded datasets, their truth and the demo sample
 yarn eval --checks-only      # Score the checks against the planted errors — free, safe to run
 yarn eval                    # Accuracy benchmark against real models — costs money, ask first
+yarn ai:record normalize-values confirm-duplicates assess-suspicious-rows   # Real calls on the sample, saved as e2e fixtures — costs money, ask first
 
 yarn lint                    # ESLint
 yarn typecheck               # next typegen + tsc --noEmit
@@ -152,7 +153,7 @@ What checks find, and what the AI adds:
 | ------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Duplicates          | Exact and normalized-equal rows; rows sharing an identifier; near-duplicate candidate pairs by name similarity | Confirms candidate pairs and picks, per column, which row's value to keep                                                                               |
 | Inconsistent values | Whitespace and casing variants; mixed date formats; values of the wrong type for their column                  | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                                                                      |
-| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                            | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                                                                 |
+| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                            | Recognizes placeholders particular to the file (`no data`, `pending`) while grouping values                                                             |
 | Suspicious records  | Robust outliers, invalid emails, formula-like values, structural issues (ragged rows, repeated headers)        | Reviews flagged rows and a sample, or every row of a small file: explains each, spots implausible combinations, suggests a change only when unambiguous |
 
 ### AI Layer
@@ -171,7 +172,7 @@ What checks find, and what the AI adds:
 - **Hosted-key calls are rate-limited per visitor** (by IP) in the route handler, returning `429 rateLimited`. The limiter counts per serverless instance, so it is best effort; calls on a visitor's own key skip it.
 - **Failures carry a reason, never a message.** Responses use `{ reason }` from the `AiFailureReason` union with a matching status; the provider's message never reaches the client. OpenRouter's out-of-credit response maps to `budgetExhausted`. The UI words each reason once, in a `Record<AiFailureReason, string>`.
 - **Logs carry metadata only** — task, model, tokens, latency, reason. Never prompts, cell values or any key.
-- **Models** live in `src/ai/models.ts`; one joins the list only after `yarn eval` has measured it.
+- **Models** live in `src/ai/models.ts`; one joins the list after a real call showed it accepts the strict structured request, and `yarn eval` then measures how well it answers and what it costs. Requests carry no `temperature`: some models reject it.
 
 ### Analysis Runs
 
@@ -309,7 +310,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.
 - **Absence after presence** — assert that something is not shown only after something that is shown has rendered; before that, absence proves nothing.
-- **E2E mocks the AI routes** (`page.route`) with recorded responses — deterministic, offline, free. The happy path: load the sample → review → accept → export.
+- **E2E mocks the AI routes** (`page.route`, installed for every test by `e2e/test.ts`) with responses recorded by `yarn ai:record` — deterministic, offline, free. The test server starts with an empty key, so a route that escaped its mock answers `aiNotConfigured` instead of spending money. The happy path: load the sample → review → accept → export.
 - **`yarn eval` is the only thing that calls real models.** Seeded corruption of clean datasets gives known ground truth. `--checks-only` scores the checks alone, at no cost: the committed baseline every check updates. Per model it reports precision and recall per category, cost and latency, written to `eval/results/`. Accuracy claims anywhere cite these files.
 
 ## Environment & Deployment

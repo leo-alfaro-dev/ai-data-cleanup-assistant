@@ -2,7 +2,7 @@ import { tv } from 'tailwind-variants';
 import { formatCount } from '@/lib/formatCount';
 import type { WorkspacePanel } from '../panelIds';
 import { toPanelId, toTabId, WORKSPACE_PANELS } from '../panelIds';
-import { useIssues } from '../state/analysisStore';
+import { useIssues } from '../state/useIssues';
 import { reviewActions, useReviewPanel } from '../state/reviewStore';
 
 export type PanelTabsProps = React.ComponentProps<'div'>;
