@@ -1,6 +1,5 @@
-import { formatDate } from '@/engine/values/formatDate';
 import { normalizeWhitespace } from '@/engine/values/normalizeWhitespace';
-import { parseDate } from '@/engine/values/parseDate';
+import { standardizeDate } from '@/engine/values/standardizeDate';
 import type { ColumnRules, DateRule, Replacement } from './cleanPlan';
 
 export function applyColumnRules({
@@ -34,11 +33,8 @@ function applyDateRule({
   dateRule: DateRule;
   base: string;
 }): Replacement | null {
-  const parsed = parseDate(base);
-  if (!parsed || parsed.isAmbiguous) return null;
-
-  const value = formatDate({ date: parsed.date, format: dateRule.format });
-  if (value === base) return null;
+  const value = standardizeDate({ value: base, format: dateRule.format });
+  if (value === null) return null;
 
   return { value, origin: dateRule.origin };
 }

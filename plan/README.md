@@ -160,11 +160,11 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 4 — Checks
 
-- [ ] **T4.1** Find exact and normalized duplicate rows
-- [ ] **T4.2** Find whitespace, casing, date-format and type inconsistencies
-- [ ] **T4.3** Find empty cells and placeholder values
-- [ ] **T4.4** Find outliers, invalid emails, formula-like cells and structural issues
-- [ ] **T4.5** Find shared identifiers and near-duplicate candidates
+- [x] **T4.1** Find exact and normalized duplicate rows
+- [x] **T4.2** Find whitespace, casing, date-format and type inconsistencies
+- [x] **T4.3** Find empty cells and placeholder values
+- [x] **T4.4** Find outliers, invalid emails, formula-like cells and structural issues
+- [x] **T4.5** Find shared identifiers and near-duplicate candidates
 
 ### Epic 5 — Review workspace
 

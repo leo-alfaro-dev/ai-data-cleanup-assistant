@@ -4,7 +4,7 @@ import { FIRST_NAMES } from '../generate/firstNames';
 import { LAST_NAMES } from '../generate/lastNames';
 import { createRandom } from '../generate/createRandom';
 import { introduceTypo } from './introduceTypo';
-import { isOneEditApart } from './isOneEditApart';
+import { isOneEditApart } from '@/engine/values/isOneEditApart';
 
 describe('introduceTypo', () => {
   it('changes a value by exactly one edit and keeps its first character', () => {

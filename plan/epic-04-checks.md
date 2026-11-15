@@ -81,7 +81,7 @@
 
 **Build**
 
-- `src/engine/values/editDistance.ts`.
+- `src/engine/values/isOneEditApart.ts`, moved from `eval/corrupt/`, where it already checked the planted typos: linear in the length of the strings.
 - `findNumericOutliers.ts`: in numeric columns, values whose robust score (from the median and the median absolute deviation) passes `OUTLIER_THRESHOLD`, and negative values in a column that is otherwise positive. `medium`, no suggestion.
 - `findInvalidEmails.ts`: in email columns, values that fail the pattern. No suggestion, except when the domain is one edit away from a domain that covers at least 20% of the column: then `setCells` with the corrected domain, `high`.
 - `findFormulaLikeValues.ts`: values that start with `=`, `+`, `-` or `@` and are not numbers or phone numbers. `high`, no suggestion.
@@ -90,6 +90,7 @@
 **Decisions**
 
 - Outliers need at least 30 numeric values and a deviation above zero; otherwise the check stays silent instead of guessing.
+- A right-skewed positive column is scored on a log scale, and any other column with a spread for each side of the median, so a long natural tail is not suspicious. The limits are reported in the column's own units.
 - The email typo rule is learned from the column itself, not from a list of providers, so it works on any company's domain.
 - These are flags. Except for the email domain, deciding the right value is left to the user or to the model in T6.5.
 
@@ -106,7 +107,7 @@
 
 - `src/engine/values/jaroWinkler.ts`.
 - `findSharedIdentifiers.ts`: rows that share a value in an identifier-like column (the same email, or the same phone digits) and are not duplicates by T4.1. `high`, suggesting `mergeRows`: keep the first row and fill its blanks from the other.
-- `findNearDuplicateCandidates.ts`: pairs worth a second opinion, each with a similarity and its evidence. These are not issues; they wait for the model in T6.4.
+- `src/engine/matching/findNearDuplicateCandidates.ts`: pairs worth a second opinion, each with a similarity and its evidence. These are not issues; they wait for the model in T6.4.
 
 **How candidates are found**
 
@@ -116,10 +117,12 @@
 
 **Decisions**
 
-- A merge only chooses between the two rows' values. It never writes a value neither row had.
+- A merge only chooses between the two rows' values. It never writes a value neither row had. A blank or placeholder cell of the kept row is filled from the other row.
+- Identifier columns are measured on the rows that are not duplicates by T4.1, so copies cannot hide an identifier.
+- When the rows sharing an identifier have clearly different names (a household email, a switchboard), the issue stays, at `medium` and with no merge suggestion.
 - Comparing neighbors in sorted order keeps the work proportional to the number of rows, not to its square.
 
 **Done when**
 
-- Specs: the same email under different name casing gives a shared-identifier issue; `Jon Smith` and `John Smith` in the same city give a candidate and no issue; unrelated rows give nothing; the cap keeps the strongest pairs; the number of comparisons for 100,000 rows stays within rows × window.
+- Specs: the same email under different name casing gives a shared-identifier issue; `Jon Smith` and `John Smith` in the same city give a candidate and no issue; unrelated rows give nothing; the cap keeps the strongest pairs; the number of comparisons for 100,000 rows stays within passes × rows × window, with two sorted passes.
 - The duplicates row of the baseline now includes the near copies that share an identifier.

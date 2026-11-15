@@ -96,7 +96,7 @@ Path alias: `@/*` → `src/*` (the only one).
 ```
 src/
   app/                  # Routes only: layout, page, api/ai/<task-name>/route.ts
-  engine/               # Framework-free TypeScript: parse, profile, checks, rules, apply, recipe, export
+  engine/               # Framework-free TypeScript: parse, profile, checks, row grouping and matching, rules, apply, recipe, export
   ai/                   # Contracts, prompts, task runners, OpenRouter client, model list
   workers/              # dataset.worker.ts and its lazy client, getDatasetWorker()
   features/workspace/   # The app's one screen: upload, grid, review, export, transparency

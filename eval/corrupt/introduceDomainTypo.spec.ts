@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createRandom } from '../generate/createRandom';
 import { EMAIL_DOMAINS } from '../generate/emailDomains';
 import { introduceDomainTypo } from './introduceDomainTypo';
-import { isOneEditApart } from './isOneEditApart';
+import { isOneEditApart } from '@/engine/values/isOneEditApart';
 
 describe('introduceDomainTypo', () => {
   it('keeps the local part and the dot, and moves the domain one edit from a real one', () => {

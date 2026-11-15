@@ -63,7 +63,7 @@ Below the `lg` breakpoint the two columns become two tabs, Issues and Data, swit
 **Decisions**
 
 - Analysis starts as soon as the file is loaded, while the row chunks are still arriving.
-- The list is ordered by category, then by rows affected.
+- The list is ordered by category, then by rows affected, and is virtualized: a messy 100,000-row file gives thousands of issues, one per record for shared identifiers.
 - D5: titles are built from structured details. The four labels are the brief's words.
 - Numeric columns in the grid align right, with `tabular-nums`, once the profile arrives.
 

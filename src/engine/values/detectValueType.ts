@@ -1,4 +1,5 @@
 import { isBlank } from './isBlank';
+import { isEmail } from './isEmail';
 import { parseDate } from './parseDate';
 import { parseNumber } from './parseNumber';
 import type { ValueType } from './valueType';
@@ -13,7 +14,7 @@ export function detectValueType(value: string): ValueType {
   }
   if (parseDate(trimmed) !== null) return 'date';
   if (BOOLEAN.test(trimmed)) return 'boolean';
-  if (EMAIL.test(trimmed)) return 'email';
+  if (isEmail(trimmed)) return 'email';
   if (URL_LIKE.test(trimmed)) return 'url';
 
   const isPhone = PHONE.test(trimmed) && !SEPARATED_DATE_SHAPE.test(trimmed);
@@ -22,12 +23,10 @@ export function detectValueType(value: string): ValueType {
 
 const BOOLEAN = /^(?:true|false|yes|no)$/i;
 
-const EMAIL = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
-
 const URL_LIKE = /^(?:https?:\/\/|www\.)\S+$/i;
 
-const MIN_PHONE_DIGITS = 7;
-const MAX_PHONE_DIGITS = 15;
+export const MIN_PHONE_DIGITS = 7;
+export const MAX_PHONE_DIGITS = 15;
 
 const PHONE = new RegExp(
   `^(?=[+(\\d])\\+?(?:[\\s().-]*\\d){${MIN_PHONE_DIGITS},${MAX_PHONE_DIGITS}}[\\s().-]*$`

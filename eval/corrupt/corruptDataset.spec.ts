@@ -15,7 +15,7 @@ import { LOCATIONS } from '../generate/locations';
 import { PLANS } from '../generate/plans';
 import { toCustomerRow } from '../generate/toCustomerRow';
 import { corruptDataset } from './corruptDataset';
-import { isOneEditApart } from './isOneEditApart';
+import { isOneEditApart } from '@/engine/values/isOneEditApart';
 import { PLACEHOLDERS } from './placeholders';
 import type { PlantedKind } from './plantedKind';
 import type { PlantedError } from './truth';
