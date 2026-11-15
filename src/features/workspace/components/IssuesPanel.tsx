@@ -2,6 +2,7 @@ import { twMerge } from 'tailwind-variants';
 import { toPanelId, toTabId } from '../panelIds';
 import { useAiRun } from '../state/aiStore';
 import { useAnalysisPhase } from '../state/analysisStore';
+import { useHasReplayFailed, useRecipeResult } from '../state/recipeStore';
 import { useCategoryFilter } from '../state/reviewStore';
 import { useIssues } from '../state/useIssues';
 import { AiToolbar } from './AiToolbar';
@@ -13,6 +14,7 @@ import { HistoryButtons } from './HistoryButtons';
 import { IssueList } from './IssueList';
 import { IssueListSkeleton } from './IssueListSkeleton';
 import { ReviewProgress } from './ReviewProgress';
+import { RecipeReport } from './RecipeReport';
 import { RunProgress } from './RunProgress';
 
 export type IssuesPanelProps = React.ComponentProps<'section'>;
@@ -22,6 +24,8 @@ export function IssuesPanel({ className = '', ...props }: IssuesPanelProps) {
   const hasAiTasks = (useAiRun()?.jobs.length ?? 0) > 0;
   const issueCount = useIssues().length;
   const category = useCategoryFilter();
+  const recipeResult = useRecipeResult();
+  const hasReplayFailed = useHasReplayFailed();
   return (
     <section
       id={toPanelId('issues')}
@@ -43,6 +47,12 @@ export function IssuesPanel({ className = '', ...props }: IssuesPanelProps) {
       {phase.status === 'done' && (
         <>
           <AiToolbar />
+          {recipeResult && <RecipeReport result={recipeResult} />}
+          {hasReplayFailed && (
+            <p role="alert" className="text-sm text-danger">
+              The recipe could not be applied. The checks still work.
+            </p>
+          )}
           <CategorySummary />
           {category !== null && <BulkActions category={category} />}
           {hasAiTasks && <RunProgress />}

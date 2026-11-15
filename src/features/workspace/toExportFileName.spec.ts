@@ -11,6 +11,12 @@ describe('toExportFileName', () => {
     ).toBe('customers.changes.csv');
   });
 
+  it('writes the recipe as json', () => {
+    expect(
+      toExportFileName({ fileName: 'customers.csv', suffix: 'recipe' })
+    ).toBe('customers.recipe.json');
+  });
+
   it('replaces any other extension, since the output is always csv', () => {
     expect(
       toExportFileName({ fileName: 'people.tsv', suffix: 'cleaned' })

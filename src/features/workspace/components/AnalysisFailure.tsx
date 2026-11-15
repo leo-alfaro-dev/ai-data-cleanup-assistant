@@ -1,6 +1,7 @@
 import { RxExclamationTriangle } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
+import { recipeStore$ } from '../state/recipeStore';
 import { analysisActions } from '../state/analysisStore';
 
 export type AnalysisFailureProps = React.ComponentProps<'div'>;
@@ -30,9 +31,22 @@ export function AnalysisFailure({
           </p>
         </div>
       </div>
-      <Button className="self-start" onClick={() => void analysisActions.run()}>
+      <Button
+        className="self-start"
+        onClick={() =>
+          void analysisActions.run({
+            runAi: !isRecipeFlow(),
+          })
+        }
+      >
         Retry
       </Button>
     </div>
   );
+}
+
+function isRecipeFlow(): boolean {
+  const { result, hasReplayFailed } = recipeStore$.getState();
+
+  return result !== null || hasReplayFailed;
 }

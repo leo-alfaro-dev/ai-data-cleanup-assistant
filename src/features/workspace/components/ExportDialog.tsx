@@ -26,7 +26,7 @@ export function ExportDialog(props: ExportDialogProps) {
     <Modal
       isOpen={phase.status !== 'closed'}
       title="Export"
-      description="Download the cleaned file and a log of every change."
+      description="Download the cleaned file, a log of every change and a recipe to replay the rules."
       isCloseDisabled={isRunning}
       onClose={() => exportActions.close()}
       {...props}
@@ -64,6 +64,13 @@ export function ExportDialog(props: ExportDialogProps) {
           Pending issues leave the data as it is in the file.
         </p>
       )}
+      {phase.status === 'ready' && (
+        <p className="text-sm text-text-secondary">
+          The recipe holds the accepted rules only: extra spaces, spellings,
+          date formats and duplicate rows. Changes to particular rows stay in
+          the change log.
+        </p>
+      )}
       <div className="flex flex-wrap justify-end gap-2">
         <Button
           variant="primary"
@@ -91,6 +98,20 @@ export function ExportDialog(props: ExportDialogProps) {
         >
           <RxDownload aria-hidden className="size-3.5" />
           Download change log
+        </Button>
+        <Button
+          disabled={phase.status !== 'ready'}
+          onClick={() =>
+            phase.status === 'ready' &&
+            downloadFile({
+              name: toExportFileName({ fileName, suffix: 'recipe' }),
+              text: phase.files.recipe,
+              type: 'application/json',
+            })
+          }
+        >
+          <RxDownload aria-hidden className="size-3.5" />
+          Download recipe
         </Button>
       </div>
     </Modal>

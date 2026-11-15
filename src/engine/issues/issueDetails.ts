@@ -101,5 +101,6 @@ export type IssueDetails =
       // The model's own words.
       reason: string;
     }
+  | { kind: 'recipeRule' }
   | { kind: 'blankRows' }
   | { kind: 'skippedBlankLines'; count: number };

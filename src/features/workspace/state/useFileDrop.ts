@@ -27,8 +27,8 @@ export function useFileDrop(): { isDragging: boolean; handlers: DropHandlers } {
       onDrop(event) {
         event.preventDefault();
         setIsDragging(false);
-        const file = event.dataTransfer.files[0];
-        if (file) void workspaceActions.loadFile(file);
+        const files = [...event.dataTransfer.files];
+        if (files.length > 0) void workspaceActions.loadFiles(files);
       },
     },
   };

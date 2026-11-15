@@ -2,7 +2,11 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { serializeTruth } from './corrupt/serializeTruth';
 import { buildCustomerDataset } from './generate/buildCustomerDataset';
-import { CUSTOMERS_SEED } from './generate/customerDatasetSettings';
+import { buildSampleRecipe } from './generate/buildSampleRecipe';
+import {
+  CUSTOMERS_SEED,
+  NEXT_MONTH_SEED,
+} from './generate/customerDatasetSettings';
 
 function main(): void {
   const { csv, truth, rows } = buildCustomerDataset({ seed: CUSTOMERS_SEED });
@@ -13,6 +17,14 @@ function main(): void {
     content: serializeTruth(truth),
   });
   writeOutput({ path: 'public/samples/customers.csv', content: csv });
+  writeOutput({
+    path: 'public/samples/customers.recipe.json',
+    content: buildSampleRecipe({ csv, fileName: 'customers.csv' }),
+  });
+  writeOutput({
+    path: 'public/samples/customers-next-month.csv',
+    content: buildCustomerDataset({ seed: NEXT_MONTH_SEED }).csv,
+  });
 
   console.log(
     `${rows.length} rows, ${truth.errors.length} planted errors, seed ${CUSTOMERS_SEED}`

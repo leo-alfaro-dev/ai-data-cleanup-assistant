@@ -14,7 +14,7 @@ export const ISSUE_CATEGORIES = [
 
 export type IssueCategory = (typeof ISSUE_CATEGORIES)[number];
 
-export type IssueSource = 'check' | 'ai';
+export type IssueSource = 'check' | 'ai' | 'recipe';
 
 export const CONFIDENCES = ['certain', 'high', 'medium', 'low'] as const;
 

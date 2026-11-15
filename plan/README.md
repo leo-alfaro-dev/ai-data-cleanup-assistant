@@ -199,8 +199,8 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 9 — Recipe
 
-- [ ] **T9.1** Export accepted rules as a recipe
-- [ ] **T9.2** Replay a recipe on another file without AI
+- [x] **T9.1** Export accepted rules as a recipe
+- [x] **T9.2** Replay a recipe on another file without AI
 
 ### Epic 10 — Proof
 

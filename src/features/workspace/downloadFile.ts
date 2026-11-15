@@ -1,12 +1,14 @@
 export function downloadFile({
   name,
   text,
+  type = 'text/csv',
 }: {
   name: string;
   text: string;
+  type?: 'text/csv' | 'application/json';
 }): void {
   const url = URL.createObjectURL(
-    new Blob([text], { type: 'text/csv;charset=utf-8' })
+    new Blob([text], { type: `${type};charset=utf-8` })
   );
   const link = document.createElement('a');
   link.href = url;

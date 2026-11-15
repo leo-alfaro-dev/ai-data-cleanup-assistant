@@ -8,8 +8,15 @@ import {
 import { tv } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
+import { countOf } from '@/lib/countOf';
 import { formatCount } from '@/lib/formatCount';
+import { recipeRejectionCopy } from '../recipeCopy';
 import { SAMPLE_ROW_COUNT } from '../sampleFile';
+import {
+  recipeActions,
+  usePendingRecipe,
+  useRecipeRejection,
+} from '../state/recipeStore';
 import { useFileDrop } from '../state/useFileDrop';
 import { workspaceActions } from '../state/workspaceStore';
 
@@ -21,6 +28,9 @@ export function WelcomeScreen({
 }: WelcomeScreenProps) {
   const { isDragging, handlers } = useFileDrop();
   const inputRef = useRef<HTMLInputElement>(null);
+  const recipeInputRef = useRef<HTMLInputElement>(null);
+  const pending = usePendingRecipe();
+  const rejection = useRecipeRejection();
 
   return (
     <section
@@ -44,6 +54,22 @@ export function WelcomeScreen({
           <RxUpload aria-hidden className="size-3.5" />
           Choose a CSV file
         </Button>
+        <Button onClick={() => recipeInputRef.current?.click()}>
+          Apply a recipe
+        </Button>
+        <input
+          ref={recipeInputRef}
+          type="file"
+          aria-label="Choose a recipe file"
+          accept=".json,application/json"
+          tabIndex={-1}
+          className="sr-only"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            event.target.value = '';
+            if (file) void recipeActions.chooseRecipe(file);
+          }}
+        />
         <input
           ref={inputRef}
           type="file"
@@ -58,6 +84,24 @@ export function WelcomeScreen({
           }}
         />
       </div>
+      {pending && (
+        <p className="text-sm">
+          Recipe ready: {pending.fileName},{' '}
+          {countOf({ count: pending.recipe.rules.length, noun: 'rule' })}. The
+          next file you load is cleaned with it, without AI.
+        </p>
+      )}
+      {rejection && (
+        <p role="alert" className="text-sm text-danger">
+          {rejection.fileName}: {recipeRejectionCopy[rejection.reason]}
+        </p>
+      )}
+      <Button
+        variant="ghost"
+        onClick={() => void workspaceActions.loadNextMonthSample()}
+      >
+        Try the recipe on next month’s file
+      </Button>
       <p className="text-xs text-text-secondary">
         The sample is {formatCount(SAMPLE_ROW_COUNT)} synthetic customer rows
         with planted errors. Or drop your own CSV anywhere in this area: comma,

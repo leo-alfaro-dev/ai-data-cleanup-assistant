@@ -11,7 +11,7 @@ import type { AnalysisPhase } from './analysisPhase';
 export const analysisStore$ = createGlobalState(makeInitialState(), {
   metadata: makeInitialMetadata(),
   actions: {
-    run() {
+    run({ runAi = true }: { runAi?: boolean } = {}) {
       return async (store) => {
         store.metadata.call?.cancel(SUPERSEDED);
 
@@ -41,7 +41,7 @@ export const analysisStore$ = createGlobalState(makeInitialState(), {
         }
 
         store.setState({ phase: { status: 'done', result } });
-        void aiActions.startRun();
+        if (runAi) void aiActions.startRun();
       };
     },
 
