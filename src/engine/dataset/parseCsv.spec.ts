@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { toDataset } from '@/engine/testing/toDataset';
 import type { Dataset } from './dataset';
 import { parseCsv } from './parseCsv';
 
@@ -9,7 +10,7 @@ describe('parseCsv', () => {
     { name: 'tab', delimiter: '\t' },
     { name: 'pipe', delimiter: '|' },
   ])('detects a $name delimiter', ({ delimiter }) => {
-    const dataset = parse(
+    const dataset = toDataset(
       ['name', 'city', 'age'].join(delimiter),
       ['Alice', 'Austin', '34'].join(delimiter),
       ['Bob', 'Boston', '41'].join(delimiter)
@@ -24,7 +25,7 @@ describe('parseCsv', () => {
   });
 
   it('prefers semicolons when commas only appear inside values', () => {
-    const dataset = parse('name;amount', 'Alice;1,50', 'Bob;2,75');
+    const dataset = toDataset('name;amount', 'Alice;1,50', 'Bob;2,75');
 
     expect(dataset.format.delimiter).toBe(';');
     expect(dataset.rows).toEqual([
@@ -37,20 +38,24 @@ describe('parseCsv', () => {
     { name: 'ends with a line break', lines: ['name;age', 'Ada;34', ''] },
     { name: 'has blank lines', lines: ['name;age', '', 'Ada;34', '', 'Bo;41'] },
   ])('detects the delimiter of a small file that $name', ({ lines }) => {
-    const dataset = parse(...lines);
+    const dataset = toDataset(...lines);
 
     expect(dataset.format.delimiter).toBe(';');
     expect(headers(dataset)).toEqual(['name', 'age']);
   });
 
   it('keeps a quoted delimiter inside its value', () => {
-    const dataset = parse('name,city', '"Doe, Jane",Austin');
+    const dataset = toDataset('name,city', '"Doe, Jane",Austin');
 
     expect(dataset.rows).toEqual([['Doe, Jane', 'Austin']]);
   });
 
   it('keeps a quoted line break inside its value', () => {
-    const dataset = parse('name,note', 'Alice,"line one\nline two"', 'Bob,ok');
+    const dataset = toDataset(
+      'name,note',
+      'Alice,"line one\nline two"',
+      'Bob,ok'
+    );
 
     expect(dataset.rows).toEqual([
       ['Alice', 'line one\nline two'],
@@ -59,14 +64,14 @@ describe('parseCsv', () => {
   });
 
   it('unescapes doubled quotes', () => {
-    const dataset = parse('name,quote', 'Alice,"She said ""hi"""');
+    const dataset = toDataset('name,quote', 'Alice,"She said ""hi"""');
 
     expect(dataset.rows).toEqual([['Alice', 'She said "hi"']]);
   });
 
   it('records and removes a byte order mark', () => {
-    const withMark = parse('\uFEFFname,age', 'Alice,34');
-    const withoutMark = parse('name,age', 'Alice,34');
+    const withMark = toDataset('\uFEFFname,age', 'Alice,34');
+    const withoutMark = toDataset('name,age', 'Alice,34');
 
     expect(withMark.format.hasByteOrderMark).toBe(true);
     expect(headers(withMark)).toEqual(['name', 'age']);
@@ -92,11 +97,11 @@ describe('parseCsv', () => {
   });
 
   it('records LF line breaks', () => {
-    expect(parse('name,age', 'Alice,34').format.lineBreak).toBe('\n');
+    expect(toDataset('name,age', 'Alice,34').format.lineBreak).toBe('\n');
   });
 
   it('pads a short row with empty cells and records it', () => {
-    const dataset = parse(
+    const dataset = toDataset(
       'name,city,age',
       'Alice,Austin,34',
       'Bob',
@@ -108,7 +113,7 @@ describe('parseCsv', () => {
   });
 
   it('adds an unnamed column for a long row and records it', () => {
-    const dataset = parse('name,age', 'Alice,34', 'Bob,41,extra');
+    const dataset = toDataset('name,age', 'Alice,34', 'Bob,41,extra');
 
     expect(headers(dataset)).toEqual(['name', 'age', '']);
     expect(dataset.rows).toEqual([
@@ -122,7 +127,7 @@ describe('parseCsv', () => {
   });
 
   it('keeps empty and repeated headers, keyed by position', () => {
-    const dataset = parse('name,,name', 'Alice,34,Al');
+    const dataset = toDataset('name,,name', 'Alice,34,Al');
 
     expect(dataset.columns).toEqual([
       { key: 0, header: 'name' },
@@ -132,14 +137,14 @@ describe('parseCsv', () => {
   });
 
   it('keeps surrounding spaces in headers and values', () => {
-    const dataset = parse(' name ,city', '  Alice ,Austin\u00A0');
+    const dataset = toDataset(' name ,city', '  Alice ,Austin\u00A0');
 
     expect(headers(dataset)).toEqual([' name ', 'city']);
     expect(dataset.rows).toEqual([['  Alice ', 'Austin\u00A0']]);
   });
 
   it('keeps a row of empty cells, which is not a blank line', () => {
-    const dataset = parse('name,age', ',', 'Alice,34');
+    const dataset = toDataset('name,age', ',', 'Alice,34');
 
     expect(dataset.rows).toEqual([
       ['', ''],
@@ -149,7 +154,7 @@ describe('parseCsv', () => {
   });
 
   it('skips zero-length lines and counts them, but not the final line break', () => {
-    const dataset = parse('name,age', '', 'Alice,34', '', '', 'Bob,41', '');
+    const dataset = toDataset('name,age', '', 'Alice,34', '', '', 'Bob,41', '');
 
     expect(dataset.rows).toEqual([
       ['Alice', '34'],
@@ -159,7 +164,7 @@ describe('parseCsv', () => {
   });
 
   it('gives each row its position as its id', () => {
-    const dataset = parse('name', 'Alice', 'Bob', '', 'Cara,extra');
+    const dataset = toDataset('name', 'Alice', 'Bob', '', 'Cara,extra');
 
     expect(dataset.structure.raggedRows).toEqual([{ rowId: 2, cellCount: 2 }]);
   });
@@ -194,13 +199,6 @@ describe('parseCsv', () => {
     });
   });
 });
-
-function parse(...lines: string[]): Dataset {
-  const outcome = parseCsv({ text: lines.join('\n'), encoding: 'utf-8' });
-  if (!outcome.ok) throw new Error(`Expected a dataset, got ${outcome.reason}`);
-
-  return outcome.dataset;
-}
 
 function headers(dataset: Dataset): string[] {
   return dataset.columns.map((column) => column.header);

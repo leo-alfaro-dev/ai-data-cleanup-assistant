@@ -95,18 +95,18 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ## Decisions the plan relies on
 
-| #   | Decision                                                                                                                                                                                                   | Lands in   |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| D1  | **Every change is a pure function of the original data.** Accepted changes never feed each other, so the result does not depend on the order of decisions, undo is free, and a recipe replays identically. | T2.3       |
-| D2  | **The cleaned value is derived when it is read.** No cleaned copy of the data exists; a decision only recompiles a small plan.                                                                             | T2.3, T5.3 |
-| D3  | **Precedence is explicit** when two accepted changes touch one cell: an explicit cell value, then date format, then value mapping, then whitespace trim. A removed row stays removed.                      | T2.3       |
-| D4  | **Rows stream to the page in chunks of 10,000**, pulled from the worker, which keeps the working copy. The first screen appears while the rest arrive.                                                     | T1.3, T5.1 |
-| D5  | **Issues are data, not sentences.** Checks return structured details and the UI words them. The model's reason is the only free text.                                                                      | T2.3, T5.2 |
-| D6  | **AI requests are built in the worker**, from the profile and the check results, capped by each AI task's contract. The page only forwards them.                                                           | T6.2, T6.3 |
-| D7  | **Small files are read in full.** When a file is smaller than a cap, every row and value is sent; summaries start only where size demands them.                                                            | T6.2, T6.5 |
-| D8  | **An AI issue absorbs a check issue it contains**, so the same values never get two competing suggestions. A check issue that is already decided is never absorbed.                                        | T6.3       |
-| D9  | **Scoring is per item**: a cell for value errors, a row for duplicates, per category, against the planted truth. The checks-only baseline costs nothing and is committed.                                  | T3.2       |
-| D10 | **Test data is synthetic**: names from small pools, emails on reserved domains (`example.com`), phones in the fictional `555-01xx` range.                                                                  | T3.1       |
+| #   | Decision                                                                                                                                                                                                                                                                             | Lands in   |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| D1  | **Every change is a pure function of the original data.** Accepted changes never feed each other, so the result does not depend on the order of decisions, undo is free, and a recipe replays identically.                                                                           | T2.3       |
+| D2  | **The cleaned value is derived when it is read.** No cleaned copy of the data exists; a decision only recompiles a small plan.                                                                                                                                                       | T2.3, T5.3 |
+| D3  | **Precedence is explicit** when two accepted changes touch one cell: an explicit cell value, then date format, then value mapping, then whitespace trim. A cell a merge fills takes the other row's original value, and the column's rules apply to it. A removed row stays removed. | T2.3       |
+| D4  | **Rows stream to the page in chunks of 10,000**, pulled from the worker, which keeps the working copy. The first screen appears while the rest arrive.                                                                                                                               | T1.3, T5.1 |
+| D5  | **Issues are data, not sentences.** Checks return structured details and the UI words them. The model's reason is the only free text.                                                                                                                                                | T2.3, T5.2 |
+| D6  | **AI requests are built in the worker**, from the profile and the check results, capped by each AI task's contract. The page only forwards them.                                                                                                                                     | T6.2, T6.3 |
+| D7  | **Small files are read in full.** When a file is smaller than a cap, every row and value is sent; summaries start only where size demands them.                                                                                                                                      | T6.2, T6.5 |
+| D8  | **An AI issue absorbs a check issue it contains**, so the same values never get two competing suggestions. A check issue that is already decided is never absorbed.                                                                                                                  | T6.3       |
+| D9  | **Scoring is per item**: a cell for value errors, a row for duplicates, per category, against the planted truth. The checks-only baseline costs nothing and is committed.                                                                                                            | T3.2       |
+| D10 | **Test data is synthetic**: names from small pools, emails on reserved domains (`example.com`), phones in the fictional `555-01xx` range.                                                                                                                                            | T3.1       |
 
 ## Risks, and where the plan retires them
 
@@ -148,10 +148,10 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 2 — Understand the data
 
-- [ ] **T2.1** Add value helpers for blanks, comparison, numbers, dates and types
-- [ ] **T2.2** Profile each column: types, distinct values and numeric spread
-- [ ] **T2.3** Model issues and changes, and derive cleaned cells
-- [ ] **T2.4** Export the cleaned CSV and a change log from the engine
+- [x] **T2.1** Add value helpers for blanks, comparison, numbers, dates and types
+- [x] **T2.2** Profile each column: types, distinct values and numeric spread
+- [x] **T2.3** Model issues and changes, and derive cleaned cells
+- [x] **T2.4** Export the cleaned CSV and a change log from the engine
 
 ### Epic 3 — Measuring stick
 

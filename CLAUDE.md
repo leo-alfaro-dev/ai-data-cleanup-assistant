@@ -131,7 +131,7 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 ### Data Invariants
 
 - **The original is immutable.** Parsed rows are never mutated; the cleaned value of a cell is derived when it is read, from the original plus accepted decisions. No cleaned copy of the data exists, so undo is flipping a decision.
-- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a removed row stays removed.
+- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a cell a merge fills takes the other row's original value, and the column's rules then apply to it; a removed row stays removed. When two changes claim the same cell, value or row, the one whose issue id sorts first wins.
 - **Issues are data, not sentences.** Checks return structured details and the UI words them in `issueCopy`; the model's reason is the only free text.
 - **Identity is stable.** Each row keeps its `RowId` from parsing for life — an index into a filtered or sorted array never leaves the component that made it. Columns are keyed by position (`ColumnKey`), never by header text: headers can be empty or repeated.
 - **Cells are strings as parsed.** Typed readings (number, date) are derived and never written back unless a decision says so.
@@ -301,6 +301,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **Specs sit beside the code**: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
 - **Workers don't exist in Vitest** — specs call the engine functions directly; the worker wiring is covered by e2e.
 - **Checks are tested from both sides** — each spec feeds a small inline CSV with what the check must find and what it must leave alone.
+- **Shared spec helpers live in `src/engine/testing/`** — `toDataset(...lines)` gives a deep-frozen dataset from inline CSV lines, `accept` and `cleanEveryCell` drive the clean plan; ids are minted with `toRowId` and `toColumnKey`, never `as`. A helper a second spec needs moves there.
 - **Round-trips** — exporting with no accepted decisions reproduces the input rows; replaying a recipe on its source file reproduces the accepted rule changes.
 - **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.

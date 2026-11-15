@@ -1,14 +1,10 @@
 import Papa from 'papaparse';
-import type {
-  Column,
-  ColumnKey,
-  Dataset,
-  RaggedRow,
-  RowId,
-  TextEncoding,
-} from './dataset';
+import { BYTE_ORDER_MARK } from './byteOrderMark';
+import type { Column, Dataset, RaggedRow, TextEncoding } from './dataset';
 import { DELIMITERS, LINE_BREAKS } from './dataset';
 import type { LoadFailureReason } from './loadFailure';
+import { toColumnKey } from './toColumnKey';
+import { toRowId } from './toRowId';
 
 export function parseCsv({
   text,
@@ -50,7 +46,7 @@ export function parseCsv({
 
   rows.forEach((row, index) => {
     if (row.length !== header.length) {
-      raggedRows.push({ rowId: index as RowId, cellCount: row.length });
+      raggedRows.push({ rowId: toRowId(index), cellCount: row.length });
     }
     if (row.length < columnCount) {
       rows[index] = padRow({ row, length: columnCount });
@@ -58,7 +54,7 @@ export function parseCsv({
   });
 
   const columns: Column[] = Array.from({ length: columnCount }, (_, index) => ({
-    key: index as ColumnKey,
+    key: toColumnKey(index),
     header: header[index] ?? '',
   }));
 
@@ -84,8 +80,6 @@ export function parseCsv({
     },
   };
 }
-
-const BYTE_ORDER_MARK = '\uFEFF';
 
 const DELIMITER_PREVIEW_ROWS = 10;
 

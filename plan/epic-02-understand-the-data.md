@@ -23,6 +23,7 @@
 
 - No date library. The supported formats are the list above, stated at the top of `parseDate`.
 - Ambiguity is data. `03/04/2024` is reported as ambiguous and never resolved here.
+- Line breaks inside a value are kept, and the spaces around them removed: a multi-line note is not a whitespace problem.
 - Every later check asks these helpers; none re-implements them inline.
 
 **Done when**
@@ -42,10 +43,10 @@ A profile holds, per column: blank and non-blank counts; distinct values with co
 
 **Decisions**
 
-- A type is dominant when at least 80% of the non-blank values share it; otherwise the column is `mixed`.
+- A type is dominant when at least 80% of the non-blank values share it; otherwise the column is `mixed`. Integers also count toward `decimal`, so a price column that mixes `5` and `5.50` is `decimal`.
 - `isCategorical`: at most 200 distinct values, and no more than half as many distinct values as non-blank cells. `isIdentifierLike`: at least 95% distinct.
 - Thresholds are named constants, each with a one-line reason at its definition.
-- Distinct values are tracked up to 5,000 per column; beyond that the profile says it is truncated.
+- The profile keeps the 5,000 most frequent distinct values per column and says when it is truncated; the distinct count stays exact.
 - The type-specific summary is a union discriminated by the dominant type, not a bag of optional fields.
 
 **Done when**
@@ -71,7 +72,8 @@ A profile holds, per column: blank and non-blank counts; distinct values with co
 
 - D1: every change is computed from the original data. `mapValues` matches on the `normalizeWhitespace` form of the original value, so trimming and mapping give the same result in either order.
 - D2: there is no cleaned copy. A decision recompiles the plan, which costs time proportional to the accepted changes, not to the rows.
-- D3: precedence on one cell is an explicit value, then date format, then value mapping, then whitespace trim. The first that changes the value wins. A removed row stays removed.
+- D3: precedence on one cell is an explicit value, then date format, then value mapping, then whitespace trim. The first that changes the value wins. A cell a merge fills takes the other row's original value, the column's rules then apply to it, and the merge stays responsible for the cell. A removed row stays removed.
+- Order independence: when two accepted changes claim the same cell, value or row, the one whose issue id sorts first wins, so the order of decisions never matters.
 - `dropDuplicateRows` carries the groups found at analysis time and keeps the first row of each.
 - D5: `details` is structured. Nothing in the engine produces an English sentence.
 
@@ -96,7 +98,10 @@ A profile holds, per column: blank and non-blank counts; distinct values with co
 - Export walks the rows once and asks `cleanCell` for each value, so the file and the screen can never disagree.
 - Removed rows are absent from the file and present in the log as removals.
 - Values are quoted only where the format requires it.
-- A file decoded as Windows-1252 is exported as UTF-8, and the log says so.
+- A file decoded as Windows-1252 is exported as UTF-8 with a byte order mark, so spreadsheet apps don't read it in their legacy encoding, and the log says so.
+- A one-column row whose value is empty is written as `""`, so readers that skip blank lines keep it.
+- The log's columns are `row`, `column`, `column_number`, `action` (`changed`, `removed` or `converted`), `before`, `after`, `change` and `issue`. Headers can be empty or repeated, so the column number is what identifies a column.
+- The log is built lazily, entry by entry, so a plan that changes every cell never holds its whole log in memory.
 
 **Done when**
 
