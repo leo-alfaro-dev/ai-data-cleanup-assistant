@@ -1,0 +1,9 @@
+id,name,email,phone,city,signup_date
+1,Ada Park,ada.park@example.com,555-0101,Austin,2024-01-15
+2,Ben Ortiz,ben.ortiz@example.com,555-0102,Boston,2024-02-03
+3,Cara Singh,cara.singh@example.com,555-0103,Chicago,2024-02-19
+4,Dev Patel,dev.patel@example.com,555-0104,Denver,2024-03-07
+5,Eli Brooks,eli.brooks@example.com,555-0105,Austin,2024-03-22
+6,Fay Moreno,fay.moreno@example.com,555-0106,Boston,2024-04-11
+7,Gus Kim,gus.kim@example.com,555-0107,Chicago,2024-04-30
+8,Hana Lee,hana.lee@example.com,555-0108,Denver,2024-05-16

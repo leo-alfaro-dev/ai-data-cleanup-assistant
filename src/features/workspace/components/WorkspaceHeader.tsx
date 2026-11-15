@@ -1,0 +1,74 @@
+import { useId } from 'react';
+import { twMerge } from 'tailwind-variants';
+import { Button } from '@/components/Button';
+import { useHasAiCalls } from '../state/aiStore';
+import { useAnalysisPhase } from '../state/analysisStore';
+import { ariaKeysOf } from '../shortcuts';
+import { helpActions } from '../state/helpStore';
+import { exportActions } from '../state/exportStore';
+import { useWorkspacePhase, workspaceActions } from '../state/workspaceStore';
+import { AiCallSummary } from './AiCallSummary';
+import { DatasetFacts } from './DatasetFacts';
+import { ShortcutHint } from './ShortcutHint';
+
+export type WorkspaceHeaderProps = React.ComponentProps<'header'>;
+
+export function WorkspaceHeader({
+  className = '',
+  ...props
+}: WorkspaceHeaderProps) {
+  const isReady = useWorkspacePhase().status === 'ready';
+  const hintId = useId();
+  const hasAiCalls = useHasAiCalls();
+  const analysisStatus = useAnalysisPhase().status;
+  const isChecking = analysisStatus === 'idle' || analysisStatus === 'running';
+
+  return (
+    <header
+      className={twMerge(
+        'flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:gap-x-6',
+        className
+      )}
+      {...props}
+    >
+      <h1 className="text-base font-semibold tracking-tight sm:text-lg">
+        AI Data Cleanup Assistant
+      </h1>
+      {isReady && (
+        <>
+          <DatasetFacts className="order-last w-full sm:order-none sm:w-auto sm:flex-1" />
+          <div className="flex flex-wrap items-center gap-2">
+            {hasAiCalls && <AiCallSummary />}
+            <Button
+              variant="ghost"
+              aria-keyshortcuts={ariaKeysOf('help')}
+              onClick={() => helpActions.open()}
+            >
+              Shortcuts
+              <ShortcutHint action="help" />
+            </Button>
+            <Button onClick={() => workspaceActions.reset()}>
+              Load another file
+            </Button>
+            <Button
+              variant="primary"
+              disabled={isChecking}
+              title={isChecking ? EXPORT_WAITS_FOR_CHECKS : undefined}
+              aria-describedby={isChecking ? hintId : undefined}
+              onClick={() => void exportActions.open()}
+            >
+              Export
+            </Button>
+            {isChecking && (
+              <span id={hintId} className="sr-only">
+                {EXPORT_WAITS_FOR_CHECKS}
+              </span>
+            )}
+          </div>
+        </>
+      )}
+    </header>
+  );
+}
+
+const EXPORT_WAITS_FOR_CHECKS = 'Export is available when the checks finish.';

@@ -1,0 +1,5 @@
+export const CUSTOMERS_SEED = 20250601;
+
+export const NEXT_MONTH_SEED = 20250701;
+
+export const CLEAN_CUSTOMER_COUNT = 1000;

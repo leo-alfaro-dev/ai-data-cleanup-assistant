@@ -1,0 +1,2268 @@
+[
+  {
+    "request": {
+      "columns": [
+        {
+          "header": "customer_id",
+          "type": "text",
+          "distinctCount": 1080,
+          "blankCount": 0,
+          "range": null,
+          "topValues": [
+            {
+              "value": "C-10018",
+              "count": 2
+            },
+            {
+              "value": "C-10021",
+              "count": 2
+            },
+            {
+              "value": "C-10024",
+              "count": 2
+            },
+            {
+              "value": "C-10039",
+              "count": 2
+            },
+            {
+              "value": "C-10049",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "header": "first_name",
+          "type": "text",
+          "distinctCount": 62,
+          "blankCount": 3,
+          "range": null,
+          "topValues": [
+            {
+              "value": "Rosa",
+              "count": 35
+            },
+            {
+              "value": "Tara",
+              "count": 33
+            },
+            {
+              "value": "Isabella",
+              "count": 33
+            },
+            {
+              "value": "Jamal",
+              "count": 33
+            },
+            {
+              "value": "Victor",
+              "count": 33
+            }
+          ]
+        },
+        {
+          "header": "last_name",
+          "type": "text",
+          "distinctCount": 61,
+          "blankCount": 0,
+          "range": null,
+          "topValues": [
+            {
+              "value": "Anderson",
+              "count": 34
+            },
+            {
+              "value": "Silva",
+              "count": 34
+            },
+            {
+              "value": "Khan",
+              "count": 33
+            },
+            {
+              "value": "Wilson",
+              "count": 33
+            },
+            {
+              "value": "Scott",
+              "count": 32
+            }
+          ]
+        },
+        {
+          "header": "email",
+          "type": "email",
+          "distinctCount": 1001,
+          "blankCount": 9,
+          "range": null,
+          "topValues": [
+            {
+              "value": "victor.clark@example.org",
+              "count": 3
+            },
+            {
+              "value": "jamal.anderson@example.com",
+              "count": 3
+            },
+            {
+              "value": "rosa.clark@example.org",
+              "count": 3
+            },
+            {
+              "value": "henry.nguyen@example.com",
+              "count": 2
+            },
+            {
+              "value": "wei.anderson@example.net",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "header": "phone",
+          "type": "phone",
+          "distinctCount": 1017,
+          "blankCount": 5,
+          "range": null,
+          "topValues": [
+            {
+              "value": "(312) 555-0130",
+              "count": 3
+            },
+            {
+              "value": "(503) 555-0136",
+              "count": 3
+            },
+            {
+              "value": "(713) 555-0189",
+              "count": 2
+            },
+            {
+              "value": "(713) 555-0190",
+              "count": 2
+            },
+            {
+              "value": "(312) 555-0189",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "header": "city",
+          "type": "text",
+          "distinctCount": 23,
+          "blankCount": 3,
+          "range": null,
+          "topValues": [
+            {
+              "value": "Denver",
+              "count": 107
+            },
+            {
+              "value": "New York",
+              "count": 104
+            },
+            {
+              "value": "Austin",
+              "count": 102
+            },
+            {
+              "value": "Boston",
+              "count": 102
+            },
+            {
+              "value": "Phoenix",
+              "count": 100
+            }
+          ]
+        },
+        {
+          "header": "state",
+          "type": "text",
+          "distinctCount": 38,
+          "blankCount": 2,
+          "range": null,
+          "topValues": [
+            {
+              "value": "MA",
+              "count": 101
+            },
+            {
+              "value": "CO",
+              "count": 101
+            },
+            {
+              "value": "NY",
+              "count": 100
+            },
+            {
+              "value": "OR",
+              "count": 98
+            },
+            {
+              "value": "AZ",
+              "count": 98
+            }
+          ]
+        },
+        {
+          "header": "country",
+          "type": "text",
+          "distinctCount": 4,
+          "blankCount": 6,
+          "range": null,
+          "topValues": [
+            {
+              "value": "United States",
+              "count": 1141
+            },
+            {
+              "value": "N/A",
+              "count": 1
+            },
+            {
+              "value": "-",
+              "count": 1
+            },
+            {
+              "value": "unknown",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "header": "signup_date",
+          "type": "date",
+          "distinctCount": 668,
+          "blankCount": 7,
+          "range": null,
+          "topValues": [
+            {
+              "value": "2023-08-20",
+              "count": 7
+            },
+            {
+              "value": "2023-01-26",
+              "count": 6
+            },
+            {
+              "value": "2022-01-19",
+              "count": 5
+            },
+            {
+              "value": "2022-01-31",
+              "count": 5
+            },
+            {
+              "value": "2022-02-17",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "header": "plan",
+          "type": "text",
+          "distinctCount": 12,
+          "blankCount": 2,
+          "range": null,
+          "topValues": [
+            {
+              "value": "Starter",
+              "count": 349
+            },
+            {
+              "value": "Free",
+              "count": 317
+            },
+            {
+              "value": "Pro",
+              "count": 302
+            },
+            {
+              "value": "Business",
+              "count": 166
+            },
+            {
+              "value": "business",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "header": "monthly_spend",
+          "type": "decimal",
+          "distinctCount": 666,
+          "blankCount": 3,
+          "range": {
+            "minimum": -116.65,
+            "maximum": 12053,
+            "median": 26.445
+          },
+          "topValues": [
+            {
+              "value": "0.00",
+              "count": 321
+            },
+            {
+              "value": "24.43",
+              "count": 3
+            },
+            {
+              "value": "23.02",
+              "count": 3
+            },
+            {
+              "value": "26.68",
+              "count": 3
+            },
+            {
+              "value": "19.64",
+              "count": 3
+            }
+          ]
+        }
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "rowId": 89,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10089",
+            "Diego",
+            "King",
+            "diego.king@example.com",
+            "(206) 555-0198",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-03-19",
+            "Pro",
+            "6779.00"
+          ]
+        },
+        {
+          "id": 1,
+          "rowId": 107,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10107",
+            "Samuel",
+            "Clark",
+            "samuel.clark@example.og",
+            "(206) 555-0144",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-04-08",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 2,
+          "rowId": 150,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10150",
+            "Wei",
+            "Garcia",
+            "wei.garcia@example.net",
+            "(619) 555-0120",
+            "Austin",
+            "TX",
+            "United States",
+            "2022-05-29",
+            "Business",
+            "10300.00"
+          ]
+        },
+        {
+          "id": 3,
+          "rowId": 183,
+          "flaggedBy": ["numeric-outliers:10:negatives"],
+          "cells": [
+            "C-10182",
+            "Mateo",
+            "Harris",
+            "mateo.harris@example.org",
+            "(303) 555-0175",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-07-10",
+            "Business",
+            "-116.65"
+          ]
+        },
+        {
+          "id": 4,
+          "rowId": 265,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10262",
+            "Emma",
+            "Singh",
+            "emma.singh@example.or",
+            "(612) 555-0139",
+            "Austin",
+            "TX",
+            "United States",
+            "2022-10-02",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 5,
+          "rowId": 273,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10270",
+            "Emma",
+            "Nguyen",
+            "emma.nguyen@example.com",
+            "(713) 555-0179",
+            "Chicago",
+            "IL",
+            "United States",
+            "2022-10-07",
+            "Pro",
+            "6716.00"
+          ]
+        },
+        {
+          "id": 6,
+          "rowId": 318,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10313",
+            "Ava",
+            "Davis",
+            "ava.davis@example.com",
+            "(305) 555-0196",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-11-21",
+            "Pro",
+            "5930.00"
+          ]
+        },
+        {
+          "id": 7,
+          "rowId": 411,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10403",
+            "Rosa",
+            "Jackson",
+            "rosa.jackson@exaple.com",
+            "(202) 555-0130",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-03-04",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 8,
+          "rowId": 426,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10417",
+            "Amelia",
+            "Smith",
+            "amelia.smith@example.com",
+            "(202) 555-0128",
+            "New York",
+            "NY",
+            "United States",
+            "2023-03-21",
+            "Business",
+            "12053.00"
+          ]
+        },
+        {
+          "id": 9,
+          "rowId": 489,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10478",
+            "Ava",
+            "Singh",
+            "ava.singh@exampkle.com",
+            "(612) 555-0196",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-05-27",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 10,
+          "rowId": 516,
+          "flaggedBy": ["numeric-outliers:10:negatives"],
+          "cells": [
+            "C-10502",
+            "Samuel",
+            "Khan",
+            "samuel.khan@example.com",
+            "(206) 555-0158",
+            "San Diego",
+            "CA",
+            "United States",
+            "2023-06-21",
+            "Starter",
+            "-19.93"
+          ]
+        },
+        {
+          "id": 11,
+          "rowId": 521,
+          "flaggedBy": ["formula-like-values:1"],
+          "cells": [
+            "C-10507",
+            "=HYPERLINK(\"https://example.com/refund\",\"Claim refund\")",
+            "Martinez",
+            "kwame.martinez@example.org",
+            "(202) 555-0156",
+            "Denver",
+            "CO",
+            "United States",
+            "2023-06-29",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 12,
+          "rowId": 542,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10523",
+            "Mei",
+            "Ivanov",
+            "mei.ivanov@exazmple.com",
+            "(212) 555-0139",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-07-23",
+            "Pro",
+            "51.32"
+          ]
+        },
+        {
+          "id": 13,
+          "rowId": 585,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10558",
+            "Aarav",
+            "Wilson",
+            "aarav.wilson@example.cmo",
+            "(503) 555-0147",
+            "New York",
+            "NY",
+            "United States",
+            "2023-09-04",
+            "Starter",
+            "23.88"
+          ]
+        },
+        {
+          "id": 14,
+          "rowId": 611,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10581",
+            "Priya",
+            "Wilson",
+            "priya.wilson@example.co",
+            "(617) 555-0176",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2023-09-25",
+            "Starter",
+            "27.72"
+          ]
+        },
+        {
+          "id": 15,
+          "rowId": 616,
+          "flaggedBy": ["invalid-emails:3"],
+          "cells": [
+            "C-10585",
+            "Liam",
+            "Silva",
+            "liam.silva.example.com",
+            "(212) 555-0123",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-09-30",
+            "Pro",
+            "67.26"
+          ]
+        },
+        {
+          "id": 16,
+          "rowId": 629,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10596",
+            "Sophia",
+            "Williams",
+            "sophia.williams@example.com",
+            "(206) 555-0192",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-10-06",
+            "Starter",
+            "2316.00"
+          ]
+        },
+        {
+          "id": 17,
+          "rowId": 651,
+          "flaggedBy": ["invalid-emails:3"],
+          "cells": [
+            "C-10616",
+            "Owen",
+            "Wright",
+            "owen.wrightexample.net",
+            "(713) 555-0161",
+            "Seattle",
+            "WA",
+            "United States",
+            "2023-10-22",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 18,
+          "rowId": 735,
+          "flaggedBy": ["numeric-outliers:10:negatives"],
+          "cells": [
+            "C-10685",
+            "Mei",
+            "Davis",
+            "mei.davis@example.net",
+            "(202) 555-0147",
+            "Miami",
+            "FL",
+            "United States",
+            "2023-12-30",
+            "Starter",
+            "-19.55"
+          ]
+        },
+        {
+          "id": 19,
+          "rowId": 743,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10690",
+            "Lucas",
+            "Martin",
+            "lucas.martin@example.nt",
+            "(612) 555-0135",
+            "Miami",
+            "FL",
+            "United States",
+            "2024-01-05",
+            "Pro",
+            "63.04"
+          ]
+        },
+        {
+          "id": 20,
+          "rowId": 758,
+          "flaggedBy": ["invalid-emails:3"],
+          "cells": [
+            "C-10702",
+            "Isabella",
+            "Miller",
+            "isabella.miller.example.net",
+            "(512) 555-0119",
+            "Austin",
+            "TX",
+            "United States",
+            "2024-01-21",
+            "Business",
+            "123.85"
+          ]
+        },
+        {
+          "id": 21,
+          "rowId": 795,
+          "flaggedBy": ["invalid-emails:3"],
+          "cells": [
+            "C-10735",
+            "Priya",
+            "Thompson",
+            "priya.thompsonexample.com",
+            "(202) 555-0113",
+            "San Diego",
+            "CA",
+            "United States",
+            "2024-02-18",
+            "Starter",
+            "28.00"
+          ]
+        },
+        {
+          "id": 22,
+          "rowId": 816,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10753",
+            "Rosa",
+            "Khan",
+            "rosa.khan@example.coam",
+            "(713) 555-0157",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2024-03-13",
+            "Business",
+            "103.17"
+          ]
+        },
+        {
+          "id": 23,
+          "rowId": 835,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10769",
+            "Isabella",
+            "Johnson",
+            "isabella.johnson@example.net",
+            "(303) 555-0149",
+            "Denver",
+            "CO",
+            "United States",
+            "2024-03-29",
+            "Pro",
+            "5369.00"
+          ]
+        },
+        {
+          "id": 24,
+          "rowId": 850,
+          "flaggedBy": ["numeric-outliers:10:negatives"],
+          "cells": [
+            "C-10780",
+            "Emma",
+            "Johnson",
+            "emma.johnson@example.net",
+            "(602) 555-0140",
+            "Denver",
+            "CO",
+            "United States",
+            "2024-04-08",
+            "Business",
+            "-111.88"
+          ]
+        },
+        {
+          "id": 25,
+          "rowId": 906,
+          "flaggedBy": ["numeric-outliers:10:negatives"],
+          "cells": [
+            "C-10824",
+            "Marcus",
+            "Okafor",
+            "marcus.okafor@example.org",
+            "(206) 555-0100",
+            "Austin",
+            "TX",
+            "United States",
+            "2024-06-08",
+            "Pro",
+            "-60.97"
+          ]
+        },
+        {
+          "id": 26,
+          "rowId": 924,
+          "flaggedBy": ["invalid-emails:3:domain-typos"],
+          "cells": [
+            "C-10836",
+            "Mateo",
+            "Kim",
+            "mateo.kim@example.nebt",
+            "(415) 555-0154",
+            "Denver",
+            "CO",
+            "United States",
+            "2024-06-30",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 27,
+          "rowId": 929,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10840",
+            "Amelia",
+            "Martinez",
+            "amelia.martinez@example.net",
+            "(503) 555-0115",
+            "Austin",
+            "TX",
+            "United States",
+            "2024-07-03",
+            "Starter",
+            "2026.00"
+          ]
+        },
+        {
+          "id": 28,
+          "rowId": 1048,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10935",
+            "Liam",
+            "Allen",
+            "liam.allen@example.com",
+            "(619) 555-0190",
+            "Denver",
+            "CO",
+            "United States",
+            "2024-10-23",
+            "Starter",
+            "2038.00"
+          ]
+        },
+        {
+          "id": 29,
+          "rowId": 1076,
+          "flaggedBy": ["numeric-outliers:10"],
+          "cells": [
+            "C-10953",
+            "Rosa",
+            "Moore",
+            "rosa.moore@example.net",
+            "(202) 555-0173",
+            "Seattle",
+            "WA",
+            "United States",
+            "2024-11-16",
+            "Starter",
+            "2309.00"
+          ]
+        },
+        {
+          "id": 30,
+          "rowId": 1113,
+          "flaggedBy": ["invalid-emails:3"],
+          "cells": [
+            "C-10979",
+            "Grace",
+            "Clark",
+            "grace.clark.example.net",
+            "(404) 555-0159",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2024-12-10",
+            "Pro",
+            "64.82"
+          ]
+        },
+        {
+          "id": 31,
+          "rowId": 78,
+          "flaggedBy": [],
+          "cells": [
+            "C-10079",
+            "Lucas",
+            "Ivanov",
+            "lucas.ivanov@example.net",
+            "(503) 555-0151",
+            "Portland",
+            "OR",
+            "United States",
+            "2022-03-03",
+            "Business",
+            "102.00"
+          ]
+        },
+        {
+          "id": 32,
+          "rowId": 79,
+          "flaggedBy": [],
+          "cells": [
+            "C-10080",
+            "Wei",
+            "Clark",
+            "wei.clark@example.com",
+            "(512) 555-0128",
+            "Seattle",
+            "WA",
+            "United States",
+            "2022-03-06",
+            "Starter",
+            "19.84"
+          ]
+        },
+        {
+          "id": 33,
+          "rowId": 213,
+          "flaggedBy": [],
+          "cells": [
+            "C-10212",
+            "Yuki",
+            "Patel",
+            "yuki.patel@example.net",
+            "(206) 555-0130",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-08-11",
+            "Starter",
+            "20.12"
+          ]
+        },
+        {
+          "id": 34,
+          "rowId": 234,
+          "flaggedBy": [],
+          "cells": [
+            "C-10231",
+            "Omar",
+            "Thomas",
+            "omar.thomas@example.com",
+            "(206) 555-0141",
+            "Austin",
+            "TX",
+            "United States",
+            "2022-08-27",
+            "Business",
+            "113.46"
+          ]
+        },
+        {
+          "id": 35,
+          "rowId": 269,
+          "flaggedBy": [],
+          "cells": [
+            "C-10266",
+            "Henry",
+            "Harris",
+            "henry.harris@example.net",
+            "(612) 555-0163",
+            "Boston",
+            "MA",
+            "United States",
+            "2022-10-04",
+            "Starter",
+            "22.66"
+          ]
+        },
+        {
+          "id": 36,
+          "rowId": 274,
+          "flaggedBy": [],
+          "cells": [
+            "C-10271",
+            "Isabella",
+            "Martin",
+            "isabella.martin@example.com",
+            "(305) 555-0179",
+            "San Diego",
+            "CA",
+            "United States",
+            "2022-10-08",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 37,
+          "rowId": 283,
+          "flaggedBy": [],
+          "cells": [
+            "C-10280",
+            "Marcus",
+            "Harris",
+            "marcus.harris@example.org",
+            "(713) 555-0150",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-10-11",
+            "Business",
+            "111.88"
+          ]
+        },
+        {
+          "id": 38,
+          "rowId": 297,
+          "flaggedBy": [],
+          "cells": [
+            "C-10293",
+            "Kwame",
+            "Singh",
+            "kwame.singh@example.net",
+            "(415) 555-0174",
+            "Denver",
+            "CO",
+            "United States",
+            "2022-11-01",
+            "Starter",
+            "22.48"
+          ]
+        },
+        {
+          "id": 39,
+          "rowId": 314,
+          "flaggedBy": [],
+          "cells": [
+            "C-10309",
+            "Zoe",
+            "Garcia",
+            "zoe.garcia@example.com",
+            "(512) 555-0149",
+            "Boston",
+            "MA",
+            "United States",
+            "2022-11-19",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 40,
+          "rowId": 353,
+          "flaggedBy": [],
+          "cells": [
+            "C-10348",
+            "Elena",
+            "Thomas",
+            "elena.thomas@example.com",
+            "(303) 555-0197",
+            "Boston",
+            "MA",
+            "United States",
+            "2023-01-08",
+            "Starter",
+            "19.91"
+          ]
+        },
+        {
+          "id": 41,
+          "rowId": 363,
+          "flaggedBy": [],
+          "cells": [
+            "C-10358",
+            "Mei",
+            "Thomas",
+            "mei.thomas@example.org",
+            "(303) 555-0187",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-01-16",
+            "Pro",
+            "52.21"
+          ]
+        },
+        {
+          "id": 42,
+          "rowId": 385,
+          "flaggedBy": [],
+          "cells": [
+            "C-10378",
+            "Marcus",
+            "Nguyen",
+            "marcus.nguyen@example.org",
+            "(212) 555-0199",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-02-05",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 43,
+          "rowId": 432,
+          "flaggedBy": [],
+          "cells": [
+            "C-10423",
+            "Ivan",
+            "King",
+            "ivan.king@example.com",
+            "(303) 555-0194",
+            "Denver",
+            "CO",
+            "United States",
+            "2023-03-25",
+            "Pro",
+            "55.79"
+          ]
+        },
+        {
+          "id": 44,
+          "rowId": 433,
+          "flaggedBy": [],
+          "cells": [
+            "C-10424",
+            "Isabella",
+            "Lewis",
+            "isabella.lewis@example.com",
+            "(305) 555-0136",
+            "Portland",
+            "OR",
+            "United States",
+            "2023-03-26",
+            "Starter",
+            "23.64"
+          ]
+        },
+        {
+          "id": 45,
+          "rowId": 497,
+          "flaggedBy": [],
+          "cells": [
+            "C-10484",
+            "Mateo",
+            "Wilson",
+            "mateo.wilson@example.com",
+            "(404) 555-0190",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2023-06-01",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 46,
+          "rowId": 510,
+          "flaggedBy": [],
+          "cells": [
+            "C-10496",
+            "Nora",
+            "Martin",
+            "nora.martin@example.com",
+            "(617) 555-0195",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "06/15/2023",
+            "Business",
+            "113.20"
+          ]
+        },
+        {
+          "id": 47,
+          "rowId": 558,
+          "flaggedBy": [],
+          "cells": [
+            "C-10539",
+            "Jamal",
+            "Kim",
+            "jamal.kim@example.org",
+            "(602) 555-0194",
+            "Austin",
+            "TX",
+            "United States",
+            "2023-08-15",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 48,
+          "rowId": 560,
+          "flaggedBy": [],
+          "cells": [
+            "C-10540",
+            "Hiroshi",
+            "Rossi",
+            "hiroshi.rossi@example.net",
+            "(512) 555-0186",
+            "Chicago",
+            "IL",
+            "United States",
+            "2023-08-15",
+            "Business",
+            "110.37"
+          ]
+        },
+        {
+          "id": 49,
+          "rowId": 599,
+          "flaggedBy": [],
+          "cells": [
+            "C-10571",
+            "Zoe",
+            "Miller",
+            "zoe.miller@example.com",
+            "(312) 555-0133",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 50,
+          "rowId": 636,
+          "flaggedBy": [],
+          "cells": [
+            "C-10603",
+            "Leila",
+            "Harris",
+            "leila.harris@example.com",
+            "(619) 555-0148",
+            "Portland",
+            "Ore.",
+            "United States",
+            "2023-10-13",
+            "Starter",
+            "21.79"
+          ]
+        },
+        {
+          "id": 51,
+          "rowId": 640,
+          "flaggedBy": [],
+          "cells": [
+            "C-10607",
+            "Ivan",
+            "Ivanov",
+            "ivan.ivanov@example.org",
+            "(206) 555-0177",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-10-15",
+            "Pro",
+            "67.83"
+          ]
+        },
+        {
+          "id": 52,
+          "rowId": 662,
+          "flaggedBy": [],
+          "cells": [
+            "C-10626",
+            "Amelia",
+            "Brown",
+            "amelia.brown@example.org",
+            "(503) 555-0126",
+            "Portland",
+            "OR",
+            "United States",
+            "2023-11-08",
+            "Starter",
+            "21.60"
+          ]
+        },
+        {
+          "id": 53,
+          "rowId": 688,
+          "flaggedBy": [],
+          "cells": [
+            "C-10171",
+            "Priya",
+            "Hall",
+            "priya.hall@example.org",
+            "(404) 555-0146",
+            "Miami",
+            "FL",
+            "United States",
+            "2022-06-26",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 54,
+          "rowId": 705,
+          "flaggedBy": [],
+          "cells": [
+            "C-10659",
+            "Leila",
+            "Scott",
+            "leila.scott@example.com",
+            "(305) 555-0134",
+            "Portland",
+            "OR",
+            "United States",
+            "2023-12-02",
+            "Pro",
+            "49.94"
+          ]
+        },
+        {
+          "id": 55,
+          "rowId": 731,
+          "flaggedBy": [],
+          "cells": [
+            "C-10681",
+            "Yuki",
+            "Martinez",
+            "yuki.martinez@example.com",
+            "(612) 555-0128",
+            "Phoenix",
+            "AZ",
+            "United States",
+            "2023-12-26",
+            "Business",
+            "102.55"
+          ]
+        },
+        {
+          "id": 56,
+          "rowId": 770,
+          "flaggedBy": [],
+          "cells": [
+            "C-11031",
+            "Rosa",
+            "Lee",
+            "rosa.lee@example.org",
+            "512.555.0192",
+            "New York",
+            "NY",
+            "United States",
+            "2022-02-15",
+            "Starter",
+            "27.69"
+          ]
+        },
+        {
+          "id": 57,
+          "rowId": 849,
+          "flaggedBy": [],
+          "cells": [
+            "C-10779",
+            "Nora",
+            "Walker",
+            "nora.walker@example.com",
+            "(404) 555-0135",
+            "Seattle",
+            "WA",
+            "United States",
+            "2024-04-07",
+            "Starter",
+            "27.17"
+          ]
+        },
+        {
+          "id": 58,
+          "rowId": 873,
+          "flaggedBy": [],
+          "cells": [
+            "C-10796",
+            "Olivia",
+            "Ivanov",
+            "olivia.ivanov@example.org",
+            "(612) 555-0191",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2024-04-25",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 59,
+          "rowId": 889,
+          "flaggedBy": [],
+          "cells": [
+            "C-10810",
+            "Mia",
+            "Rossi",
+            "mia.rossi@example.org",
+            "(713) 555-0115",
+            "Atlanta",
+            "GA",
+            "United States",
+            "2024-05-17",
+            "Starter",
+            "19.31"
+          ]
+        },
+        {
+          "id": 60,
+          "rowId": 922,
+          "flaggedBy": [],
+          "cells": [
+            "C-11051",
+            "Ava",
+            "Brow",
+            "ava.brown@example.org",
+            "(503) 555-0102",
+            "San Diego",
+            "CA",
+            "United States",
+            "2022-02-14",
+            "Pro",
+            "51.16"
+          ]
+        },
+        {
+          "id": 61,
+          "rowId": 937,
+          "flaggedBy": [],
+          "cells": [
+            "C-10848",
+            "Isabella",
+            "Davis",
+            "isabella.davis@example.com",
+            "(415) 555-0104",
+            "Phoenix",
+            "AZ",
+            "",
+            "2024-07-13",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 62,
+          "rowId": 966,
+          "flaggedBy": [],
+          "cells": [
+            "C-10869",
+            "Grace",
+            "Davis",
+            "grace.davis@example.net",
+            "(617) 555-0179",
+            "Austin",
+            "TX",
+            "United States",
+            "2024-08-10",
+            "Free",
+            "0.00"
+          ]
+        },
+        {
+          "id": 63,
+          "rowId": 972,
+          "flaggedBy": [],
+          "cells": [
+            "C-10873",
+            "Samuel",
+            "Patel",
+            "samuel.patel@example.net",
+            "(312) 555-0119",
+            "New York",
+            "NY",
+            "United States",
+            "2024-08-14",
+            "Pro",
+            "63.79"
+          ]
+        },
+        {
+          "id": 64,
+          "rowId": 1001,
+          "flaggedBy": [],
+          "cells": [
+            "C-10898",
+            "Noah",
+            "Ivanov",
+            "noah.ivanov@example.net",
+            "(503) 555-0199",
+            "Minneapolis",
+            "MN",
+            "United States",
+            "2024-09-13",
+            "Pro",
+            "70.19"
+          ]
+        },
+        {
+          "id": 65,
+          "rowId": 1034,
+          "flaggedBy": [],
+          "cells": [
+            "C-10924",
+            "Yuki",
+            "Chen",
+            "yuki.chen@example.com",
+            "(305) 555-0167",
+            "Boston",
+            "MA",
+            "United States",
+            "2024-10-12",
+            "Pro",
+            "71.16"
+          ]
+        },
+        {
+          "id": 66,
+          "rowId": 1038,
+          "flaggedBy": [],
+          "cells": [
+            "C-10928",
+            "Owen",
+            "Johnson",
+            "owen.johnson@example.net",
+            "(503) 555-0141",
+            "New York",
+            "NY",
+            "United States",
+            "2024-10-16",
+            "Starter",
+            "24.52"
+          ]
+        },
+        {
+          "id": 67,
+          "rowId": 1039,
+          "flaggedBy": [],
+          "cells": [
+            "C-10830",
+            "Isabella",
+            "Kim",
+            "isabella.kim@example.com",
+            "(503) 555-0134",
+            "Seattle",
+            "WA",
+            "United States",
+            "2024-06-19",
+            "Pro",
+            "66.80"
+          ]
+        },
+        {
+          "id": 68,
+          "rowId": 1044,
+          "flaggedBy": [],
+          "cells": [
+            "C-10790",
+            "Victor",
+            "Scott",
+            "victor.scott@example.org",
+            "(206) 555-0157",
+            "Boston",
+            "MA",
+            "United States",
+            "2024-04-19",
+            "Starter",
+            "26.13"
+          ]
+        },
+        {
+          "id": 69,
+          "rowId": 1082,
+          "flaggedBy": [],
+          "cells": [
+            "C-10134",
+            "Amara",
+            "Wilson",
+            "amara.wilson@example.org",
+            "(415) 555-0170",
+            "San Diego",
+            "CA",
+            "United States",
+            "2022-05-17",
+            "Business",
+            "120.72"
+          ]
+        },
+        {
+          "id": 70,
+          "rowId": 1136,
+          "flaggedBy": [],
+          "cells": [
+            "C-10813",
+            "Isabella",
+            "Nguyen",
+            "isabella.nguyen@example.net",
+            "(612) 555-0102",
+            "Miami",
+            "FL",
+            "United States",
+            "2024-05-20",
+            "Starter",
+            "20.85"
+          ]
+        }
+      ],
+      "isComplete": false
+    },
+    "response": {
+      "ok": true,
+      "result": {
+        "rows": [
+          {
+            "rowId": 89,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 6779.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 107,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.og' is a typo for 'example.org'.",
+            "confidence": "high",
+            "suggestedValue": "samuel.clark@example.org"
+          },
+          {
+            "rowId": 150,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 10300.00 is about 100 times the typical Business value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 183,
+            "flaggedBy": ["numeric-outliers:10:negatives"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Negative monthly spend of -116.65 on a Business plan is unusual and may be a sign error or an unexplained credit.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 265,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.or' is a typo for 'example.org'.",
+            "confidence": "high",
+            "suggestedValue": "emma.singh@example.org"
+          },
+          {
+            "rowId": 273,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 6716.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 318,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 5930.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 411,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'exaple.com' is a typo for 'example.com'.",
+            "confidence": "high",
+            "suggestedValue": "rosa.jackson@example.com"
+          },
+          {
+            "rowId": 426,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 12053.00 is about 100 times the typical Business value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 489,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'exampkle.com' is a typo for 'example.com'.",
+            "confidence": "high",
+            "suggestedValue": "ava.singh@example.com"
+          },
+          {
+            "rowId": 516,
+            "flaggedBy": ["numeric-outliers:10:negatives"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Negative monthly spend of -19.93 on a Starter plan is unusual and may be a sign error.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 521,
+            "flaggedBy": ["formula-like-values:1"],
+            "isSuspicious": true,
+            "column": 1,
+            "reason": "First name holds a spreadsheet formula (=HYPERLINK) instead of a name.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 542,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'exazmple.com' is a typo for 'example.com'.",
+            "confidence": "high",
+            "suggestedValue": "mei.ivanov@example.com"
+          },
+          {
+            "rowId": 585,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.cmo' is a typo for 'example.com'.",
+            "confidence": "high",
+            "suggestedValue": "aarav.wilson@example.com"
+          },
+          {
+            "rowId": 611,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.co' is probably a mistyped 'example.com', but the intended domain is not certain.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 616,
+            "flaggedBy": ["invalid-emails:3"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email is missing the @ sign before the domain.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 629,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 2316.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 651,
+            "flaggedBy": ["invalid-emails:3"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email is missing the @ sign before the domain.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 735,
+            "flaggedBy": ["numeric-outliers:10:negatives"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Negative monthly spend of -19.55 on a Starter plan is unusual and may be a sign error.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 743,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.nt' is a typo for 'example.net'.",
+            "confidence": "high",
+            "suggestedValue": "lucas.martin@example.net"
+          },
+          {
+            "rowId": 758,
+            "flaggedBy": ["invalid-emails:3"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email is missing the @ sign before the domain.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 795,
+            "flaggedBy": ["invalid-emails:3"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email is missing the @ sign before the domain.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 816,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.coam' is a typo for 'example.com'.",
+            "confidence": "high",
+            "suggestedValue": "rosa.khan@example.com"
+          },
+          {
+            "rowId": 835,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 5369.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 850,
+            "flaggedBy": ["numeric-outliers:10:negatives"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Negative monthly spend of -111.88 on a Business plan is unusual and may be a sign error.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 906,
+            "flaggedBy": ["numeric-outliers:10:negatives"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Negative monthly spend of -60.97 on a Pro plan is unusual and may be a sign error.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 924,
+            "flaggedBy": ["invalid-emails:3:domain-typos"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email domain 'example.nebt' is a typo for 'example.net'.",
+            "confidence": "high",
+            "suggestedValue": "mateo.kim@example.net"
+          },
+          {
+            "rowId": 929,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 2026.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1048,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 2038.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1076,
+            "flaggedBy": ["numeric-outliers:10"],
+            "isSuspicious": true,
+            "column": 10,
+            "reason": "Monthly spend of 2309.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
+            "confidence": "medium",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1113,
+            "flaggedBy": ["invalid-emails:3"],
+            "isSuspicious": true,
+            "column": 3,
+            "reason": "Email is missing the @ sign before the domain.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 78,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 79,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 213,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 234,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 269,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 274,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 283,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 297,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 314,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 353,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 363,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 385,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 432,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 433,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 497,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 510,
+            "flaggedBy": [],
+            "isSuspicious": true,
+            "column": 8,
+            "reason": "Signup date uses MM/DD/YYYY instead of the YYYY-MM-DD format used elsewhere; 06/15 can only mean June 15.",
+            "confidence": "high",
+            "suggestedValue": "2023-06-15"
+          },
+          {
+            "rowId": 558,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 560,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 599,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The blank signup date is a missing value, not an implausible one, and the other values are consistent.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 636,
+            "flaggedBy": [],
+            "isSuspicious": true,
+            "column": 6,
+            "reason": "State 'Ore.' is not the standard abbreviation; Portland is in Oregon, so the value should be OR.",
+            "confidence": "high",
+            "suggestedValue": "OR"
+          },
+          {
+            "rowId": 640,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 662,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 688,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 705,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 731,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 770,
+            "flaggedBy": [],
+            "isSuspicious": true,
+            "column": 4,
+            "reason": "Phone uses the 512.555.0192 format instead of the (area) exchange-number format used elsewhere.",
+            "confidence": "high",
+            "suggestedValue": "(512) 555-0192"
+          },
+          {
+            "rowId": 849,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 873,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 889,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 922,
+            "flaggedBy": [],
+            "isSuspicious": true,
+            "column": 2,
+            "reason": "Last name 'Brow' does not match the email address, which uses 'brown'.",
+            "confidence": "high",
+            "suggestedValue": "Brown"
+          },
+          {
+            "rowId": 937,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The blank country is a missing value, and the other values are consistent.",
+            "confidence": "high",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 966,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 972,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1001,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1034,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1038,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1039,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1044,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1082,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          },
+          {
+            "rowId": 1136,
+            "flaggedBy": [],
+            "isSuspicious": false,
+            "column": null,
+            "reason": "All values are consistent with the column and with each other.",
+            "confidence": "certain",
+            "suggestedValue": null
+          }
+        ],
+        "claimCount": 84,
+        "droppedClaims": 0
+      },
+      "calls": [
+        {
+          "task": "assessSuspiciousRows",
+          "model": "anthropic/claude-haiku-5.5",
+          "promptTokens": 8585,
+          "completionTokens": 8737,
+          "totalTokens": 17322,
+          "cost": 0.005227,
+          "latencyMs": 32609,
+          "outcome": "valid"
+        }
+      ]
+    }
+  }
+]

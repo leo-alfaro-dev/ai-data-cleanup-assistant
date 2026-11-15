@@ -24,7 +24,7 @@ It should feel like a meticulous data analyst working beside you: it does the te
 
 - **In:** the four categories; review with accept, edit, reject, undo and bulk decisions; export of the cleaned CSV, a change log and a recipe; replaying a recipe; a transparency panel; built-in sample data; an optional own OpenRouter key; `yarn eval`.
 - **Out:** accounts, a database or any persistence beyond the tab, Excel files, multi-file joins, collaboration, free-form cell editing (every change is a suggestion).
-- **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one task per commit, submittable at every checkpoint.
+- **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one commit per epic, submittable at every checkpoint.
 
 ### Vocabulary
 
@@ -74,7 +74,10 @@ yarn test                    # Unit specs (Vitest, no watch)
 yarn test src/engine/checks/findExactDuplicates.spec.ts   # One file
 yarn integrations            # Production build + headless Playwright on port 3100, AI routes mocked
 yarn integrations --headed   # Headed mode
+yarn eval:data               # Regenerate the seeded datasets, their truth and the demo sample
+yarn eval --checks-only      # Score the checks against the planted errors — free, safe to run
 yarn eval                    # Accuracy benchmark against real models — costs money, ask first
+yarn ai:record normalize-values confirm-duplicates assess-suspicious-rows   # Real calls on the sample, saved as e2e fixtures — costs money, ask first
 
 yarn lint                    # ESLint
 yarn typecheck               # next typegen + tsc --noEmit
@@ -94,7 +97,7 @@ Path alias: `@/*` → `src/*` (the only one).
 ```
 src/
   app/                  # Routes only: layout, page, api/ai/<task-name>/route.ts
-  engine/               # Framework-free TypeScript: parse, profile, checks, rules, apply, recipe, export
+  engine/               # Framework-free TypeScript: parse, profile, checks, row grouping and matching, rules, apply, recipe, export
   ai/                   # Contracts, prompts, task runners, OpenRouter client, model list
   workers/              # dataset.worker.ts and its lazy client, getDatasetWorker()
   features/workspace/   # The app's one screen: upload, grid, review, export, transparency
@@ -104,7 +107,7 @@ src/
   components/           # Shared UI primitives (Modal, Button, Kbd, …)
   hooks/                # Shared hooks
   lib/                  # Generic, domain-free, pure helpers (tryCatch, …)
-eval/                   # Clean datasets, seeded corruption, runner, committed results
+eval/                   # generate/ and corrupt/ (seeded data, planted truth), score/, run.ts; committed datasets/ and results/
 e2e/                    # Playwright specs and recorded AI responses
 public/samples/         # Demo CSVs
 scripts/                # Repo tooling (scanKeys.ts)
@@ -131,7 +134,7 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 ### Data Invariants
 
 - **The original is immutable.** Parsed rows are never mutated; the cleaned value of a cell is derived when it is read, from the original plus accepted decisions. No cleaned copy of the data exists, so undo is flipping a decision.
-- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a removed row stays removed.
+- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a cell a merge fills takes the other row's original value, and the column's rules then apply to it; a removed row stays removed. When two changes claim the same cell, value or row, the one whose issue id sorts first wins.
 - **Issues are data, not sentences.** Checks return structured details and the UI words them in `issueCopy`; the model's reason is the only free text.
 - **Identity is stable.** Each row keeps its `RowId` from parsing for life — an index into a filtered or sorted array never leaves the component that made it. Columns are keyed by position (`ColumnKey`), never by header text: headers can be empty or repeated.
 - **Cells are strings as parsed.** Typed readings (number, date) are derived and never written back unless a decision says so.
@@ -150,7 +153,7 @@ What checks find, and what the AI adds:
 | ------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Duplicates          | Exact and normalized-equal rows; rows sharing an identifier; near-duplicate candidate pairs by name similarity | Confirms candidate pairs and picks, per column, which row's value to keep                                                                               |
 | Inconsistent values | Whitespace and casing variants; mixed date formats; values of the wrong type for their column                  | Groups variants of one value (`CA`, `Calif.`, `California`) under a canonical form                                                                      |
-| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                            | Recognizes placeholders particular to the file (`TBD`, `no data`) while grouping values                                                                 |
+| Missing data        | Empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`)                                            | Recognizes placeholders particular to the file (`no data`, `pending`) while grouping values                                                             |
 | Suspicious records  | Robust outliers, invalid emails, formula-like values, structural issues (ragged rows, repeated headers)        | Reviews flagged rows and a sample, or every row of a small file: explains each, spots implausible combinations, suggests a change only when unambiguous |
 
 ### AI Layer
@@ -169,7 +172,7 @@ What checks find, and what the AI adds:
 - **Hosted-key calls are rate-limited per visitor** (by IP) in the route handler, returning `429 rateLimited`. The limiter counts per serverless instance, so it is best effort; calls on a visitor's own key skip it.
 - **Failures carry a reason, never a message.** Responses use `{ reason }` from the `AiFailureReason` union with a matching status; the provider's message never reaches the client. OpenRouter's out-of-credit response maps to `budgetExhausted`. The UI words each reason once, in a `Record<AiFailureReason, string>`.
 - **Logs carry metadata only** — task, model, tokens, latency, reason. Never prompts, cell values or any key.
-- **Models** live in `src/ai/models.ts`; one joins the list only after `yarn eval` has measured it.
+- **Models** live in `src/ai/models.ts`; one joins the list after a real call showed it accepts the strict structured request, and `yarn eval` then measures how well it answers and what it costs. Requests carry no `temperature`: some models reject it.
 
 ### Analysis Runs
 
@@ -271,7 +274,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 
 - **No margins on a component's root** — the parent spaces its children with flex/grid `gap`.
 - **Parent owns visibility** — a component never conditionally returns `null`; the parent decides whether to render it (`{isVisible && <Component />}`).
-- **`<Activity>` to hide while keeping state** — `<Activity mode={isVisible ? 'visible' : 'hidden'}>`, never `display: none`.
+- **`<Activity>` to hide while keeping state** — `<Activity mode={isVisible ? 'visible' : 'hidden'}>`, never `display: none`. Not around a subtree that reads a `react-global-state-hooks` store: a hook drops its subscription while hidden and returns a stale value when shown again. Keep such a panel mounted and hide it with `hidden`.
 - **Composition over configuration** — `children` and named sub-components (`ReviewPanel.Header`) instead of boolean props that change structure or behavior.
 - **Small, focused, composable.**
 - **Dialogs** — every dialog uses `src/components/Modal.tsx`, built on Radix Dialog.
@@ -298,15 +301,17 @@ Every new component, hook, calculation or helper starts with two questions: **do
 
 ## Testing
 
-- **Specs sit beside the code**: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
+- **Specs sit beside the code**, in `src/` and `eval/` alike: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
 - **Workers don't exist in Vitest** — specs call the engine functions directly; the worker wiring is covered by e2e.
 - **Checks are tested from both sides** — each spec feeds a small inline CSV with what the check must find and what it must leave alone.
+- **Shared spec helpers live in `src/engine/testing/`** — `toDataset(...lines)` gives a deep-frozen dataset from inline CSV lines, `accept` and `cleanEveryCell` drive the clean plan; ids are minted with `toRowId` and `toColumnKey`, never `as`. A helper a second spec needs moves there.
+- **UI spec helpers live in `src/features/workspace/testing/`** — `seedWorkspace(...lines)` puts a CSV and the real checks' issues into the stores, `seedIssues` swaps in chosen issues, and `mockLayout()` gives elements a size so virtualized lists render in jsdom.
 - **Round-trips** — exporting with no accepted decisions reproduces the input rows; replaying a recipe on its source file reproduces the accepted rule changes.
 - **AI runners use a fake client** — specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.
 - **Absence after presence** — assert that something is not shown only after something that is shown has rendered; before that, absence proves nothing.
-- **E2E mocks the AI routes** (`page.route`) with recorded responses — deterministic, offline, free. The happy path: load the sample → review → accept → export.
-- **`yarn eval` is the only thing that calls real models.** Seeded corruption of clean datasets gives known ground truth; per model it reports precision and recall per category, cost and latency, written to `eval/results/`. Accuracy claims anywhere cite these files.
+- **E2E mocks the AI routes** (`page.route`, installed for every test by `e2e/test.ts`) with responses recorded by `yarn ai:record` — deterministic, offline, free. The test server starts with an empty key, so a route that escaped its mock answers `aiNotConfigured` instead of spending money. The happy path: load the sample → review → accept → export.
+- **`yarn eval` is the only thing that calls real models.** Seeded corruption of clean datasets gives known ground truth. `--checks-only` scores the checks alone, at no cost: the committed baseline every check updates. Per model it reports precision and recall per category, cost and latency, written to `eval/results/`. Accuracy claims anywhere cite these files.
 
 ## Environment & Deployment
 
@@ -326,8 +331,8 @@ OPENROUTER_API_KEY=   # Server only — never prefix with NEXT_PUBLIC_
 ## Workflow
 
 - **Claude never commits and never stages.** The user is the only one who commits. No `git add`, `git commit`, `git stash` or anything else that changes the index or the history — and no `yarn prepare:commit`, because lint-staged stages files. When work is ready, say so and suggest a commit split and messages.
-- **Work follows [`plan/`](plan/README.md).** Take the next open task, build only its scope, tick it in the plan's status list, and report its title as the commit message. A task that turns out bigger than planned is split in the plan, not widened.
-- **Commits are small and single-purpose** with imperative subjects; the history is part of the submission.
+- **Work follows [`plan/`](plan/README.md), one epic at a time.** Build the epic's tasks in order without pausing between them, each to its own scope, and tick each in the plan's status list. A task that turns out bigger than planned is split in the plan, not widened.
+- **One commit per epic.** When the epic is done, report its commit message: the subject `Epic 1: A CSV becomes data`, and the task titles in the body, one per line. The history is part of the submission.
 - **The pre-commit hook runs `yarn prepare:commit`** when the user commits.
 - **CI repeats the checks on every push** — `.github/workflows/ci.yml` runs them on the whole repo, plus e2e.
 - **Done means:** `yarn verify` passes; UI changes are screenshotted at 1440px, 1280px and 390px; prompt changes come with their reviewed snapshot; accuracy claims cite `eval/results/`.

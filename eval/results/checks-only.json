@@ -1,0 +1,53 @@
+{
+  "run": "checks-only",
+  "dataset": "eval/datasets/customers.csv",
+  "seed": 20250601,
+  "rows": 1150,
+  "issues": 110,
+  "scores": {
+    "duplicate": {
+      "planted": 297,
+      "claimed": 297,
+      "correctClaims": 297,
+      "found": 297,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 150,
+      "rightSuggestions": 150,
+      "suggestionAccuracy": 1
+    },
+    "inconsistent": {
+      "planted": 130,
+      "claimed": 90,
+      "correctClaims": 90,
+      "found": 90,
+      "precision": 1,
+      "recall": 0.6923076923076923,
+      "suggested": 78,
+      "rightSuggestions": 78,
+      "suggestionAccuracy": 1
+    },
+    "missing": {
+      "planted": 55,
+      "claimed": 55,
+      "correctClaims": 55,
+      "found": 55,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 25,
+      "rightSuggestions": 25,
+      "suggestionAccuracy": 1
+    },
+    "suspicious": {
+      "planted": 31,
+      "claimed": 31,
+      "correctClaims": 31,
+      "found": 31,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 10,
+      "rightSuggestions": 10,
+      "suggestionAccuracy": 1
+    }
+  }
+}

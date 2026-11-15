@@ -21,6 +21,8 @@ export default defineConfig({
     command: `yarn build && yarn start --port ${PORT}`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: false,
+    // No key, so a route that escaped its mock answers aiNotConfigured instead of spending money.
+    env: { OPENROUTER_API_KEY: '' },
     timeout: 180_000,
   },
 });

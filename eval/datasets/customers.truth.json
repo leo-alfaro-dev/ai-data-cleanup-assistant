@@ -1,0 +1,2633 @@
+{
+  "seed": 20250601,
+  "errors": [
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 38,
+      "copy": 82
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 45,
+      "copy": 167
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 17,
+      "copy": 216
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 87,
+      "copy": 218
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 277,
+      "copy": 287
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 100,
+      "copy": 312
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 307,
+      "copy": 367
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 369,
+      "copy": 376
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 271,
+      "copy": 396
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 245,
+      "copy": 415
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 309,
+      "copy": 443
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 144,
+      "copy": 454
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 333,
+      "copy": 491
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 338,
+      "copy": 495
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 116,
+      "copy": 504
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 212,
+      "copy": 523
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 375,
+      "copy": 529
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 515,
+      "copy": 536
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 342,
+      "copy": 537
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 80,
+      "copy": 539
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 325,
+      "copy": 559
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 160,
+      "copy": 564
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 360,
+      "copy": 566
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 335,
+      "copy": 569
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 207,
+      "copy": 570
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 413,
+      "copy": 573
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 48,
+      "copy": 577
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 498,
+      "copy": 578
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 272,
+      "copy": 587
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 109,
+      "copy": 602
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 49,
+      "copy": 606
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 179,
+      "copy": 614
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 143,
+      "copy": 618
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 380,
+      "copy": 624
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 39,
+      "copy": 646
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 513,
+      "copy": 650
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 598,
+      "copy": 654
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 197,
+      "copy": 667
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 311,
+      "copy": 675
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 61,
+      "copy": 676
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 155,
+      "copy": 678
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 461,
+      "copy": 679
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 172,
+      "copy": 688
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 603,
+      "copy": 694
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 375,
+      "copy": 697
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 412,
+      "copy": 698
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 545,
+      "copy": 701
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 623,
+      "copy": 716
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 535,
+      "copy": 725
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 127,
+      "copy": 728
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 20,
+      "copy": 730
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 638,
+      "copy": 737
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 290,
+      "copy": 739
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 268,
+      "copy": 742
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 388,
+      "copy": 749
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 358,
+      "copy": 750
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 690,
+      "copy": 751
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 329,
+      "copy": 761
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 57,
+      "copy": 770
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 768,
+      "copy": 780
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 112,
+      "copy": 786
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 450,
+      "copy": 805
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 377,
+      "copy": 807
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 138,
+      "copy": 811
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 445,
+      "copy": 824
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 567,
+      "copy": 829
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 777,
+      "copy": 832
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 508,
+      "copy": 836
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 632,
+      "copy": 837
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 421,
+      "copy": 841
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 658,
+      "copy": 845
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 391,
+      "copy": 851
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 607,
+      "copy": 852
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 802,
+      "copy": 861
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 783,
+      "copy": 865
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 497,
+      "copy": 867
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 222,
+      "copy": 870
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 724,
+      "copy": 871
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 664,
+      "copy": 877
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 236,
+      "copy": 878
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 748,
+      "copy": 893
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 846,
+      "copy": 899
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 868,
+      "copy": 902
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 800,
+      "copy": 907
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 762,
+      "copy": 911
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 23,
+      "copy": 913
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 73,
+      "copy": 919
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 180,
+      "copy": 921
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 56,
+      "copy": 922
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 215,
+      "copy": 926
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 764,
+      "copy": 944
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 804,
+      "copy": 946
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 748,
+      "copy": 949
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 950,
+      "copy": 954
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 875,
+      "copy": 958
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 283,
+      "copy": 959
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 856,
+      "copy": 961
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 844,
+      "copy": 962
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 801,
+      "copy": 967
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 613,
+      "copy": 968
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 64,
+      "copy": 978
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 405,
+      "copy": 979
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 756,
+      "copy": 983
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 817,
+      "copy": 993
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 156,
+      "copy": 1004
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 996,
+      "copy": 1016
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 904,
+      "copy": 1021
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 833,
+      "copy": 1022
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 1023,
+      "copy": 1024
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 141,
+      "copy": 1025
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 986,
+      "copy": 1033
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 915,
+      "copy": 1039
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 418,
+      "copy": 1042
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 863,
+      "copy": 1044
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1013,
+      "copy": 1054
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 823,
+      "copy": 1058
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 794,
+      "copy": 1059
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 1027,
+      "copy": 1060
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 932,
+      "copy": 1061
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 1036,
+      "copy": 1062
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1052,
+      "copy": 1064
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 242,
+      "copy": 1065
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1037,
+      "copy": 1072
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 971,
+      "copy": 1073
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 989,
+      "copy": 1079
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 134,
+      "copy": 1082
+    },
+    {
+      "category": "duplicate",
+      "kind": "blankedField",
+      "original": 1057,
+      "copy": 1083
+    },
+    {
+      "category": "duplicate",
+      "kind": "casing",
+      "original": 860,
+      "copy": 1085
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 1090,
+      "copy": 1093
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 248,
+      "copy": 1098
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1003,
+      "copy": 1101
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1086,
+      "copy": 1102
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 192,
+      "copy": 1107
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 1040,
+      "copy": 1109
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 828,
+      "copy": 1111
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 764,
+      "copy": 1115
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 565,
+      "copy": 1116
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1105,
+      "copy": 1120
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 999,
+      "copy": 1122
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 416,
+      "copy": 1123
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 1103,
+      "copy": 1125
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 1100,
+      "copy": 1128
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1045,
+      "copy": 1134
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 892,
+      "copy": 1136
+    },
+    {
+      "category": "duplicate",
+      "kind": "phoneFormat",
+      "original": 389,
+      "copy": 1137
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 635,
+      "copy": 1138
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1094,
+      "copy": 1139
+    },
+    {
+      "category": "duplicate",
+      "kind": "nameTypo",
+      "original": 1135,
+      "copy": 1142
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1143,
+      "copy": 1148
+    },
+    {
+      "category": "duplicate",
+      "kind": "exactCopy",
+      "original": 1145,
+      "copy": 1149
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 96,
+      "column": 6,
+      "cleanValue": "OR",
+      "corruptedValue": "Oregon"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 102,
+      "column": 6,
+      "cleanValue": "NY",
+      "corruptedValue": "N.Y."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 135,
+      "column": 6,
+      "cleanValue": "IL",
+      "corruptedValue": "Ill."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 136,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "Colo."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 163,
+      "column": 6,
+      "cleanValue": "AZ",
+      "corruptedValue": "Ariz."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 189,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "Minn."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 201,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "Tex."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 254,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "California"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 316,
+      "column": 6,
+      "cleanValue": "OR",
+      "corruptedValue": "Oregon"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 347,
+      "column": 6,
+      "cleanValue": "MA",
+      "corruptedValue": "Massachusetts"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 371,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "California"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 403,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "Colo."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 414,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "Tex."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 435,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "California"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 437,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "Tex."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 468,
+      "column": 6,
+      "cleanValue": "IL",
+      "corruptedValue": "Illinois"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 478,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "Calif."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 492,
+      "column": 6,
+      "cleanValue": "IL",
+      "corruptedValue": "Ill."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 500,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "Minnesota"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 509,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "California"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 609,
+      "column": 6,
+      "cleanValue": "OR",
+      "corruptedValue": "Ore."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 634,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "Minnesota"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 636,
+      "column": 6,
+      "cleanValue": "OR",
+      "corruptedValue": "Ore."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 673,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "Colo."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 704,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "Minn."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 752,
+      "column": 6,
+      "cleanValue": "FL",
+      "corruptedValue": "Florida"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 757,
+      "column": 6,
+      "cleanValue": "FL",
+      "corruptedValue": "Fla."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 763,
+      "column": 6,
+      "cleanValue": "OR",
+      "corruptedValue": "Oregon"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 798,
+      "column": 6,
+      "cleanValue": "IL",
+      "corruptedValue": "Ill."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 808,
+      "column": 6,
+      "cleanValue": "IL",
+      "corruptedValue": "Ill."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 866,
+      "column": 6,
+      "cleanValue": "NY",
+      "corruptedValue": "N.Y."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 885,
+      "column": 6,
+      "cleanValue": "FL",
+      "corruptedValue": "Florida"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 886,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "Texas"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 909,
+      "column": 6,
+      "cleanValue": "GA",
+      "corruptedValue": "Georgia"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 936,
+      "column": 6,
+      "cleanValue": "AZ",
+      "corruptedValue": "Arizona"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 939,
+      "column": 6,
+      "cleanValue": "NY",
+      "corruptedValue": "N.Y."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 985,
+      "column": 6,
+      "cleanValue": "NY",
+      "corruptedValue": "N.Y."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 1049,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "Colorado"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 1069,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": "Calif."
+    },
+    {
+      "category": "inconsistent",
+      "kind": "stateVariant",
+      "rowId": 1108,
+      "column": 6,
+      "cleanValue": "AZ",
+      "corruptedValue": "Arizona"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 9,
+      "column": 9,
+      "cleanValue": "Free",
+      "corruptedValue": "FREE"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 15,
+      "column": 5,
+      "cleanValue": "Boston",
+      "corruptedValue": "BOSTON"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 30,
+      "column": 9,
+      "cleanValue": "Pro",
+      "corruptedValue": "PRO"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 105,
+      "column": 5,
+      "cleanValue": "Seattle",
+      "corruptedValue": "seattle"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 115,
+      "column": 5,
+      "cleanValue": "Phoenix",
+      "corruptedValue": "phoenix"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 132,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "co"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 151,
+      "column": 9,
+      "cleanValue": "Free",
+      "corruptedValue": "free"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 185,
+      "column": 9,
+      "cleanValue": "Business",
+      "corruptedValue": "business"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 238,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": "STARTER"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 343,
+      "column": 6,
+      "cleanValue": "WA",
+      "corruptedValue": "wa"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 345,
+      "column": 5,
+      "cleanValue": "Atlanta",
+      "corruptedValue": "ATLANTA"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 378,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "mn"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 386,
+      "column": 6,
+      "cleanValue": "MA",
+      "corruptedValue": "ma"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 440,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "mn"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 477,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": "starter"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 507,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "tx"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 546,
+      "column": 5,
+      "cleanValue": "Atlanta",
+      "corruptedValue": "ATLANTA"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 612,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": "starter"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 631,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": "STARTER"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 649,
+      "column": 9,
+      "cleanValue": "Pro",
+      "corruptedValue": "PRO"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 666,
+      "column": 5,
+      "cleanValue": "Atlanta",
+      "corruptedValue": "atlanta"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 684,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": "tx"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 715,
+      "column": 5,
+      "cleanValue": "San Diego",
+      "corruptedValue": "san diego"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 879,
+      "column": 9,
+      "cleanValue": "Business",
+      "corruptedValue": "business"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 977,
+      "column": 6,
+      "cleanValue": "WA",
+      "corruptedValue": "wa"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 982,
+      "column": 6,
+      "cleanValue": "CO",
+      "corruptedValue": "co"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 1067,
+      "column": 5,
+      "cleanValue": "Austin",
+      "corruptedValue": "austin"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 1075,
+      "column": 5,
+      "cleanValue": "San Diego",
+      "corruptedValue": "SAN DIEGO"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 1088,
+      "column": 6,
+      "cleanValue": "MN",
+      "corruptedValue": "mn"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "casing",
+      "rowId": 1130,
+      "column": 9,
+      "cleanValue": "Business",
+      "corruptedValue": "business"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 4,
+      "column": 2,
+      "cleanValue": "Scott",
+      "corruptedValue": "Scott "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 98,
+      "column": 2,
+      "cleanValue": "Lewis",
+      "corruptedValue": "Lewis "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 148,
+      "column": 1,
+      "cleanValue": "Emma",
+      "corruptedValue": "Emma "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 149,
+      "column": 1,
+      "cleanValue": "Ethan",
+      "corruptedValue": " Ethan "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 153,
+      "column": 2,
+      "cleanValue": "Allen",
+      "corruptedValue": " Allen"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 187,
+      "column": 2,
+      "cleanValue": "Ivanov",
+      "corruptedValue": "Ivanov "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 214,
+      "column": 1,
+      "cleanValue": "Nia",
+      "corruptedValue": "Nia "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 259,
+      "column": 5,
+      "cleanValue": "Boston",
+      "corruptedValue": "Boston "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 291,
+      "column": 2,
+      "cleanValue": "Jackson",
+      "corruptedValue": "Jackson "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 328,
+      "column": 5,
+      "cleanValue": "Portland",
+      "corruptedValue": " Portland"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 341,
+      "column": 1,
+      "cleanValue": "Rosa",
+      "corruptedValue": " Rosa "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 372,
+      "column": 2,
+      "cleanValue": "Lewis",
+      "corruptedValue": " Lewis"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 394,
+      "column": 5,
+      "cleanValue": "New York",
+      "corruptedValue": "New York "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 406,
+      "column": 5,
+      "cleanValue": "Miami",
+      "corruptedValue": "Miami "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 431,
+      "column": 1,
+      "cleanValue": "Omar",
+      "corruptedValue": " Omar"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 592,
+      "column": 2,
+      "cleanValue": "Lee",
+      "corruptedValue": " Lee"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 620,
+      "column": 1,
+      "cleanValue": "Henry",
+      "corruptedValue": " Henry"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 659,
+      "column": 2,
+      "cleanValue": "Allen",
+      "corruptedValue": " Allen "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 693,
+      "column": 1,
+      "cleanValue": "Wei",
+      "corruptedValue": " Wei "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 741,
+      "column": 1,
+      "cleanValue": "Amara",
+      "corruptedValue": " Amara"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 838,
+      "column": 1,
+      "cleanValue": "Leila",
+      "corruptedValue": " Leila"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 917,
+      "column": 1,
+      "cleanValue": "Nia",
+      "corruptedValue": "Nia "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 957,
+      "column": 2,
+      "cleanValue": "Thompson",
+      "corruptedValue": "Thompson "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 1018,
+      "column": 5,
+      "cleanValue": "Chicago",
+      "corruptedValue": " Chicago "
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 88,
+      "column": 5,
+      "cleanValue": "New York",
+      "corruptedValue": "New  York"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 126,
+      "column": 5,
+      "cleanValue": "San Diego",
+      "corruptedValue": "San Diego"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 175,
+      "column": 5,
+      "cleanValue": "New York",
+      "corruptedValue": "New York"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 278,
+      "column": 5,
+      "cleanValue": "San Diego",
+      "corruptedValue": "San Diego"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 600,
+      "column": 5,
+      "cleanValue": "New York",
+      "corruptedValue": "New York"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "spacing",
+      "rowId": 963,
+      "column": 5,
+      "cleanValue": "New York",
+      "corruptedValue": "New  York"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 41,
+      "column": 8,
+      "cleanValue": "2022-02-01",
+      "corruptedValue": "02/01/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 42,
+      "column": 8,
+      "cleanValue": "2022-02-02",
+      "corruptedValue": "02/02/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 65,
+      "column": 8,
+      "cleanValue": "2022-02-19",
+      "corruptedValue": "02/19/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 70,
+      "column": 8,
+      "cleanValue": "2022-02-24",
+      "corruptedValue": "02/24/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 117,
+      "column": 8,
+      "cleanValue": "2022-04-21",
+      "corruptedValue": "04/21/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 161,
+      "column": 8,
+      "cleanValue": "2022-06-11",
+      "corruptedValue": "06/11/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 166,
+      "column": 8,
+      "cleanValue": "2022-06-21",
+      "corruptedValue": "06/21/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 173,
+      "column": 8,
+      "cleanValue": "2022-06-26",
+      "corruptedValue": "06/26/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 225,
+      "column": 8,
+      "cleanValue": "2022-08-22",
+      "corruptedValue": "08/22/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 231,
+      "column": 8,
+      "cleanValue": "2022-08-26",
+      "corruptedValue": "08/26/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 243,
+      "column": 8,
+      "cleanValue": "2022-09-03",
+      "corruptedValue": "09/03/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 262,
+      "column": 8,
+      "cleanValue": "2022-09-25",
+      "corruptedValue": "09/25/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 266,
+      "column": 8,
+      "cleanValue": "2022-10-02",
+      "corruptedValue": "10/02/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 346,
+      "column": 8,
+      "cleanValue": "2022-12-29",
+      "corruptedValue": "12/29/2022"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 422,
+      "column": 8,
+      "cleanValue": "2023-03-16",
+      "corruptedValue": "03/16/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 430,
+      "column": 8,
+      "cleanValue": "2023-03-24",
+      "corruptedValue": "03/24/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 446,
+      "column": 8,
+      "cleanValue": "2023-04-13",
+      "corruptedValue": "04/13/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 465,
+      "column": 8,
+      "cleanValue": "2023-05-03",
+      "corruptedValue": "05/03/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 501,
+      "column": 8,
+      "cleanValue": "2023-06-04",
+      "corruptedValue": "06/04/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 510,
+      "column": 8,
+      "cleanValue": "2023-06-15",
+      "corruptedValue": "06/15/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 619,
+      "column": 8,
+      "cleanValue": "2023-10-02",
+      "corruptedValue": "10/02/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 625,
+      "column": 8,
+      "cleanValue": "2023-10-02",
+      "corruptedValue": "10/02/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 627,
+      "column": 8,
+      "cleanValue": "2023-10-05",
+      "corruptedValue": "10/05/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 653,
+      "column": 8,
+      "cleanValue": "2023-10-27",
+      "corruptedValue": "10/27/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 685,
+      "column": 8,
+      "cleanValue": "2023-11-25",
+      "corruptedValue": "11/25/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 710,
+      "column": 8,
+      "cleanValue": "2023-12-07",
+      "corruptedValue": "12/07/2023"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 814,
+      "column": 8,
+      "cleanValue": "2024-03-08",
+      "corruptedValue": "03/08/2024"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 825,
+      "column": 8,
+      "cleanValue": "2024-03-21",
+      "corruptedValue": "03/21/2024"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 864,
+      "column": 8,
+      "cleanValue": "2024-04-19",
+      "corruptedValue": "04/19/2024"
+    },
+    {
+      "category": "inconsistent",
+      "kind": "dateFormat",
+      "rowId": 880,
+      "column": 8,
+      "cleanValue": "2024-05-01",
+      "corruptedValue": "05/01/2024"
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 21,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 51,
+      "column": 8,
+      "cleanValue": "2022-02-09",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 97,
+      "column": 6,
+      "cleanValue": "CA",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 190,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 228,
+      "column": 8,
+      "cleanValue": "2022-08-24",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 294,
+      "column": 4,
+      "cleanValue": "(619) 555-0103",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 310,
+      "column": 8,
+      "cleanValue": "2022-11-16",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 317,
+      "column": 4,
+      "cleanValue": "(305) 555-0163",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 374,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 449,
+      "column": 10,
+      "cleanValue": "25.54",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 572,
+      "column": 5,
+      "cleanValue": "Portland",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 586,
+      "column": 3,
+      "cleanValue": "grace.taylor@example.net",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 588,
+      "column": 4,
+      "cleanValue": "(503) 555-0119",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 590,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 599,
+      "column": 8,
+      "cleanValue": "2023-09-16",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 699,
+      "column": 1,
+      "cleanValue": "Elena",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 706,
+      "column": 3,
+      "cleanValue": "olivia.davis@example.org",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 791,
+      "column": 6,
+      "cleanValue": "TX",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 820,
+      "column": 3,
+      "cleanValue": "nora.okafor@example.org",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 847,
+      "column": 8,
+      "cleanValue": "2024-04-06",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 925,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 937,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 947,
+      "column": 1,
+      "cleanValue": "Liam",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 980,
+      "column": 8,
+      "cleanValue": "2024-08-17",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 987,
+      "column": 3,
+      "cleanValue": "rosa.johnson@example.com",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 988,
+      "column": 3,
+      "cleanValue": "ivan.johnson@example.com",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 1007,
+      "column": 10,
+      "cleanValue": "61.88",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 1035,
+      "column": 5,
+      "cleanValue": "Miami",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 1047,
+      "column": 8,
+      "cleanValue": "2024-10-23",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "blank",
+      "rowId": 1126,
+      "column": 3,
+      "cleanValue": "jamal.davis@example.org",
+      "corruptedValue": ""
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 37,
+      "column": 9,
+      "cleanValue": "Starter",
+      "corruptedValue": "TBD"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 72,
+      "column": 5,
+      "cleanValue": "Portland",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 106,
+      "column": 6,
+      "cleanValue": "GA",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 164,
+      "column": 5,
+      "cleanValue": "San Diego",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 169,
+      "column": 9,
+      "cleanValue": "Free",
+      "corruptedValue": "TBD"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 193,
+      "column": 8,
+      "cleanValue": "2022-07-23",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 220,
+      "column": 9,
+      "cleanValue": "Free",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 292,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 305,
+      "column": 2,
+      "cleanValue": "Harris",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 348,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": "-"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 350,
+      "column": 4,
+      "cleanValue": "(713) 555-0164",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 352,
+      "column": 4,
+      "cleanValue": "(202) 555-0100",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 365,
+      "column": 3,
+      "cleanValue": "mia.martinez@example.com",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 444,
+      "column": 6,
+      "cleanValue": "FL",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 457,
+      "column": 3,
+      "cleanValue": "elena.johnson@example.com",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 499,
+      "column": 5,
+      "cleanValue": "Portland",
+      "corruptedValue": "-"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 506,
+      "column": 3,
+      "cleanValue": "wei.nguyen@example.com",
+      "corruptedValue": "-"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 534,
+      "column": 3,
+      "cleanValue": "yuki.clark@example.org",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 550,
+      "column": 5,
+      "cleanValue": "Austin",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 575,
+      "column": 7,
+      "cleanValue": "United States",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 682,
+      "column": 10,
+      "cleanValue": "53.15",
+      "corruptedValue": "-"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 779,
+      "column": 4,
+      "cleanValue": "(619) 555-0188",
+      "corruptedValue": "-"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 934,
+      "column": 5,
+      "cleanValue": "Miami",
+      "corruptedValue": "N/A"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 992,
+      "column": 8,
+      "cleanValue": "2024-08-25",
+      "corruptedValue": "TBD"
+    },
+    {
+      "category": "missing",
+      "kind": "placeholder",
+      "rowId": 1043,
+      "column": 8,
+      "cleanValue": "2024-10-20",
+      "corruptedValue": "unknown"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 89,
+      "column": 10,
+      "cleanValue": "67.79",
+      "corruptedValue": "6779.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 150,
+      "column": 10,
+      "cleanValue": "103.00",
+      "corruptedValue": "10300.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 273,
+      "column": 10,
+      "cleanValue": "67.16",
+      "corruptedValue": "6716.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 318,
+      "column": 10,
+      "cleanValue": "59.30",
+      "corruptedValue": "5930.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 426,
+      "column": 10,
+      "cleanValue": "120.53",
+      "corruptedValue": "12053.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 629,
+      "column": 10,
+      "cleanValue": "23.16",
+      "corruptedValue": "2316.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 835,
+      "column": 10,
+      "cleanValue": "53.69",
+      "corruptedValue": "5369.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 929,
+      "column": 10,
+      "cleanValue": "20.26",
+      "corruptedValue": "2026.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 1048,
+      "column": 10,
+      "cleanValue": "20.38",
+      "corruptedValue": "2038.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "spendTimes100",
+      "rowId": 1076,
+      "column": 10,
+      "cleanValue": "23.09",
+      "corruptedValue": "2309.00"
+    },
+    {
+      "category": "suspicious",
+      "kind": "negativeSpend",
+      "rowId": 183,
+      "column": 10,
+      "cleanValue": "116.65",
+      "corruptedValue": "-116.65"
+    },
+    {
+      "category": "suspicious",
+      "kind": "negativeSpend",
+      "rowId": 516,
+      "column": 10,
+      "cleanValue": "19.93",
+      "corruptedValue": "-19.93"
+    },
+    {
+      "category": "suspicious",
+      "kind": "negativeSpend",
+      "rowId": 735,
+      "column": 10,
+      "cleanValue": "19.55",
+      "corruptedValue": "-19.55"
+    },
+    {
+      "category": "suspicious",
+      "kind": "negativeSpend",
+      "rowId": 850,
+      "column": 10,
+      "cleanValue": "111.88",
+      "corruptedValue": "-111.88"
+    },
+    {
+      "category": "suspicious",
+      "kind": "negativeSpend",
+      "rowId": 906,
+      "column": 10,
+      "cleanValue": "60.97",
+      "corruptedValue": "-60.97"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailWithoutAt",
+      "rowId": 616,
+      "column": 3,
+      "cleanValue": "liam.silva@example.com",
+      "corruptedValue": "liam.silva.example.com"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailWithoutAt",
+      "rowId": 651,
+      "column": 3,
+      "cleanValue": "owen.wright@example.net",
+      "corruptedValue": "owen.wrightexample.net"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailWithoutAt",
+      "rowId": 758,
+      "column": 3,
+      "cleanValue": "isabella.miller@example.net",
+      "corruptedValue": "isabella.miller.example.net"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailWithoutAt",
+      "rowId": 795,
+      "column": 3,
+      "cleanValue": "priya.thompson@example.com",
+      "corruptedValue": "priya.thompsonexample.com"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailWithoutAt",
+      "rowId": 1113,
+      "column": 3,
+      "cleanValue": "grace.clark@example.net",
+      "corruptedValue": "grace.clark.example.net"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 107,
+      "column": 3,
+      "cleanValue": "samuel.clark@example.org",
+      "corruptedValue": "samuel.clark@example.og"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 265,
+      "column": 3,
+      "cleanValue": "emma.singh@example.org",
+      "corruptedValue": "emma.singh@example.or"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 411,
+      "column": 3,
+      "cleanValue": "rosa.jackson@example.com",
+      "corruptedValue": "rosa.jackson@exaple.com"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 489,
+      "column": 3,
+      "cleanValue": "ava.singh@example.com",
+      "corruptedValue": "ava.singh@exampkle.com"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 542,
+      "column": 3,
+      "cleanValue": "mei.ivanov@example.com",
+      "corruptedValue": "mei.ivanov@exazmple.com"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 585,
+      "column": 3,
+      "cleanValue": "aarav.wilson@example.com",
+      "corruptedValue": "aarav.wilson@example.cmo"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 611,
+      "column": 3,
+      "cleanValue": "priya.wilson@example.com",
+      "corruptedValue": "priya.wilson@example.co"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 743,
+      "column": 3,
+      "cleanValue": "lucas.martin@example.net",
+      "corruptedValue": "lucas.martin@example.nt"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 816,
+      "column": 3,
+      "cleanValue": "rosa.khan@example.com",
+      "corruptedValue": "rosa.khan@example.coam"
+    },
+    {
+      "category": "suspicious",
+      "kind": "emailDomainTypo",
+      "rowId": 924,
+      "column": 3,
+      "cleanValue": "mateo.kim@example.net",
+      "corruptedValue": "mateo.kim@example.nebt"
+    },
+    {
+      "category": "suspicious",
+      "kind": "formulaLike",
+      "rowId": 521,
+      "column": 1,
+      "cleanValue": "Kwame",
+      "corruptedValue": "=HYPERLINK(\"https://example.com/refund\",\"Claim refund\")"
+    }
+  ]
+}
