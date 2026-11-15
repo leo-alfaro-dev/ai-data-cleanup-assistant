@@ -12,6 +12,8 @@
     "start": "next start",
     "test": "vitest run",
     "integrations": "playwright test",
+    "eval": "tsx eval/run.ts",
+    "eval:data": "tsx eval/buildDatasets.ts",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "prettier": "prettier --write .",

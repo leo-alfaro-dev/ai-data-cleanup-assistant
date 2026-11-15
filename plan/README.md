@@ -155,8 +155,8 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 3 — Measuring stick
 
-- [ ] **T3.1** Generate synthetic customer data with planted, recorded errors
-- [ ] **T3.2** Score found issues against planted errors
+- [x] **T3.1** Generate synthetic customer data with planted, recorded errors
+- [x] **T3.2** Score found issues against planted errors
 
 ### Epic 4 — Checks
 

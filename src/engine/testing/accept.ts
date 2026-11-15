@@ -1,6 +1,6 @@
 import type { AcceptedChange } from '@/engine/changes/acceptedChange';
 import type { Change } from '@/engine/changes/change';
-import type { IssueId } from '@/engine/issues/issue';
+import { toIssueId } from '@/engine/issues/toIssueId';
 
 export function accept({
   issue,
@@ -9,5 +9,5 @@ export function accept({
   issue: string;
   change: Change;
 }): AcceptedChange {
-  return { issueId: issue as IssueId, change };
+  return { issueId: toIssueId(issue), change };
 }

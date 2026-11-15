@@ -33,7 +33,9 @@
 - D10: everything is synthetic. Names come from small pools, emails use the reserved domains `example.com`, `example.org` and `example.net`, phones use the fictional `555-01xx` range. No value can belong to a real person.
 - 1,000 clean rows become about 1,150 after corruption: large enough to be convincing, small enough that a demo run costs cents.
 - The same seed always produces the same bytes.
-- A cell never carries two planted errors, so the truth stays unambiguous.
+- A cell never carries two planted errors, so the truth stays unambiguous. Value errors land only on rows outside duplicate pairs, at most one per row.
+- An exact copy repeats every cell. A near copy is a record entered again: a new `customer_id` and exactly one other change. Every copy lands after its original, because the app keeps the first row of a group.
+- `committedDatasets.spec.ts` fails when the generator changes and `yarn eval:data` was not rerun.
 
 **Done when**
 
@@ -51,15 +53,18 @@
 - `src/engine/checks/check.ts`: the one signature every check shares, with its id and category.
 - `src/engine/checks/checks.ts`: the registered list, empty for now.
 - `src/engine/checks/runChecks.ts`: dataset and profile to issues.
+- `Issue` gains `column`: the column whose cells the issue covers in its rows, or `null` for whole rows. The scorer, the grid highlight (T5.4) and absorption (D8) read it.
+- `src/engine/changes/listChangedCells.ts`, extracted from `previewChange`: the cells a change rewrites, shared by the preview and the scorer.
 - `eval/score/scoreIssues.ts`: issues and truth to precision, recall and suggestion accuracy per category.
 - `eval/run.ts` and the script `yarn eval`. With `--checks-only` it parses, profiles, runs the checks, scores, prints a table and writes `eval/results/checks-only.json`.
 
 **Scoring rules** (D9)
 
-- The unit is an item: a cell for value errors, a row for duplicates.
-- A planted item counts as found when an issue of the same category covers it.
-- Precision is found planted items over items claimed. Recall is found planted items over planted items.
-- Suggestion accuracy is the share of suggested cell values that equal the clean value. For duplicates it is the share of removals that remove the planted copy.
+- The unit is an item: a cell for value errors, a row for duplicates. Both rows of a planted pair are duplicate items.
+- An issue claims its column's cells in its rows, or its whole rows when it has no column; each item counts once however many issues claim it. A planted item counts as found when a claim of the same category covers it.
+- Precision is correct claims over claims. Recall is found planted items over planted items. A ratio over nothing is empty, never zero.
+- A copied row is one duplicate error: value claims and suggested cells inside it are not scored.
+- Suggestion accuracy is the share of suggested cell values that equal the clean value, each suggestion scored alone. For missing data an empty value is also right, because no value is invented. For duplicates it is the share of removals that remove the planted copy.
 
 **Decisions**
 

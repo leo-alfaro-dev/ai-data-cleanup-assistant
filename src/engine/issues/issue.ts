@@ -1,5 +1,5 @@
 import type { Change } from '@/engine/changes/change';
-import type { RowId } from '@/engine/dataset/dataset';
+import type { ColumnKey, RowId } from '@/engine/dataset/dataset';
 import type { Brand } from '@/lib/brand';
 import type { IssueDetails } from './issueDetails';
 
@@ -26,6 +26,8 @@ export type Issue = {
   source: IssueSource;
   confidence: Confidence;
   rows: readonly RowId[];
+  // The issue covers this column's cells in its rows; null covers the whole rows.
+  column: ColumnKey | null;
   suggestion: Change | null;
   details: IssueDetails;
 };

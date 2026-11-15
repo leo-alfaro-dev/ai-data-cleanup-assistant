@@ -1,6 +1,6 @@
 import type { Change } from '@/engine/changes/change';
 import type { ChangeOrigin } from '@/engine/changes/changeOrigin';
-import type { IssueId } from '@/engine/issues/issue';
+import { toIssueId } from '@/engine/issues/toIssueId';
 
 export function origin({
   issue,
@@ -9,5 +9,5 @@ export function origin({
   issue: string;
   kind: Change['kind'];
 }): ChangeOrigin {
-  return { issueId: issue as IssueId, kind };
+  return { issueId: toIssueId(issue), kind };
 }

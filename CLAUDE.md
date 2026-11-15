@@ -74,6 +74,8 @@ yarn test                    # Unit specs (Vitest, no watch)
 yarn test src/engine/checks/findExactDuplicates.spec.ts   # One file
 yarn integrations            # Production build + headless Playwright on port 3100, AI routes mocked
 yarn integrations --headed   # Headed mode
+yarn eval:data               # Regenerate the seeded datasets, their truth and the demo sample
+yarn eval --checks-only      # Score the checks against the planted errors — free, safe to run
 yarn eval                    # Accuracy benchmark against real models — costs money, ask first
 
 yarn lint                    # ESLint
@@ -104,7 +106,7 @@ src/
   components/           # Shared UI primitives (Modal, Button, Kbd, …)
   hooks/                # Shared hooks
   lib/                  # Generic, domain-free, pure helpers (tryCatch, …)
-eval/                   # Clean datasets, seeded corruption, runner, committed results
+eval/                   # generate/ and corrupt/ (seeded data, planted truth), score/, run.ts; committed datasets/ and results/
 e2e/                    # Playwright specs and recorded AI responses
 public/samples/         # Demo CSVs
 scripts/                # Repo tooling (scanKeys.ts)
@@ -298,7 +300,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 
 ## Testing
 
-- **Specs sit beside the code**: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
+- **Specs sit beside the code**, in `src/` and `eval/` alike: `<name>.spec.ts` runs in Node, `<name>.spec.tsx` in jsdom with Testing Library. No spec touches the network.
 - **Workers don't exist in Vitest** — specs call the engine functions directly; the worker wiring is covered by e2e.
 - **Checks are tested from both sides** — each spec feeds a small inline CSV with what the check must find and what it must leave alone.
 - **Shared spec helpers live in `src/engine/testing/`** — `toDataset(...lines)` gives a deep-frozen dataset from inline CSV lines, `accept` and `cleanEveryCell` drive the clean plan; ids are minted with `toRowId` and `toColumnKey`, never `as`. A helper a second spec needs moves there.
@@ -307,7 +309,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **Prove the race with a held response** — hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.
 - **Absence after presence** — assert that something is not shown only after something that is shown has rendered; before that, absence proves nothing.
 - **E2E mocks the AI routes** (`page.route`) with recorded responses — deterministic, offline, free. The happy path: load the sample → review → accept → export.
-- **`yarn eval` is the only thing that calls real models.** Seeded corruption of clean datasets gives known ground truth; per model it reports precision and recall per category, cost and latency, written to `eval/results/`. Accuracy claims anywhere cite these files.
+- **`yarn eval` is the only thing that calls real models.** Seeded corruption of clean datasets gives known ground truth. `--checks-only` scores the checks alone, at no cost: the committed baseline every check updates. Per model it reports precision and recall per category, cost and latency, written to `eval/results/`. Accuracy claims anywhere cite these files.
 
 ## Environment & Deployment
 
