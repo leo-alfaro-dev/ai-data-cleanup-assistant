@@ -1613,8 +1613,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 6779.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 6779.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1622,8 +1622,8 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.og' is a typo for 'example.org'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.og' is likely a typo, as 'og' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "samuel.clark@example.org"
           },
           {
@@ -1631,8 +1631,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 10300.00 is about 100 times the typical Business value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 10300.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1640,17 +1640,17 @@
             "flaggedBy": ["numeric-outliers:10:negatives"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Negative monthly spend of -116.65 on a Business plan is unusual and may be a sign error or an unexplained credit.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "Monthly spend of -116.65 is negative, which is not plausible.",
+            "confidence": "certain",
+            "suggestedValue": "0.00"
           },
           {
             "rowId": 265,
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.or' is a typo for 'example.org'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.or' is likely a typo, as 'or' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "emma.singh@example.org"
           },
           {
@@ -1658,8 +1658,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 6716.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 6716.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1667,8 +1667,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 5930.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 5930.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1676,8 +1676,8 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'exaple.com' is a typo for 'example.com'.",
-            "confidence": "high",
+            "reason": "The email domain 'exaple.com' is likely a typo, as 'exaple' is not a standard domain name.",
+            "confidence": "certain",
             "suggestedValue": "rosa.jackson@example.com"
           },
           {
@@ -1685,8 +1685,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 12053.00 is about 100 times the typical Business value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 12053.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1694,8 +1694,8 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'exampkle.com' is a typo for 'example.com'.",
-            "confidence": "high",
+            "reason": "The email domain 'exampkle.com' is likely a typo, as 'exampkle' is not a standard domain name.",
+            "confidence": "certain",
             "suggestedValue": "ava.singh@example.com"
           },
           {
@@ -1703,16 +1703,16 @@
             "flaggedBy": ["numeric-outliers:10:negatives"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Negative monthly spend of -19.93 on a Starter plan is unusual and may be a sign error.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "Monthly spend of -19.93 is negative, which is not plausible.",
+            "confidence": "certain",
+            "suggestedValue": "0.00"
           },
           {
             "rowId": 521,
             "flaggedBy": ["formula-like-values:1"],
             "isSuspicious": true,
             "column": 1,
-            "reason": "First name holds a spreadsheet formula (=HYPERLINK) instead of a name.",
+            "reason": "The value '=HYPERLINK(\"https://example.com/refund\",\"Claim refund\")' is a formula and not a valid first name.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1721,8 +1721,8 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'exazmple.com' is a typo for 'example.com'.",
-            "confidence": "high",
+            "reason": "The email domain 'exazmple.com' is likely a typo, as 'exazmple' is not a standard domain name.",
+            "confidence": "certain",
             "suggestedValue": "mei.ivanov@example.com"
           },
           {
@@ -1730,8 +1730,8 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.cmo' is a typo for 'example.com'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.cmo' is likely a typo, as 'cmo' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "aarav.wilson@example.com"
           },
           {
@@ -1739,26 +1739,26 @@
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.co' is probably a mistyped 'example.com', but the intended domain is not certain.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "The email domain 'example.co' is likely a typo, as 'co' is not a standard top-level domain.",
+            "confidence": "certain",
+            "suggestedValue": "priya.wilson@example.com"
           },
           {
             "rowId": 616,
             "flaggedBy": ["invalid-emails:3"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email is missing the @ sign before the domain.",
-            "confidence": "high",
-            "suggestedValue": null
+            "reason": "The email address 'liam.silva.example.com' is missing the '@' symbol.",
+            "confidence": "certain",
+            "suggestedValue": "liam.silva@example.com"
           },
           {
             "rowId": 629,
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 2316.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 2316.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1766,26 +1766,26 @@
             "flaggedBy": ["invalid-emails:3"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email is missing the @ sign before the domain.",
-            "confidence": "high",
-            "suggestedValue": null
+            "reason": "The email address 'owen.wrightexample.net' is missing the '@' symbol.",
+            "confidence": "certain",
+            "suggestedValue": "owen.wright@example.net"
           },
           {
             "rowId": 735,
             "flaggedBy": ["numeric-outliers:10:negatives"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Negative monthly spend of -19.55 on a Starter plan is unusual and may be a sign error.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "Monthly spend of -19.55 is negative, which is not plausible.",
+            "confidence": "certain",
+            "suggestedValue": "0.00"
           },
           {
             "rowId": 743,
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.nt' is a typo for 'example.net'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.nt' is likely a typo, as 'nt' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "lucas.martin@example.net"
           },
           {
@@ -1793,26 +1793,26 @@
             "flaggedBy": ["invalid-emails:3"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email is missing the @ sign before the domain.",
-            "confidence": "high",
-            "suggestedValue": null
+            "reason": "The email address 'isabella.miller.example.net' is missing the '@' symbol.",
+            "confidence": "certain",
+            "suggestedValue": "isabella.miller@example.net"
           },
           {
             "rowId": 795,
             "flaggedBy": ["invalid-emails:3"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email is missing the @ sign before the domain.",
-            "confidence": "high",
-            "suggestedValue": null
+            "reason": "The email address 'priya.thompsonexample.com' is missing the '@' symbol.",
+            "confidence": "certain",
+            "suggestedValue": "priya.thompson@example.com"
           },
           {
             "rowId": 816,
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.coam' is a typo for 'example.com'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.coam' is likely a typo, as 'coam' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "rosa.khan@example.com"
           },
           {
@@ -1820,8 +1820,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 5369.00 is about 100 times the typical Pro value, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 5369.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1829,26 +1829,26 @@
             "flaggedBy": ["numeric-outliers:10:negatives"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Negative monthly spend of -111.88 on a Business plan is unusual and may be a sign error.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "Monthly spend of -111.88 is negative, which is not plausible.",
+            "confidence": "certain",
+            "suggestedValue": "0.00"
           },
           {
             "rowId": 906,
             "flaggedBy": ["numeric-outliers:10:negatives"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Negative monthly spend of -60.97 on a Pro plan is unusual and may be a sign error.",
-            "confidence": "medium",
-            "suggestedValue": null
+            "reason": "Monthly spend of -60.97 is negative, which is not plausible.",
+            "confidence": "certain",
+            "suggestedValue": "0.00"
           },
           {
             "rowId": 924,
             "flaggedBy": ["invalid-emails:3:domain-typos"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email domain 'example.nebt' is a typo for 'example.net'.",
-            "confidence": "high",
+            "reason": "The email domain 'example.nebt' is likely a typo, as 'nebt' is not a standard top-level domain.",
+            "confidence": "certain",
             "suggestedValue": "mateo.kim@example.net"
           },
           {
@@ -1856,8 +1856,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 2026.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 2026.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1865,8 +1865,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 2038.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 2038.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1874,8 +1874,8 @@
             "flaggedBy": ["numeric-outliers:10"],
             "isSuspicious": true,
             "column": 10,
-            "reason": "Monthly spend of 2309.00 is far above the Starter range of about 20 to 28, which suggests a misplaced decimal point.",
-            "confidence": "medium",
+            "reason": "Monthly spend of 2309.00 is unusually high compared to the typical range.",
+            "confidence": "high",
             "suggestedValue": null
           },
           {
@@ -1883,16 +1883,16 @@
             "flaggedBy": ["invalid-emails:3"],
             "isSuspicious": true,
             "column": 3,
-            "reason": "Email is missing the @ sign before the domain.",
-            "confidence": "high",
-            "suggestedValue": null
+            "reason": "The email address 'grace.clark.example.net' is missing the '@' symbol.",
+            "confidence": "certain",
+            "suggestedValue": "grace.clark@example.net"
           },
           {
             "rowId": 78,
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1901,7 +1901,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1910,7 +1910,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1919,7 +1919,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1928,7 +1928,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1937,7 +1937,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1946,7 +1946,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1955,7 +1955,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1964,7 +1964,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1973,7 +1973,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1982,7 +1982,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -1991,7 +1991,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2000,7 +2000,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2009,7 +2009,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2018,25 +2018,25 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
           {
             "rowId": 510,
             "flaggedBy": [],
-            "isSuspicious": true,
-            "column": 8,
-            "reason": "Signup date uses MM/DD/YYYY instead of the YYYY-MM-DD format used elsewhere; 06/15 can only mean June 15.",
-            "confidence": "high",
-            "suggestedValue": "2023-06-15"
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The row is plausible.",
+            "confidence": "certain",
+            "suggestedValue": null
           },
           {
             "rowId": 558,
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2045,7 +2045,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2054,25 +2054,25 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "The blank signup date is a missing value, not an implausible one, and the other values are consistent.",
-            "confidence": "high",
+            "reason": "The row is plausible.",
+            "confidence": "certain",
             "suggestedValue": null
           },
           {
             "rowId": 636,
             "flaggedBy": [],
-            "isSuspicious": true,
-            "column": 6,
-            "reason": "State 'Ore.' is not the standard abbreviation; Portland is in Oregon, so the value should be OR.",
-            "confidence": "high",
-            "suggestedValue": "OR"
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The row is plausible.",
+            "confidence": "certain",
+            "suggestedValue": null
           },
           {
             "rowId": 640,
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2081,7 +2081,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2090,7 +2090,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2099,7 +2099,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2108,25 +2108,25 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
           {
             "rowId": 770,
             "flaggedBy": [],
-            "isSuspicious": true,
-            "column": 4,
-            "reason": "Phone uses the 512.555.0192 format instead of the (area) exchange-number format used elsewhere.",
-            "confidence": "high",
-            "suggestedValue": "(512) 555-0192"
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The row is plausible.",
+            "confidence": "certain",
+            "suggestedValue": null
           },
           {
             "rowId": 849,
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2135,7 +2135,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2144,26 +2144,26 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
           {
             "rowId": 922,
             "flaggedBy": [],
-            "isSuspicious": true,
-            "column": 2,
-            "reason": "Last name 'Brow' does not match the email address, which uses 'brown'.",
-            "confidence": "high",
-            "suggestedValue": "Brown"
+            "isSuspicious": false,
+            "column": null,
+            "reason": "The row is plausible.",
+            "confidence": "certain",
+            "suggestedValue": null
           },
           {
             "rowId": 937,
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "The blank country is a missing value, and the other values are consistent.",
-            "confidence": "high",
+            "reason": "The row is plausible.",
+            "confidence": "certain",
             "suggestedValue": null
           },
           {
@@ -2171,7 +2171,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2180,7 +2180,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2189,7 +2189,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2198,7 +2198,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2207,7 +2207,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2216,7 +2216,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2225,7 +2225,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2234,7 +2234,7 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           },
@@ -2243,23 +2243,23 @@
             "flaggedBy": [],
             "isSuspicious": false,
             "column": null,
-            "reason": "All values are consistent with the column and with each other.",
+            "reason": "The row is plausible.",
             "confidence": "certain",
             "suggestedValue": null
           }
         ],
-        "claimCount": 84,
+        "claimCount": 91,
         "droppedClaims": 0
       },
       "calls": [
         {
           "task": "assessSuspiciousRows",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 8585,
-          "completionTokens": 8737,
-          "totalTokens": 17322,
-          "cost": 0.005227,
-          "latencyMs": 32609,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 7121,
+          "completionTokens": 4828,
+          "totalTokens": 11949,
+          "cost": 0.0026433,
+          "latencyMs": 9494,
           "outcome": "valid"
         }
       ]

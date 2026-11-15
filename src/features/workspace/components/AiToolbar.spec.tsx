@@ -43,7 +43,7 @@ describe('AiToolbar', () => {
     expect(picker).toHaveValue('anthropic/claude-haiku-5.5');
     expect(
       screen.getAllByRole('option').map((option) => option.textContent)
-    ).toEqual(['Claude Haiku 5.5', 'Gemini 2.5 Flash Lite']);
+    ).toEqual(['Gemini 2.5 Flash Lite', 'Claude Haiku 5.5']);
   });
 
   it('stores the model that is picked', async () => {

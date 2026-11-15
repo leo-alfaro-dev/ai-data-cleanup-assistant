@@ -92,7 +92,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 - Worker: `buildAiRequests()` returns every request for the file, already capped.
 - Store: `run` with its `RunId` and one entry per AI task (`queued`, `running`, `done`, or `failed` with a reason); actions `startRun` and `retryTask`.
-- `src/features/workspace/state/runAiTasks.ts`: a queue with at most `AI_CONCURRENCY` (3) calls in flight, each a `fetch` with the run's `AbortSignal`.
+- `src/ai/runAiTasks.ts`: a queue with at most `AI_CONCURRENCY` (3) calls in flight, each a `fetch` with the run's `AbortSignal`.
 - `src/engine/issues/mergeAiIssues.ts`: D8.
 - UI: `RunProgress` (one `AiTaskRow` per AI task, with its failure in words from `aiFailureCopy`, a `Record<AiFailureReason, string>`), `AiAnnouncement` (always mounted, announces each task that finishes through `aria-live`), and the AI source and confidence band on issue cards.
 

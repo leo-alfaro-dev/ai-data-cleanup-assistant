@@ -147,8 +147,16 @@ test.describe('editing a suggestion', () => {
     page,
   }) => {
     await loadSample(page);
+    await expect(
+      page
+        .getByRole('region', { name: 'AI tasks' })
+        .getByText('Done', { exact: true })
+    ).toHaveCount(3);
     await filterTo(page, 'Inconsistent values');
-    const card = page.getByRole('article', { name: /^Spellings of/ }).first();
+    const card = await findIssueCard({
+      page,
+      name: 'Spellings of “MA” in “state”',
+    });
     await card.getByRole('button').first().click();
     const detail = page.getByRole('region', { name: 'Issue detail' });
     const firstRow = detail
@@ -544,10 +552,10 @@ test.describe('the AI tasks', () => {
     expect(await countOf(inconsistent)).toBeGreaterThan(before);
     const group = await findIssueCard({
       page,
-      name: 'Spellings of “MN” in “state”',
+      name: 'Spellings of “MA” in “state”',
     });
     await expect(group).toBeVisible();
-    await expect(group).toContainText('AI · Certain');
+    await expect(group).toContainText('AI · High');
     await expect(
       page.getByRole('article', { name: 'Inconsistent casing in “state”' })
     ).toHaveCount(0);
@@ -565,7 +573,7 @@ test.describe('the AI tasks', () => {
       page,
       name: 'Rows 47 and 169 are the same record',
     });
-    await expect(card).toContainText('AI · High');
+    await expect(card).toContainText('AI · Certain');
     await card.getByRole('button', { name: 'Accept' }).click();
     await expect(card.getByText('Accepted')).toBeVisible();
 
@@ -593,7 +601,7 @@ test.describe('the AI tasks', () => {
     await expect(review).toBeVisible();
     await expect(review.getByText('Suspicious').first()).toBeVisible();
     await expect(
-      review.getByText(/about 100 times the typical/).first()
+      review.getByText(/unusually high compared to the typical range/).first()
     ).toBeVisible();
     await expect(
       page.getByRole('region', { name: 'Issue detail' }).getByRole('heading', {
@@ -646,7 +654,7 @@ test.describe('what was sent to the AI', () => {
     await panel.getByRole('button', { name: /Confirm duplicate rows/ }).click();
     await expect(panel.getByText('Request, exactly as sent')).toBeVisible();
     await expect(panel.locator('pre')).toContainText(
-      '"model":"anthropic/claude-haiku-5.5"'
+      '"model":"google/gemini-2.5-flash-lite"'
     );
     await expect(panel.locator('pre')).toContainText('"pairs"');
     expect(await panel.textContent()).not.toMatch(/sk-or-/);
@@ -717,11 +725,11 @@ test.describe('the model', () => {
     const picker = page.getByRole('combobox', { name: 'Model' });
     await expect(picker).toBeEnabled();
 
-    await picker.selectOption({ label: 'Gemini 2.5 Flash Lite' });
+    await picker.selectOption({ label: 'Claude Haiku 5.5' });
     const request = page.waitForRequest(
       (sent) =>
         sent.url().endsWith('/api/ai/normalize-values') &&
-        sent.postDataJSON().model === 'google/gemini-2.5-flash-lite'
+        sent.postDataJSON().model === 'anthropic/claude-haiku-5.5'
     );
     await page.getByRole('button', { name: 'Run again' }).click();
     await request;
@@ -734,10 +742,10 @@ test.describe('the model', () => {
       8
     );
     await expect(
-      panel.getByText(/Gemini 2.5 Flash Lite · Answered/).first()
+      panel.getByText(/Claude Haiku 5.5 · Answered/).first()
     ).toBeVisible();
     await expect(
-      panel.getByText(/Claude Haiku 5.5 · Answered/).first()
+      panel.getByText(/Gemini 2.5 Flash Lite · Answered/).first()
     ).toBeVisible();
   });
 

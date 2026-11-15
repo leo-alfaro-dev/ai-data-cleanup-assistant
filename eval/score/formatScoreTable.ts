@@ -2,6 +2,7 @@ import type { IssueCategory } from '@/engine/issues/issue';
 import { ISSUE_CATEGORIES } from '@/engine/issues/issue';
 import { CATEGORY_LABELS } from './categoryLabels';
 import type { CategoryScore } from './categoryScore';
+import { formatPercent } from './formatPercent';
 
 export function formatScoreTable(
   scores: Record<IssueCategory, CategoryScore>
@@ -47,9 +48,3 @@ const COLUMNS: {
     format: ({ suggestionAccuracy }) => formatPercent(suggestionAccuracy),
   },
 ];
-
-function formatPercent(ratio: number | null): string {
-  if (ratio === null) return '—';
-
-  return `${(ratio * 100).toFixed(1)}%`;
-}

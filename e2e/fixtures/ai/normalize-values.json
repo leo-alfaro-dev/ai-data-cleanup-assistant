@@ -35,19 +35,25 @@
           "dominantType": "text"
         },
         "groups": [],
-        "placeholders": [],
-        "claimCount": 0,
-        "droppedClaims": 0
+        "placeholders": [
+          {
+            "value": "United States",
+            "reason": "This value might be a placeholder if the majority of entries are missing and only a few are populated.",
+            "confidence": "low"
+          }
+        ],
+        "claimCount": 3,
+        "droppedClaims": 2
       },
       "calls": [
         {
           "task": "normalizeValues",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 1126,
-          "completionTokens": 238,
-          "totalTokens": 1364,
-          "cost": 0.0002316,
-          "latencyMs": 2451,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 392,
+          "completionTokens": 203,
+          "totalTokens": 595,
+          "cost": 0.0001204,
+          "latencyMs": 1410,
           "outcome": "valid"
         }
       ]
@@ -125,28 +131,28 @@
             "canonical": "Starter",
             "isCanonicalInFile": true,
             "variants": ["STARTER", "starter"],
-            "reason": "Same plan name differing only in letter case",
+            "reason": "Case variations of the same plan name.",
             "confidence": "certain"
           },
           {
             "canonical": "Free",
             "isCanonicalInFile": true,
             "variants": ["FREE", "free"],
-            "reason": "Same plan name differing only in letter case",
+            "reason": "Case variations of the same plan name.",
             "confidence": "certain"
           },
           {
             "canonical": "Pro",
             "isCanonicalInFile": true,
             "variants": ["PRO"],
-            "reason": "Same plan name differing only in letter case",
+            "reason": "Case variations of the same plan name.",
             "confidence": "certain"
           },
           {
             "canonical": "Business",
             "isCanonicalInFile": true,
             "variants": ["business"],
-            "reason": "Same plan name differing only in letter case",
+            "reason": "Case variations of the same plan name.",
             "confidence": "certain"
           }
         ],
@@ -157,12 +163,12 @@
       "calls": [
         {
           "task": "normalizeValues",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 1235,
-          "completionTokens": 297,
-          "totalTokens": 1532,
-          "cost": 0.000272,
-          "latencyMs": 2596,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 478,
+          "completionTokens": 292,
+          "totalTokens": 770,
+          "cost": 0.0001646,
+          "latencyMs": 1118,
           "outcome": "valid"
         }
       ]
@@ -284,58 +290,58 @@
             "canonical": "Atlanta",
             "isCanonicalInFile": true,
             "variants": ["ATLANTA", "atlanta"],
-            "reason": "Same city, differing only in letter case",
+            "reason": "Variant spellings of the city Atlanta.",
             "confidence": "certain"
           },
           {
             "canonical": "Boston",
             "isCanonicalInFile": true,
             "variants": ["BOSTON"],
-            "reason": "Same city, differing only in letter case",
-            "confidence": "certain"
-          },
-          {
-            "canonical": "Seattle",
-            "isCanonicalInFile": true,
-            "variants": ["seattle"],
-            "reason": "Same city, differing only in letter case",
+            "reason": "Variant spellings of the city Boston.",
             "confidence": "certain"
           },
           {
             "canonical": "Phoenix",
             "isCanonicalInFile": true,
             "variants": ["phoenix"],
-            "reason": "Same city, differing only in letter case",
+            "reason": "Variant spellings of the city Phoenix.",
             "confidence": "certain"
           },
           {
             "canonical": "San Diego",
             "isCanonicalInFile": true,
             "variants": ["san diego", "SAN DIEGO"],
-            "reason": "Same city, differing only in letter case",
+            "reason": "Variant spellings of the city San Diego.",
+            "confidence": "certain"
+          },
+          {
+            "canonical": "Seattle",
+            "isCanonicalInFile": true,
+            "variants": ["seattle"],
+            "reason": "Variant spellings of the city Seattle.",
             "confidence": "certain"
           },
           {
             "canonical": "Austin",
             "isCanonicalInFile": true,
             "variants": ["austin"],
-            "reason": "Same city, differing only in letter case",
+            "reason": "Variant spellings of the city Austin.",
             "confidence": "certain"
           }
         ],
         "placeholders": [],
-        "claimCount": 14,
+        "claimCount": 20,
         "droppedClaims": 0
       },
       "calls": [
         {
           "task": "normalizeValues",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 1412,
-          "completionTokens": 691,
-          "totalTokens": 2103,
-          "cost": 0.0004867,
-          "latencyMs": 3894,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 606,
+          "completionTokens": 429,
+          "totalTokens": 1035,
+          "cost": 0.0002322,
+          "latencyMs": 1332,
           "outcome": "valid"
         }
       ]
@@ -517,93 +523,100 @@
             "canonical": "MA",
             "isCanonicalInFile": true,
             "variants": ["ma", "Massachusetts"],
-            "reason": "Massachusetts abbreviation and full name, case variants",
-            "confidence": "certain"
+            "reason": "Different abbreviations and full name for Massachusetts",
+            "confidence": "high"
           },
           {
             "canonical": "CO",
             "isCanonicalInFile": true,
             "variants": ["co", "Colo.", "Colorado"],
-            "reason": "Colorado abbreviation and full name, case variants",
-            "confidence": "certain"
+            "reason": "Different abbreviations and full name for Colorado",
+            "confidence": "high"
           },
           {
             "canonical": "NY",
             "isCanonicalInFile": true,
             "variants": ["N.Y."],
-            "reason": "New York abbreviation with periods",
-            "confidence": "certain"
-          },
-          {
-            "canonical": "IL",
-            "isCanonicalInFile": true,
-            "variants": ["Ill.", "Illinois"],
-            "reason": "Illinois abbreviation and full name",
-            "confidence": "certain"
-          },
-          {
-            "canonical": "MN",
-            "isCanonicalInFile": true,
-            "variants": ["mn", "Minn.", "Minnesota"],
-            "reason": "Minnesota abbreviation and full name, case variants",
-            "confidence": "certain"
+            "reason": "Different abbreviations for New York",
+            "confidence": "high"
           },
           {
             "canonical": "OR",
             "isCanonicalInFile": true,
             "variants": ["Oregon", "Ore."],
-            "reason": "Oregon abbreviation and full name",
-            "confidence": "certain"
+            "reason": "Different abbreviations and full name for Oregon",
+            "confidence": "high"
           },
           {
             "canonical": "AZ",
             "isCanonicalInFile": true,
-            "variants": ["Arizona", "Ariz."],
-            "reason": "Arizona abbreviation and full name",
-            "confidence": "certain"
+            "variants": ["Ariz.", "Arizona"],
+            "reason": "Different abbreviations and full name for Arizona",
+            "confidence": "high"
           },
           {
             "canonical": "TX",
             "isCanonicalInFile": true,
-            "variants": ["tx", "Tex.", "Texas"],
-            "reason": "Texas abbreviation and full name, case variants",
-            "confidence": "certain"
+            "variants": ["Tex.", "Texas", "tx"],
+            "reason": "Different abbreviations and full name for Texas",
+            "confidence": "high"
           },
           {
             "canonical": "FL",
             "isCanonicalInFile": true,
-            "variants": ["Florida", "Fla."],
-            "reason": "Florida abbreviation and full name",
-            "confidence": "certain"
+            "variants": ["Fla.", "Florida"],
+            "reason": "Different abbreviations and full name for Florida",
+            "confidence": "high"
           },
           {
             "canonical": "GA",
             "isCanonicalInFile": true,
             "variants": ["Georgia"],
-            "reason": "Georgia abbreviation and full name",
-            "confidence": "certain"
+            "reason": "Different abbreviations and full name for Georgia",
+            "confidence": "high"
           },
           {
             "canonical": "CA",
             "isCanonicalInFile": true,
-            "variants": ["California", "Calif."],
-            "reason": "California abbreviation and full name",
-            "confidence": "certain"
+            "variants": ["Calif.", "California"],
+            "reason": "Different abbreviations and full name for California",
+            "confidence": "high"
+          },
+          {
+            "canonical": "WA",
+            "isCanonicalInFile": true,
+            "variants": ["wa"],
+            "reason": "Different abbreviations for Washington",
+            "confidence": "high"
+          },
+          {
+            "canonical": "IL",
+            "isCanonicalInFile": true,
+            "variants": ["Ill.", "Illinois"],
+            "reason": "Different abbreviations and full name for Illinois",
+            "confidence": "high"
+          },
+          {
+            "canonical": "MN",
+            "isCanonicalInFile": true,
+            "variants": ["Minn.", "Minnesota", "mn"],
+            "reason": "Different abbreviations and full name for Minnesota",
+            "confidence": "high"
           }
         ],
         "placeholders": [],
-        "claimCount": 45,
+        "claimCount": 48,
         "droppedClaims": 0
       },
       "calls": [
         {
           "task": "normalizeValues",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 1606,
-          "completionTokens": 1097,
-          "totalTokens": 2703,
-          "cost": 0.0007091,
-          "latencyMs": 4964,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 756,
+          "completionTokens": 681,
+          "totalTokens": 1437,
+          "cost": 0.000348,
+          "latencyMs": 2014,
           "outcome": "valid"
         }
       ]

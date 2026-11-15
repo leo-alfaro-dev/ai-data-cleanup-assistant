@@ -1,0 +1,66 @@
+{
+  "run": "model",
+  "model": "openai/gpt-5-mini",
+  "date": "2026-11-15",
+  "dataset": "eval/datasets/customers.csv",
+  "seed": 20250601,
+  "rows": 1150,
+  "issues": 129,
+  "calls": 6,
+  "failedTasks": [
+    {
+      "task": "assessSuspiciousRows",
+      "reason": "timeout"
+    }
+  ],
+  "tokens": 17024,
+  "cost": 0.021381499999999998,
+  "callsWithoutCost": 1,
+  "wallMs": 71277,
+  "scores": {
+    "duplicate": {
+      "planted": 297,
+      "claimed": 297,
+      "correctClaims": 297,
+      "found": 297,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 150,
+      "rightSuggestions": 150,
+      "suggestionAccuracy": 1
+    },
+    "inconsistent": {
+      "planted": 130,
+      "claimed": 899,
+      "correctClaims": 112,
+      "found": 112,
+      "precision": 0.12458286985539488,
+      "recall": 0.8615384615384616,
+      "suggested": 887,
+      "rightSuggestions": 74,
+      "suggestionAccuracy": 0.0834272829763247
+    },
+    "missing": {
+      "planted": 55,
+      "claimed": 55,
+      "correctClaims": 55,
+      "found": 55,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 25,
+      "rightSuggestions": 25,
+      "suggestionAccuracy": 1
+    },
+    "suspicious": {
+      "planted": 31,
+      "claimed": 31,
+      "correctClaims": 31,
+      "found": 31,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 10,
+      "rightSuggestions": 10,
+      "suggestionAccuracy": 1
+    }
+  }
+}

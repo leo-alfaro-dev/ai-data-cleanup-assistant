@@ -76,7 +76,9 @@ yarn integrations            # Production build + headless Playwright on port 31
 yarn integrations --headed   # Headed mode
 yarn eval:data               # Regenerate the seeded datasets, their truth and the demo sample
 yarn eval --checks-only      # Score the checks against the planted errors — free, safe to run
-yarn eval                    # Accuracy benchmark against real models — costs money, ask first
+yarn eval --summary          # Rebuild eval/results/summary.md from the result files — free
+yarn eval --models a,b --estimate   # Calls and cost ceiling for those OpenRouter model ids — makes no call
+yarn eval --models a,b       # Accuracy benchmark against real models, one result file each — costs money, ask first
 yarn ai:record normalize-values confirm-duplicates assess-suspicious-rows   # Real calls on the sample, saved as e2e fixtures — costs money, ask first
 
 yarn lint                    # ESLint

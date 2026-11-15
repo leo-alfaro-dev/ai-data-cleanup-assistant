@@ -204,8 +204,8 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 10 — Proof
 
-- [ ] **T10.1** Benchmark models on planted errors: accuracy, cost and latency · _needs your approval of the spend_
-- [ ] **T10.2** Choose the default model and limits from the benchmark
+- [x] **T10.1** Benchmark models on planted errors: accuracy, cost and latency · _needs your approval of the spend_
+- [x] **T10.2** Choose the default model and limits from the benchmark
 
 ### Epic 11 — Story
 

@@ -1,0 +1,61 @@
+{
+  "run": "model",
+  "model": "google/gemini-2.5-flash-lite",
+  "date": "2026-11-15",
+  "dataset": "eval/datasets/customers.csv",
+  "seed": 20250601,
+  "rows": 1150,
+  "issues": 129,
+  "calls": 7,
+  "failedTasks": [],
+  "tokens": 40010,
+  "cost": 0.009014600000000001,
+  "callsWithoutCost": 0,
+  "wallMs": 19421,
+  "scores": {
+    "duplicate": {
+      "planted": 297,
+      "claimed": 297,
+      "correctClaims": 297,
+      "found": 297,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 150,
+      "rightSuggestions": 150,
+      "suggestionAccuracy": 1
+    },
+    "inconsistent": {
+      "planted": 130,
+      "claimed": 130,
+      "correctClaims": 130,
+      "found": 130,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 118,
+      "rightSuggestions": 118,
+      "suggestionAccuracy": 1
+    },
+    "missing": {
+      "planted": 55,
+      "claimed": 55,
+      "correctClaims": 55,
+      "found": 55,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 25,
+      "rightSuggestions": 25,
+      "suggestionAccuracy": 1
+    },
+    "suspicious": {
+      "planted": 31,
+      "claimed": 31,
+      "correctClaims": 31,
+      "found": 31,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 10,
+      "rightSuggestions": 10,
+      "suggestionAccuracy": 1
+    }
+  }
+}

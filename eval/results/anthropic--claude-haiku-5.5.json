@@ -1,0 +1,61 @@
+{
+  "run": "model",
+  "model": "anthropic/claude-haiku-5.5",
+  "date": "2026-11-15",
+  "dataset": "eval/datasets/customers.csv",
+  "seed": 20250601,
+  "rows": 1150,
+  "issues": 131,
+  "calls": 6,
+  "failedTasks": [],
+  "tokens": 35769,
+  "cost": 0.009443299999999998,
+  "callsWithoutCost": 0,
+  "wallMs": 34330,
+  "scores": {
+    "duplicate": {
+      "planted": 297,
+      "claimed": 297,
+      "correctClaims": 297,
+      "found": 297,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 150,
+      "rightSuggestions": 120,
+      "suggestionAccuracy": 0.8
+    },
+    "inconsistent": {
+      "planted": 130,
+      "claimed": 130,
+      "correctClaims": 130,
+      "found": 130,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 118,
+      "rightSuggestions": 118,
+      "suggestionAccuracy": 1
+    },
+    "missing": {
+      "planted": 55,
+      "claimed": 55,
+      "correctClaims": 55,
+      "found": 55,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 25,
+      "rightSuggestions": 25,
+      "suggestionAccuracy": 1
+    },
+    "suspicious": {
+      "planted": 31,
+      "claimed": 31,
+      "correctClaims": 31,
+      "found": 31,
+      "precision": 1,
+      "recall": 1,
+      "suggested": 10,
+      "rightSuggestions": 10,
+      "suggestionAccuracy": 1
+    }
+  }
+}

@@ -160,7 +160,7 @@ describe('aiStore', () => {
     const [entry] = state.calls;
     expect(entry).toMatchObject({
       task: 'normalizeValues',
-      model: 'anthropic/claude-haiku-5.5',
+      model: 'google/gemini-2.5-flash-lite',
       outcome: 'ok',
       claimCount: 4,
       droppedClaims: 1,
@@ -168,7 +168,7 @@ describe('aiStore', () => {
     });
     expect(entry?.requestBody).toBe(
       JSON.stringify({
-        model: 'anthropic/claude-haiku-5.5',
+        model: 'google/gemini-2.5-flash-lite',
         request: request(0),
       })
     );

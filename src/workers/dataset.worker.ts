@@ -24,12 +24,10 @@ import { findNearDuplicateCandidates } from '@/engine/matching/findNearDuplicate
 import { profileDataset } from '@/engine/profile/profileDataset';
 import type { AiRequests } from '@/ai/aiRequests';
 import type { AiTaskResult } from '@/ai/aiTaskResult';
+import { toTaskIssues } from '@/ai/toTaskIssues';
 import { buildAssessSuspiciousRowsRequests } from '@/ai/tasks/assessSuspiciousRows/buildAssessSuspiciousRowsRequests';
-import { toAssessSuspiciousRowsIssues } from '@/ai/tasks/assessSuspiciousRows/toAssessSuspiciousRowsIssues';
 import { buildConfirmDuplicatesRequests } from '@/ai/tasks/confirmDuplicates/buildConfirmDuplicatesRequests';
-import { toConfirmDuplicatesIssues } from '@/ai/tasks/confirmDuplicates/toConfirmDuplicatesIssues';
 import { buildNormalizeValuesRequests } from '@/ai/tasks/normalizeValues/buildNormalizeValuesRequests';
-import { toNormalizeValuesIssues } from '@/ai/tasks/normalizeValues/toNormalizeValuesIssues';
 import type { NearDuplicateCandidate } from '@/engine/matching/nearDuplicateCandidate';
 import type { ColumnProfile } from '@/engine/profile/columnProfile';
 import { tryCatch } from '@/lib/tryCatch';
@@ -154,33 +152,8 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
 
   buildAiIssues: (
     taskResult: AiTaskResult
-  ): { issues: Issue[]; notes: AiNote[] } => {
-    if (!dataset) return { issues: [], notes: [] };
-
-    switch (taskResult.task) {
-      case 'normalizeValues':
-        return {
-          issues: toNormalizeValuesIssues({
-            result: taskResult.result,
-            dataset,
-          }),
-          notes: [],
-        };
-      case 'confirmDuplicates':
-        return {
-          issues: toConfirmDuplicatesIssues({
-            result: taskResult.result,
-            dataset,
-          }),
-          notes: [],
-        };
-      case 'assessSuspiciousRows':
-        return toAssessSuspiciousRowsIssues({
-          result: taskResult.result,
-          dataset,
-        });
-    }
-  },
+  ): { issues: Issue[]; notes: AiNote[] } =>
+    dataset ? toTaskIssues({ taskResult, dataset }) : { issues: [], notes: [] },
 
   preview: (change: Change): ChangePreview | null =>
     dataset ? previewChange({ change, dataset }) : null,
