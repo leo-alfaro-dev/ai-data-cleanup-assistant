@@ -1,5 +1,5 @@
 import type { IconType } from 'react-icons';
-import { RxDownload, RxFileText, RxListBullet, RxReader } from 'react-icons/rx';
+import { RxDownload, RxFileText, RxListBullet } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import { IconCircle } from '@/components/IconCircle';
@@ -34,7 +34,6 @@ export function ExportDialog({ className = '', ...props }: ExportDialogProps) {
     downloadFile({
       name: toExportFileName({ fileName, suffix: file.suffix }),
       text: phase.files[file.content],
-      type: file.type,
     });
   };
 
@@ -42,7 +41,7 @@ export function ExportDialog({ className = '', ...props }: ExportDialogProps) {
     <Modal
       isOpen={phase.status !== 'closed'}
       title="Export"
-      description="Download the cleaned file, a log of every change and a recipe to replay the rules."
+      description="Download the cleaned file and a log of every change."
       icon={RxDownload}
       isCloseDisabled={isRunning}
       onClose={() => exportActions.close()}
@@ -109,21 +108,13 @@ export function ExportDialog({ className = '', ...props }: ExportDialogProps) {
           </li>
         ))}
       </ul>
-      {phase.status === 'ready' && (
-        <p className="text-sm text-text-secondary">
-          The recipe holds the applied rules only: extra spaces, spellings, date
-          formats and duplicate rows. Changes to particular rows stay in the
-          change log.
-        </p>
-      )}
     </Modal>
   );
 }
 
 type ExportFile = {
-  suffix: 'cleaned' | 'changes' | 'recipe';
-  content: 'csv' | 'changeLog' | 'recipe';
-  type?: 'application/json';
+  suffix: 'cleaned' | 'changes';
+  content: 'csv' | 'changeLog';
   icon: IconType;
   action: string;
   description: string;
@@ -145,15 +136,6 @@ const EXPORT_FILES: readonly ExportFile[] = [
     icon: RxListBullet,
     action: 'Download change log',
     description: 'One line for each changed cell and removed row.',
-    isMain: false,
-  },
-  {
-    suffix: 'recipe',
-    content: 'recipe',
-    type: 'application/json',
-    icon: RxReader,
-    action: 'Download recipe',
-    description: 'The applied rules, to replay on another file.',
     isMain: false,
   },
 ];

@@ -26,10 +26,7 @@ export const exportStore$ = createGlobalState(makeInitialState(), {
 
         const run = Symbol('export');
         const isCurrent = () => store.metadata.run === run;
-        const call = getDatasetWorker().exportFiles({
-          accepted,
-          createdAt: new Date().toISOString(),
-        });
+        const call = getDatasetWorker().exportFiles(accepted);
         store.setMetadata({ run, call });
         store.setState({ phase: { status: 'running' } });
 

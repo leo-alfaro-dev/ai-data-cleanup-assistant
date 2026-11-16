@@ -178,23 +178,6 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
       };
     },
 
-    acceptIssues(issueIds: readonly IssueId[]) {
-      return (store) => {
-        const { decisions } = store.getState();
-        const wanted = new Set(issueIds);
-        const issues = readIssues(decisions).filter(
-          ({ id, suggestion }) => wanted.has(id) && suggestion !== null
-        );
-
-        store.setState((state) =>
-          commitDecisions({
-            state,
-            changes: toDecisions({ issues, status: 'accepted' }),
-          })
-        );
-      };
-    },
-
     rejectAll({ category }: { category: IssueCategory }) {
       return (store) => {
         const { decisions } = store.getState();

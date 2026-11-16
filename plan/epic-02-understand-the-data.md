@@ -2,7 +2,7 @@
 
 **Outcome:** the engine can describe every column, and can express any cleanup as data: a change that is previewed, applied, undone and exported. All of it is pure TypeScript with specs.
 
-**Why it matters:** this is where "rules, not edits" becomes real. Once a change is a small piece of data and the cleaned value is derived from it, review, undo, export, recipes and scoring all become simple consequences instead of separate features.
+**Why it matters:** this is where "rules, not edits" becomes real. Once a change is a small piece of data and the cleaned value is derived from it, review, undo, export and scoring all become simple consequences instead of separate features.
 
 **Show after this epic:** nothing on screen yet. The proof is the spec list: order-independent changes, a frozen original, and a round trip that reproduces the input.
 

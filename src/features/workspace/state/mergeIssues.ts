@@ -10,17 +10,15 @@ export const mergeIssues = memoizeLast(
   ({
     checkIssues,
     aiIssues,
-    recipeIssues,
     decisions,
   }: {
     checkIssues: readonly Issue[];
     aiIssues: readonly Issue[];
-    recipeIssues: readonly Issue[];
     decisions: ReadonlyMap<IssueId, Decision>;
   }): readonly Issue[] =>
     mergeAiIssues({
       checkIssues,
-      aiIssues: [...aiIssues, ...recipeIssues],
+      aiIssues,
       isDecided: (issueId) => decisions.has(issueId),
       isRejected: (issueId) => decisions.get(issueId)?.status === 'rejected',
       changeOf: ({ id, suggestion }) =>

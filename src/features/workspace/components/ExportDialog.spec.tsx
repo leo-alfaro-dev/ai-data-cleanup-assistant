@@ -30,7 +30,6 @@ vi.mock('../downloadFile', () => ({ downloadFile: vi.fn() }));
 const files: CleanedFiles = {
   csv: 'name\nAda\n',
   changeLog: 'row,column\n',
-  recipe: '{}\n',
   cellsChanged: 12,
   rowsRemoved: 3,
 };
@@ -138,7 +137,6 @@ describe('ExportDialog', () => {
     await user.click(
       screen.getByRole('button', { name: 'Download change log' })
     );
-    await user.click(screen.getByRole('button', { name: 'Download recipe' }));
 
     expect(downloadFile).toHaveBeenNthCalledWith(1, {
       name: 'people.cleaned.csv',
@@ -148,14 +146,6 @@ describe('ExportDialog', () => {
       name: 'people.changes.csv',
       text: files.changeLog,
     });
-    expect(downloadFile).toHaveBeenNthCalledWith(3, {
-      name: 'people.recipe.json',
-      text: files.recipe,
-      type: 'application/json',
-    });
-    expect(
-      screen.getByText(/recipe holds the applied rules only/)
-    ).toBeInTheDocument();
   });
 
   it('closes from its Close button once the files are ready', async () => {

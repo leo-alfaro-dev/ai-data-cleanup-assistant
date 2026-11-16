@@ -67,12 +67,7 @@ const startCard = tv({
         title: 'text-text-primary',
         icon: 'text-primary/10',
       },
-      plain: {
-        root: 'border-border bg-surface text-text-secondary shadow-xs',
-        title: 'text-text-primary',
-        icon: 'text-primary/7',
-      },
     },
   },
-  defaultVariants: { tone: 'plain' },
+  defaultVariants: { tone: 'tint' },
 });

@@ -5,10 +5,11 @@ import type { Coverage } from './listCoverage';
 import { listCoverage } from './listCoverage';
 
 /**
- * Check issues and AI or recipe issues in one list. An issue absorbs a check issue it covers
- * entirely (mapped values, merged rows, a trim, a date format, a kind of duplicate removal), so
- * nothing has two competing suggestions. Decided check issues and rejected issues never absorb.
- * An AI assessment of a cell that another issue covers is left out.
+ * Check issues and AI issues in one list. An AI issue absorbs a check issue whose every mapped
+ * value it maps too, or whose merged rows it merges too, so one value or row never has two
+ * competing suggestions. An AI assessment of a single cell adds nothing where another issue
+ * already covers that cell, so it is left out. A check issue that is already decided stays, and
+ * so does one the AI covers only in part. A rejected AI issue absorbs nothing.
  */
 export function mergeAiIssues({
   checkIssues,
@@ -76,18 +77,6 @@ function isAbsorbed({
     return coverage.mergedRows.some((rows) =>
       [suggestion.keep, ...suggestion.remove].every((rowId) => rows.has(rowId))
     );
-  }
-  if (suggestion?.kind === 'trimWhitespace') {
-    return coverage.trimmedColumns.has(suggestion.column);
-  }
-  if (suggestion?.kind === 'standardizeDates') {
-    return (
-      coverage.datedColumns.get(suggestion.column)?.has(suggestion.format) ??
-      false
-    );
-  }
-  if (suggestion?.kind === 'dropDuplicateRows') {
-    return coverage.droppedDuplicates.has(suggestion.mode);
   }
   if (suggestion?.kind !== 'mapValues') return false;
 

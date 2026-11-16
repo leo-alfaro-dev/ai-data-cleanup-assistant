@@ -5,11 +5,8 @@ import type { LoadFailureReason } from '@/engine/dataset/loadFailure';
 import { tryCatch } from '@/lib/tryCatch';
 import { getDatasetWorker } from '@/workers/getDatasetWorker';
 import { LOAD_STAGES } from '@/workers/loadStage';
-import type { SampleName } from '../sampleFile';
-import { SAMPLE_RECIPE, SAMPLES } from '../sampleFile';
+import { SAMPLE_FILE_NAME, SAMPLE_URL } from '../sampleFile';
 import { analysisActions } from './analysisStore';
-import { applyRecipe } from './applyRecipe';
-import { recipeActions, recipeStore$ } from './recipeStore';
 import { NO_FILE_FACTS } from './noFileFacts';
 import { resetReview } from './resetReview';
 import type { WorkspacePhase } from './workspacePhase';
@@ -22,7 +19,6 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
     loadFile(file: File) {
       return async (store) => {
         store.metadata.workerCall?.cancel(SUPERSEDED);
-        const hasRecipe = recipeStore$.getState().pending !== null;
         resetReview();
 
         const load = Symbol(file.name);
@@ -90,36 +86,41 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
               phase: { ...phase, rowChunks: [...phase.rowChunks, chunk] },
             };
           });
-          if (offset === 0) {
-            void analysisActions.run({ runAi: !hasRecipe });
-            if (hasRecipe) void applyRecipe();
-          }
+          if (offset === 0) void analysisActions.run();
         }
       };
     },
 
-    loadSample(name: SampleName = 'customers') {
+    loadSample() {
       return async (store) => {
-        const { url, fileName } = SAMPLES[name];
         store.metadata.workerCall?.cancel(SUPERSEDED);
-        const load = Symbol(fileName);
+        const load = Symbol(SAMPLE_FILE_NAME);
         store.setMetadata({ load, workerCall: null });
         store.setState({
           phase: {
             status: 'loading',
-            fileName,
+            fileName: SAMPLE_FILE_NAME,
             stage: 'reading',
             percentage: 0,
           },
         });
 
-        const { result: file, error } = await tryCatch(() =>
-          fetchAsFile({ url, fileName })
-        );
+        const { result: file, error } = await tryCatch(async () => {
+          const response = await fetch(SAMPLE_URL);
+          if (!response.ok) throw new Error('sample not served');
+
+          return new File([await response.blob()], SAMPLE_FILE_NAME, {
+            type: 'text/csv',
+          });
+        });
         if (store.metadata.load !== load) return;
         if (error) {
           return store.setState({
-            phase: { status: 'failed', fileName, reason: 'unreadable' },
+            phase: {
+              status: 'failed',
+              fileName: SAMPLE_FILE_NAME,
+              reason: 'unreadable',
+            },
           });
         }
 
@@ -127,56 +128,10 @@ export const workspaceStore$ = createGlobalState(makeInitialState(), {
       };
     },
 
-    loadNextMonthSample() {
-      return async (store) => {
-        store.setState({
-          phase: {
-            status: 'loading',
-            fileName: SAMPLES.nextMonth.fileName,
-            stage: 'reading',
-            percentage: 0,
-          },
-        });
-        const { result: recipeFile, error } = await tryCatch(() =>
-          fetchAsFile({
-            url: SAMPLE_RECIPE.url,
-            fileName: SAMPLE_RECIPE.fileName,
-          })
-        );
-        if (error) {
-          return store.setState({
-            phase: {
-              status: 'failed',
-              fileName: SAMPLE_RECIPE.fileName,
-              reason: 'unreadable',
-            },
-          });
-        }
-
-        await recipeActions.chooseRecipe(recipeFile);
-        await store.actions.loadSample?.('nextMonth');
-      };
-    },
-
-    loadFiles(files: readonly File[]) {
-      return async (store) => {
-        const recipeFile = files.find(isRecipeFile);
-        const dataFile = files.find((file) => !isRecipeFile(file));
-
-        if (recipeFile) await recipeActions.chooseRecipe(recipeFile);
-        const isRecipeRefused =
-          recipeFile !== undefined && recipeStore$.getState().pending === null;
-        if (dataFile && !isRecipeRefused) {
-          await store.actions.loadFile?.(dataFile);
-        }
-      };
-    },
-
     reset() {
       return (store) => {
         store.metadata.workerCall?.cancel(SUPERSEDED);
         resetReview();
-        recipeActions.reset();
         store.setMetadata(makeInitialMetadata());
         store.setState(makeInitialState());
       };
@@ -206,21 +161,4 @@ function makeInitialMetadata(): {
   workerCall: CancelablePromise<unknown> | null;
 } {
   return { load: null, workerCall: null };
-}
-
-function isRecipeFile(file: File): boolean {
-  return file.name.toLowerCase().endsWith('.json');
-}
-
-async function fetchAsFile({
-  url,
-  fileName,
-}: {
-  url: string;
-  fileName: string;
-}): Promise<File> {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('sample not served');
-
-  return new File([await response.blob()], fileName);
 }

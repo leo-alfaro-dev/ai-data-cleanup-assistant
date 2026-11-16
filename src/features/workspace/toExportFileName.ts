@@ -3,11 +3,11 @@ export function toExportFileName({
   suffix,
 }: {
   fileName: string;
-  suffix: 'cleaned' | 'changes' | 'recipe';
+  suffix: 'cleaned' | 'changes';
 }): string {
   const dotIndex = fileName.lastIndexOf('.');
   const hasExtension = dotIndex > 0;
   const name = hasExtension ? fileName.slice(0, dotIndex) : fileName;
 
-  return `${name}.${suffix}.${suffix === 'recipe' ? 'json' : 'csv'}`;
+  return `${name}.${suffix}.csv`;
 }

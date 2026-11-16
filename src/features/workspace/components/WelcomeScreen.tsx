@@ -1,12 +1,9 @@
 import { useId, useRef } from 'react';
 import {
-  RxArrowRight,
-  RxCheck,
   RxCheckCircled,
   RxEyeOpen,
   RxFileText,
   RxLockClosed,
-  RxReader,
   RxTable,
   RxUpload,
 } from 'react-icons/rx';
@@ -15,18 +12,10 @@ import { Button } from '@/components/Button';
 import { eyebrow } from '@/components/eyebrow';
 import { IconCircle } from '@/components/IconCircle';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
-import { countOf } from '@/lib/countOf';
 import { formatCount } from '@/lib/formatCount';
-import { recipeRejectionCopy } from '../recipeCopy';
 import { SAMPLE_ROW_COUNT } from '../sampleFile';
-import {
-  recipeActions,
-  usePendingRecipe,
-  useRecipeRejection,
-} from '../state/recipeStore';
 import { useFileDrop } from '../state/useFileDrop';
 import { workspaceActions } from '../state/workspaceStore';
-import { FailureNote } from './FailureNote';
 import { StartCard } from './StartCard';
 
 export type WelcomeScreenProps = React.ComponentProps<'section'>;
@@ -37,10 +26,7 @@ export function WelcomeScreen({
 }: WelcomeScreenProps) {
   const { isDragging, handlers } = useFileDrop();
   const inputRef = useRef<HTMLInputElement>(null);
-  const recipeInputRef = useRef<HTMLInputElement>(null);
   const factsTitleId = useId();
-  const pending = usePendingRecipe();
-  const rejection = useRecipeRejection();
 
   return (
     <section
@@ -71,7 +57,7 @@ export function WelcomeScreen({
           say so.
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <StartCard
           tone="solid"
           icon={RxTable}
@@ -120,63 +106,6 @@ export function WelcomeScreen({
               const file = event.target.files?.[0];
               event.target.value = '';
               if (file) void workspaceActions.loadFile(file);
-            }}
-          />
-        </StartCard>
-        <StartCard
-          tone="plain"
-          icon={RxReader}
-          label="Repeat a cleanup"
-          title="Replay a recipe"
-        >
-          <p>
-            Load the rules you accepted last time. They replay on the next file
-            in one step, without AI.
-          </p>
-          <Button
-            variant="ghost"
-            className="h-auto px-0 text-primary underline-offset-4 hover:bg-transparent hover:text-primary hover:underline"
-            onClick={() => void workspaceActions.loadNextMonthSample()}
-          >
-            Try the recipe on next month’s file
-            <RxArrowRight aria-hidden className="size-3.5" />
-          </Button>
-          {pending && (
-            <p className="flex items-start gap-2 rounded-xl bg-tint px-3 py-2 text-text-primary">
-              <RxCheck
-                aria-hidden
-                className="mt-0.5 size-4 shrink-0 text-primary"
-              />
-              <span>
-                Recipe ready: {pending.fileName},{' '}
-                {countOf({ count: pending.recipe.rules.length, noun: 'rule' })}.
-                The next file you load is cleaned with it, without AI.
-              </span>
-            </p>
-          )}
-          {rejection && (
-            <FailureNote>
-              {rejection.fileName}: {recipeRejectionCopy[rejection.reason]}
-            </FailureNote>
-          )}
-          <Button
-            size="lg"
-            className="mt-auto"
-            onClick={() => recipeInputRef.current?.click()}
-          >
-            Apply a recipe
-          </Button>
-          <input
-            ref={recipeInputRef}
-            type="file"
-            aria-label="Choose a recipe file"
-            accept=".json,application/json"
-            tabIndex={-1}
-            className="sr-only"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              event.target.value = '';
-              if (file) void recipeActions.chooseRecipe(file);
             }}
           />
         </StartCard>

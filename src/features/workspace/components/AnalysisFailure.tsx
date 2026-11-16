@@ -1,6 +1,5 @@
 import { RxReload } from 'react-icons/rx';
 import { Button } from '@/components/Button';
-import { recipeStore$ } from '../state/recipeStore';
 import { analysisActions } from '../state/analysisStore';
 import type { FailurePanelProps } from './FailurePanel';
 import { FailurePanel } from './FailurePanel';
@@ -18,23 +17,11 @@ export function AnalysisFailure(props: AnalysisFailureProps) {
           The rows are listed, but the file has not been checked. Run the checks
           again.
         </p>
-        <Button
-          onClick={() =>
-            void analysisActions.run({
-              runAi: !isRecipeFlow(),
-            })
-          }
-        >
+        <Button onClick={() => void analysisActions.run()}>
           <RxReload aria-hidden className="size-3.5" />
           Retry
         </Button>
       </div>
     </FailurePanel>
   );
-}
-
-function isRecipeFlow(): boolean {
-  const { result, hasReplayFailed } = recipeStore$.getState();
-
-  return result !== null || hasReplayFailed;
 }

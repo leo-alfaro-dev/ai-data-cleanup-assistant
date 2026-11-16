@@ -13,14 +13,14 @@
 1. One paragraph on what it is, the live demo link, and a screenshot or short recording.
 2. The brief, and how each line of it is met, as a table.
 3. How it works: a diagram of file → worker → checks → summaries → AI → rules → decisions → export.
-4. What is different: rules instead of edits, the recipe, measured accuracy, review at volume, transparency.
+4. What is different: rules instead of edits, measured accuracy, review at volume, transparency.
 5. The accuracy table, with the checks-only row.
 6. Privacy and limits: what leaves the browser, what the demo caps.
 7. Run it locally, with and without a key.
 8. Tests and CI.
 9. Project structure.
 10. Decisions and trade-offs, including what was deliberately not built and why.
-11. What comes next: the production shape for large files and teams (a queue and workers, object storage for uploads, a database for recipes and audit trails), and the items in `stretch.md`.
+11. What comes next: the production shape for large files and teams (a queue and workers, object storage for uploads, a database for decisions and audit trails), and the items in `stretch.md`.
 12. How AI was used to build it: `CLAUDE.md`, this plan, and one commit per epic.
 
 **Decisions**
@@ -47,7 +47,7 @@
 | 0:30 | Load the sample. Check issues appear at once, in the brief's four categories                 |
 | 1:15 | AI issues arrive. Open the panel: what was sent, what it cost                                |
 | 2:00 | Review from the keyboard, bulk accept, edit one suggestion, undo                             |
-| 2:45 | Export, then replay the recipe on next month's file with zero AI calls                       |
+| 2:45 | Export the cleaned CSV and the change log                                                    |
 | 3:30 | How it is built: rules instead of edits, the worker, validation of everything the model says |
 | 4:10 | The accuracy table, and how the default model was chosen                                     |
 | 4:35 | What it took: the plan, one commit per epic, CI. What comes next                             |

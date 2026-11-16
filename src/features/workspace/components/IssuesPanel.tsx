@@ -4,7 +4,6 @@ import { BackdropIcon } from '@/components/BackdropIcon';
 import { eyebrow } from '@/components/eyebrow';
 import { toPanelId, toTabId } from '../panelIds';
 import { useAnalysisPhase } from '../state/analysisStore';
-import { useHasReplayFailed, useRecipeResult } from '../state/recipeStore';
 import { useCategoryFilter } from '../state/reviewStore';
 import { useIssues } from '../state/useIssues';
 import { AiToolbar } from './AiToolbar';
@@ -12,12 +11,10 @@ import { AnalysisFailure } from './AnalysisFailure';
 import { AnalysisProgress } from './AnalysisProgress';
 import { BulkActions } from './BulkActions';
 import { CategorySummary } from './CategorySummary';
-import { FailureNote } from './FailureNote';
 import { HistoryButtons } from './HistoryButtons';
 import { IssueList } from './IssueList';
 import { IssueListSkeleton } from './IssueListSkeleton';
 import { ReviewProgress } from './ReviewProgress';
-import { RecipeReport } from './RecipeReport';
 
 export type IssuesPanelProps = React.ComponentProps<'section'>;
 
@@ -25,8 +22,6 @@ export function IssuesPanel({ className = '', ...props }: IssuesPanelProps) {
   const phase = useAnalysisPhase();
   const issueCount = useIssues().length;
   const category = useCategoryFilter();
-  const recipeResult = useRecipeResult();
-  const hasReplayFailed = useHasReplayFailed();
   return (
     <section
       id={toPanelId('issues')}
@@ -48,12 +43,6 @@ export function IssuesPanel({ className = '', ...props }: IssuesPanelProps) {
       {phase.status === 'done' && (
         <>
           <AiToolbar />
-          {recipeResult && <RecipeReport result={recipeResult} />}
-          {hasReplayFailed && (
-            <FailureNote>
-              The recipe could not be applied. The checks still work.
-            </FailureNote>
-          )}
           <CategorySummary />
           {category !== null && <BulkActions category={category} />}
           {issueCount === 0 && (

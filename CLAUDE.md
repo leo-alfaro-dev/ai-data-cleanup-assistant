@@ -24,7 +24,7 @@ It looks like a well-run workspace early in the morning: calm, competent, fresh,
 
 ### Scope
 
-- **In:** the four categories; review with accept, edit, reject, undo and bulk decisions; export of the cleaned CSV, a change log and a recipe; replaying a recipe; a transparency panel; built-in sample data; an optional own OpenRouter key; `yarn eval`.
+- **In:** the four categories; review with accept, edit, reject, undo and bulk decisions; export of the cleaned CSV and a change log; a transparency panel; built-in sample data; an optional own OpenRouter key; `yarn eval`.
 - **Out:** accounts, a database or any persistence beyond the tab, Excel files, multi-file joins, collaboration, free-form cell editing (every change is a suggestion).
 - **Delivery order** lives in [`plan/`](plan/README.md): epics and tasks, one commit per epic, submittable at every checkpoint.
 
@@ -38,7 +38,6 @@ Use these words in code and UI; don't introduce synonyms (finding, anomaly, fix)
 - **Decision**: the user's verdict on a suggestion: accepted, edited or rejected; pending until made, undoable after. The UI words a decision by what it does to the data: the apply button names the change (“Trim spaces”, “Remove row 169”), and rejecting reads “Keep as is”.
 - **Change**: what a suggestion proposes, expressed as data.
 - **Rule**: a row-independent change (map values, trim, standardize a format, drop exact duplicates); one rule can touch many rows.
-- **Recipe**: the accepted rules, saved as versioned JSON to replay on another file without AI.
 - **Change log**: every cell change the accepted decisions produce.
 - **Profile**: per-column statistics that checks and AI tasks work from.
 - **Run**: one analysis of the loaded file. **Task**: one kind of AI request within a run. In `plan/` a task is a unit of work, so there the AI kind is always written "AI task".
@@ -101,7 +100,7 @@ Path alias: `@/*` → `src/*` (the only one).
 ```
 src/
   app/                  # Routes only: layout, page, api/ai/<task-name>/route.ts
-  engine/               # Framework-free TypeScript: parse, profile, checks, row grouping and matching, rules, apply, recipe, export
+  engine/               # Framework-free TypeScript: parse, profile, checks, row grouping and matching, rules, apply, export
   ai/                   # Contracts, prompts, task runners, OpenRouter client, model list
   workers/              # dataset.worker.ts and its lazy client, getDatasetWorker()
   features/workspace/   # The app's one screen: upload, grid, review, export, transparency
@@ -124,12 +123,12 @@ CSV ──▶ worker: parse → profile → checks ──▶ check suggestions, 
                                    │
                                    └──▶ summaries ──▶ /api/ai/<task-name> ──▶ OpenRouter
                                                        ◀── rules, validated ──┘
-decisions ──▶ cleaned view (original + accepted changes) ──▶ export: CSV · change log · recipe
+decisions ──▶ cleaned view (original + accepted changes) ──▶ export: CSV · change log
 ```
 
 - **The engine is pure.** `src/engine/` imports nothing from React, Next, `src/features`, `src/ai` or browser globals, so the worker, the specs and `yarn eval` run the same code. `src/lib/` follows the same rule, so the engine can use it. Lint-enforced.
 - **Checks share one signature**: pure functions from dataset and profile to issues, one per file, registered in one list. Adding a check is a file and a list entry.
-- **One worker owns the data.** `dataset.worker.ts` only wires engine functions with `defineWorker` (from `easy-web-worker/defineWorker`); the page imports its type alone and calls it through `getDatasetWorker()`, which builds it with `createWorker` (from `easy-web-worker/createWorker`) on first use in the browser. The worker stays single and alive and keeps the parsed rows: parsing, profiling, checks, AI request building, export and recipe replay run there. The rows cross to the page once, in chunks of 10,000 that the page pulls, so the first screen appears while the rest arrive.
+- **One worker owns the data.** `dataset.worker.ts` only wires engine functions with `defineWorker` (from `easy-web-worker/defineWorker`); the page imports its type alone and calls it through `getDatasetWorker()`, which builds it with `createWorker` (from `easy-web-worker/createWorker`) on first use in the browser. The worker stays single and alive and keeps the parsed rows: parsing, profiling, checks, AI request building and export run there. The rows cross to the page once, in chunks of 10,000 that the page pulls, so the first screen appears while the rest arrive.
 - **Next.js needs a native Worker.** Pass `new Worker(new URL('./dataset.worker.ts', import.meta.url), { type: 'module' })` to `createWorker`, written literally. A bare `new URL(...)` works in dev but hangs every call in production, so verify any change to the setup with `yarn build && yarn start`. This source can't be force-restarted: no `reboot`, `force` or `maxWorkers`.
 - **Long worker methods work in chunks.** Between chunks they pause with `setTimeout` (not `await Promise.resolve()`), stop when `message.isPending()` is false, and report progress; a worker inside a synchronous loop never hears a cancel.
 - **Only plain data crosses.** Payloads and results are structured-cloned: no functions or class instances, and a result that can't be cloned hangs the call silently. Errors lose their class, so expected failures come back as a result union, not a throw. The `File` goes to the worker as is and is read there.
@@ -138,7 +137,7 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 ### Data Invariants
 
 - **The original is immutable.** Parsed rows are never mutated; the cleaned value of a cell is derived when it is read, from the original plus accepted decisions. No cleaned copy of the data exists, so undo is flipping a decision.
-- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions and a recipe replays identically. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a cell a merge fills takes the other row's original value, and the column's rules then apply to it; a removed row stays removed. When two changes claim the same cell, value or row, the one whose issue id sorts first wins.
+- **Changes never feed each other.** Every change is a pure function of the original data, so the result does not depend on the order of decisions. When two accepted changes touch one cell, precedence is an explicit cell value, then date format, then value mapping, then whitespace trim; a cell a merge fills takes the other row's original value, and the column's rules then apply to it; a removed row stays removed. When two changes claim the same cell, value or row, the one whose issue id sorts first wins.
 - **Issues are data, not sentences.** Checks return structured details and the UI words them in `issueCopy`; the model's reason is the only free text.
 - **Identity is stable.** Each row keeps its `RowId` from parsing for life: an index into a filtered or sorted array never leaves the component that made it. Columns are keyed by position (`ColumnKey`), never by header text: headers can be empty or repeated.
 - **Cells are strings as parsed.** Typed readings (number, date) are derived and never written back unless a decision says so.
@@ -148,7 +147,6 @@ decisions ──▶ cleaned view (original + accepted changes) ──▶ export:
 - **Values are untrusted text.** Rendered as text only. Formula-like values (spreadsheet formula injection) are suspicious issues, never silently rewritten.
 - **Invisible differences are visible.** Cells and diffs show leading and trailing spaces, non-breaking spaces, and empty versus placeholder distinctly.
 - **Export is faithful.** Column order, header text and delimiter are preserved; with no accepted decisions, the export reproduces the input rows.
-- **Recipes hold only rules.** Row-specific changes go to the change log, not the recipe. Recipes key columns by header text so they replay on files with reordered columns; replay skips a rule whose column is missing and reports it.
 - **Repo data is synthetic**: no real personal data in samples, fixtures or eval sets. Names come from small pools, emails use reserved domains (`example.com`), phones use the fictional `555-01xx` range.
 
 What checks find, and what the AI adds:
@@ -305,7 +303,7 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **Checks are tested from both sides**: each spec feeds a small inline CSV with what the check must find and what it must leave alone.
 - **Shared spec helpers live in `src/engine/testing/`**: `toDataset(...lines)` gives a deep-frozen dataset from inline CSV lines, `accept` and `cleanEveryCell` drive the clean plan; ids are minted with `toRowId` and `toColumnKey`, never `as`. A helper a second spec needs moves there.
 - **UI spec helpers live in `src/features/workspace/testing/`**: `seedWorkspace(...lines)` puts a CSV and the real checks' issues into the stores, `seedIssues` swaps in chosen issues, and `mockLayout()` gives elements a size so virtualized lists render in jsdom.
-- **Round-trips**: exporting with no accepted decisions reproduces the input rows; replaying a recipe on its source file reproduces the accepted rule changes.
+- **Round-trips**: exporting with no accepted decisions reproduces the input rows.
 - **AI runners use a fake client**: specs cover reference validation (cited rows or values that weren't sent are dropped) and the retry on invalid output. Vitest swaps `server-only` for an empty module, so specs can import the modules it guards.
 - **Prove the race with a held response**: hold an AI response, load a new file, resolve the response, and assert nothing from the stale run lands.
 - **Absence after presence**: assert that something is not shown only after something that is shown has rendered; before that, absence proves nothing.

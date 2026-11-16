@@ -14,10 +14,7 @@ const { worker } = vi.hoisted(() => ({
   worker: {
     exportFiles:
       vi.fn<
-        (request: {
-          accepted: AcceptedChange[];
-          createdAt: string;
-        }) => CancelablePromise<CleanedFiles | null>
+        (accepted: AcceptedChange[]) => CancelablePromise<CleanedFiles | null>
       >(),
     preview: vi.fn(),
   },
@@ -30,7 +27,6 @@ vi.mock('@/workers/getDatasetWorker', () => ({
 const files: CleanedFiles = {
   csv: 'name\nAda\n',
   changeLog: 'row\n',
-  recipe: '{}\n',
   cellsChanged: 3,
   rowsRemoved: 1,
 };
@@ -49,12 +45,9 @@ describe('exportStore', () => {
 
     await exportActions.open();
 
-    const [request] = worker.exportFiles.mock.calls[0] ?? [];
+    const [accepted] = worker.exportFiles.mock.calls[0] ?? [];
     const trim: Change = { kind: 'trimWhitespace', column: toColumnKey(0) };
-    expect(request?.accepted).toEqual([
-      { issueId: 'whitespace:0', change: trim },
-    ]);
-    expect(Date.parse(request?.createdAt ?? '')).not.toBeNaN();
+    expect(accepted).toEqual([{ issueId: 'whitespace:0', change: trim }]);
     expect(exportStore$.getState().phase).toEqual({
       status: 'ready',
       files,
@@ -67,10 +60,7 @@ describe('exportStore', () => {
 
     await exportActions.open();
 
-    expect(worker.exportFiles).toHaveBeenCalledWith({
-      accepted: [],
-      createdAt: expect.any(String),
-    });
+    expect(worker.exportFiles).toHaveBeenCalledWith([]);
     expect(exportStore$.getState().phase).toMatchObject({
       status: 'ready',
       pendingCount: 2,

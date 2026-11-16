@@ -24,12 +24,11 @@ The submission is a public repository with a descriptive README, a five-minute d
 ## What sets it apart
 
 1. **Rules, not edits.** The model never rewrites the file. It proposes rules ("these 14 spellings are one state"); code validates them against what was actually sent, then applies them. Every change is explainable, reversible and repeatable. _T2.3, Epic 6_
-2. **A recipe.** Accepted rules export as a file that cleans next month's export in one step, with no AI call. _Epic 9_
-3. **Measured accuracy.** Errors are planted in synthetic data and recorded, so what the app finds can be scored per category and per model, with cost and latency. The measuring stick is built before the checks it measures. _Epic 3, Epic 10_
-4. **Review at volume.** One decision covers a rule across every row it touches. Bulk accept, full keyboard control, edit before accepting, undo for everything. _Epic 5, Epic 8_
-5. **Nothing hidden.** A panel shows exactly what was sent to the AI and what it cost. Small files are read in full, large ones as summaries. _T6.6_
-6. **A demo that survives visitors.** Sample data one click away, a spend cap, rate limits, and the option to use your own key. _Epic 7_
-7. **Visible process.** This plan, `CLAUDE.md`, CI, and one commit per epic. _Epic 0_
+2. **Measured accuracy.** Errors are planted in synthetic data and recorded, so what the app finds can be scored per category and per model, with cost and latency. The measuring stick is built before the checks it measures. _Epic 3, Epic 10_
+3. **Review at volume.** One decision covers a rule across every row it touches. Bulk accept, full keyboard control, edit before accepting, undo for everything. _Epic 5, Epic 8_
+4. **Nothing hidden.** A panel shows exactly what was sent to the AI and what it cost. Small files are read in full, large ones as summaries. _T6.6_
+5. **A demo that survives visitors.** Sample data one click away, a spend cap, rate limits, and the option to use your own key. _Epic 7_
+6. **Visible process.** This plan, `CLAUDE.md`, CI, and one commit per epic. _Epic 0_
 
 ## Epics
 
@@ -44,7 +43,6 @@ The submission is a public repository with a descriptive README, a five-minute d
 | 6   | [AI proposes rules](epic-06-ai.md)                    | The model reads summaries and proposes rules; code validates and applies them; every call is visible      | 7     |
 | 7   | [Safe live demo](epic-07-live-demo.md)                | A public URL with sample data that one visitor cannot drain                                               | 4     |
 | 8   | [Review at volume](epic-08-review-at-volume.md)       | Dozens of issues cleared in seconds, from the keyboard, with undo                                         | 3     |
-| 9   | [Recipe](epic-09-recipe.md)                           | Next month's file cleaned in one step with no AI                                                          | 2     |
 | 10  | [Proof](epic-10-proof.md)                             | A table: what each model finds, what it costs, how long it takes                                          | 2     |
 | 11  | [Story](epic-11-story.md)                             | README, demo script, final QA, submission                                                                 | 3     |
 
@@ -54,13 +52,13 @@ Ideas that are out of the plan unless time is left over: [stretch.md](stretch.md
 
 The order is chosen so the app can be submitted at every checkpoint from B on.
 
-| Checkpoint          | After      | What exists                                                |
-| ------------------- | ---------- | ---------------------------------------------------------- |
-| A. Works without AI | Epic 5     | Load, review, accept, export; every category found by code |
-| B. Brief met        | Epic 6     | AI in all four categories, with full transparency          |
-| C. Safe to share    | Epic 7     | Live demo with sample data and limits                      |
-| D. Stands out       | Epics 8–10 | Review at volume, recipe, model benchmark                  |
-| E. Submitted        | Epic 11    | README, video script, QA                                   |
+| Checkpoint          | After       | What exists                                                |
+| ------------------- | ----------- | ---------------------------------------------------------- |
+| A. Works without AI | Epic 5      | Load, review, accept, export; every category found by code |
+| B. Brief met        | Epic 6      | AI in all four categories, with full transparency          |
+| C. Safe to share    | Epic 7      | Live demo with sample data and limits                      |
+| D. Stands out       | Epics 8, 10 | Review at volume, model benchmark                          |
+| E. Submitted        | Epic 11     | README, video script, QA                                   |
 
 ## If time runs short
 
@@ -70,7 +68,6 @@ Epic 11 is never cut: without a README and a video there is no submission. Cut i
 2. Epic 10. The checks-only baseline from Epic 3 still gives the README a real number.
 3. T8.3 (edit before accepting).
 4. The rest of Epic 8.
-5. Epic 9.
 
 The shortest route to a real submission is checkpoint C, then Epic 11.
 
@@ -97,7 +94,7 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 | #   | Decision                                                                                                                                                                                                                                                                             | Lands in   |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
-| D1  | **Every change is a pure function of the original data.** Accepted changes never feed each other, so the result does not depend on the order of decisions, undo is free, and a recipe replays identically.                                                                           | T2.3       |
+| D1  | **Every change is a pure function of the original data.** Accepted changes never feed each other, so the result does not depend on the order of decisions and undo is free.                                                                                                          | T2.3       |
 | D2  | **The cleaned value is derived when it is read.** No cleaned copy of the data exists; a decision only recompiles a small plan.                                                                                                                                                       | T2.3, T5.3 |
 | D3  | **Precedence is explicit** when two accepted changes touch one cell: an explicit cell value, then date format, then value mapping, then whitespace trim. A cell a merge fills takes the other row's original value, and the column's rules apply to it. A removed row stays removed. | T2.3       |
 | D4  | **Rows stream to the page in chunks of 10,000**, pulled from the worker, which keeps the working copy. The first screen appears while the rest arrive.                                                                                                                               | T1.3, T5.1 |
@@ -196,11 +193,6 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 - [x] **T8.1** Decide in bulk and undo any step
 - [x] **T8.2** Review from the keyboard
 - [x] **T8.3** Edit a suggestion before accepting it
-
-### Epic 9: Recipe
-
-- [x] **T9.1** Export accepted rules as a recipe
-- [x] **T9.2** Replay a recipe on another file without AI
 
 ### Epic 10: Proof
 

@@ -15,9 +15,6 @@ import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { parseCsv } from '@/engine/dataset/parseCsv';
 import type { CleanedFiles } from '@/engine/export/cleanedFiles';
 import { exportCleanedFiles } from '@/engine/export/exportCleanedFiles';
-import type { Recipe } from '@/engine/recipe/recipe';
-import { replayRecipe } from '@/engine/recipe/replayRecipe';
-import type { ReplayResult } from '@/engine/recipe/replayResult';
 import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { findNearDuplicateCandidates } from '@/engine/matching/findNearDuplicateCandidates';
@@ -37,7 +34,6 @@ import { pauseForCancel } from './pauseForCancel';
 import { toAnalysisProgress } from './toAnalysisProgress';
 
 let dataset: Dataset | null = null;
-let fileName = '';
 let profile: readonly ColumnProfile[] | null = null;
 let candidates: readonly NearDuplicateCandidate[] | null = null;
 let checkIssues: readonly Issue[] | null = null;
@@ -51,7 +47,6 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
       { ok: true; facts: FileFacts } | { ok: false; reason: LoadFailureReason }
     > => {
       dataset = null;
-      fileName = file.name;
       profile = null;
       candidates = null;
       checkIssues = null;
@@ -158,23 +153,8 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
   preview: (change: Change): ChangePreview | null =>
     dataset ? previewChange({ change, dataset }) : null,
 
-  exportFiles: ({
-    accepted,
-    createdAt,
-  }: {
-    accepted: AcceptedChange[];
-    createdAt: string;
-  }): CleanedFiles | null =>
-    dataset
-      ? exportCleanedFiles({
-          dataset,
-          accepted,
-          recipeSource: { fileName, createdAt },
-        })
-      : null,
-
-  replayRecipe: (recipe: Recipe): ReplayResult | null =>
-    dataset ? replayRecipe({ dataset, recipe }) : null,
+  exportFiles: (accepted: AcceptedChange[]): CleanedFiles | null =>
+    dataset ? exportCleanedFiles({ dataset, accepted }) : null,
 }));
 
 export type DatasetWorker = typeof datasetWorker;

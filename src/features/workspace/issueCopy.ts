@@ -4,7 +4,6 @@ import type { Issue } from '@/engine/issues/issue';
 import { countOf } from '@/lib/countOf';
 import { formatNumber } from '@/lib/formatNumber';
 import { quote } from '@/lib/quote';
-import { describeRecipeChange } from './recipeCopy';
 import { toColumnLabel } from './toColumnLabel';
 
 export function describeIssue({
@@ -189,11 +188,6 @@ export function describeIssue({
       return {
         title: 'Repeated column headers',
         summary: `Headers used on more than one column: ${formatNumber(details.groups.length)}.`,
-      };
-    case 'recipeRule':
-      return {
-        title: describeRecipeChange({ change: issue.suggestion, columnName }),
-        summary: 'Applied from the recipe you loaded.',
       };
     case 'blankRows':
       return {
