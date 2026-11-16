@@ -1,5 +1,8 @@
 import { RxFileText } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
+import { BackdropIcon } from '@/components/BackdropIcon';
+import { eyebrow } from '@/components/eyebrow';
+import { IconCircle } from '@/components/IconCircle';
 import { ProgressBar } from '@/components/ProgressBar';
 import type { LoadStage } from '@/workers/loadStage';
 
@@ -20,16 +23,24 @@ export function LoadProgress({
     <section
       aria-label={`Loading ${fileName}`}
       className={twMerge(
-        'flex flex-col gap-4 rounded-lg border border-border bg-surface p-6',
+        'relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-sm',
         className
       )}
       {...props}
     >
-      <p className="flex min-w-0 items-center gap-2 text-sm font-medium">
-        <RxFileText aria-hidden className="size-4 shrink-0" />
-        <span className="truncate">{fileName}</span>
-      </p>
-      <ProgressBar value={percentage} label={loadStageCopy[stage]} />
+      <BackdropIcon icon={RxFileText} className="-right-6 -bottom-10 size-40" />
+      <div className="relative flex min-w-0 items-center gap-3">
+        <IconCircle icon={RxFileText} size="lg" />
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <p className={eyebrow()}>Loading</p>
+          <p className="truncate text-base font-semibold">{fileName}</p>
+        </div>
+      </div>
+      <ProgressBar
+        className="relative"
+        value={percentage}
+        label={loadStageCopy[stage]}
+      />
       <p aria-live="polite" className="sr-only">
         {loadStageCopy[stage]}
       </p>

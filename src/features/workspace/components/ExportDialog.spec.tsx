@@ -154,7 +154,7 @@ describe('ExportDialog', () => {
       type: 'application/json',
     });
     expect(
-      screen.getByText(/recipe holds the accepted rules only/)
+      screen.getByText(/recipe holds the applied rules only/)
     ).toBeInTheDocument();
   });
 

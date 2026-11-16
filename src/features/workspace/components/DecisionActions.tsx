@@ -6,8 +6,13 @@ import { Badge } from '@/components/Badge';
 import type { ButtonProps } from '@/components/Button';
 import { Button } from '@/components/Button';
 import type { Issue } from '@/engine/issues/issue';
+import { applyLabel } from '../applyLabel';
 import { ariaKeysOf } from '../shortcuts';
-import { reviewActions, useDecision } from '../state/reviewStore';
+import {
+  reviewActions,
+  useDecision,
+  useSelectedIssueId,
+} from '../state/reviewStore';
 import { ShortcutHint } from './ShortcutHint';
 
 export type DecisionActionsProps = React.ComponentProps<'div'> & {
@@ -15,12 +20,14 @@ export type DecisionActionsProps = React.ComponentProps<'div'> & {
 };
 
 // The main button keeps its place whichever decision is made, so keyboard focus stays on it.
+// Only the selected issue's apply button is solid: the one the A key acts on.
 export function DecisionActions({
   issue,
   className = '',
   ...props
 }: DecisionActionsProps) {
   const decision = useDecision(issue.id);
+  const isSelected = useSelectedIssueId() === issue.id;
   const mainButton = useRef<HTMLButtonElement>(null);
   const hasSuggestion = issue.suggestion !== null;
 
@@ -40,11 +47,11 @@ export function DecisionActions({
         run: () => reviewActions.resetDecision(issue.id),
       };
     }
-    if (hasSuggestion) {
+    if (issue.suggestion !== null) {
       return {
-        label: 'Accept',
+        label: applyLabel(issue.suggestion),
         icon: RxCheck,
-        variant: 'primary',
+        variant: isSelected ? 'primary' : 'tint',
         shortcut: ariaKeysOf('accept'),
         run: () => reviewActions.accept(issue.id),
       };
@@ -61,11 +68,12 @@ export function DecisionActions({
 
   return (
     <div
-      className={twMerge('flex items-center justify-end gap-2', className)}
+      className={twMerge('flex items-center justify-end gap-1.5', className)}
       {...props}
     >
       {decision === undefined && hasSuggestion && (
         <Button
+          variant="ghost"
           aria-keyshortcuts={ariaKeysOf('reject')}
           onClick={() => {
             reviewActions.reject(issue.id);
@@ -73,12 +81,15 @@ export function DecisionActions({
           }}
         >
           <RxCross2 aria-hidden className="size-3.5" />
-          Reject
+          Keep as is
           <ShortcutHint action="reject" />
         </Button>
       )}
       {decision !== undefined && (
-        <Badge variant="outline">
+        <Badge
+          variant={decision.status === 'rejected' ? 'neutral' : 'positive'}
+          className="motion-safe:animate-settle"
+        >
           {decision.status !== 'rejected' && (
             <RxCheck aria-hidden className="size-3" />
           )}
@@ -108,8 +119,8 @@ function decisionCopy({
   status: 'accepted' | 'edited' | 'rejected';
   hasSuggestion: boolean;
 }): string {
-  if (status === 'accepted') return 'Accepted';
-  if (status === 'edited') return 'Edited and accepted';
+  if (status === 'accepted') return 'Applied';
+  if (status === 'edited') return 'Edited and applied';
 
-  return hasSuggestion ? 'Rejected' : 'Dismissed';
+  return hasSuggestion ? 'Kept as is' : 'Dismissed';
 }

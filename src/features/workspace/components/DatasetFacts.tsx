@@ -16,8 +16,8 @@ export function DatasetFacts({ className = '', ...props }: DatasetFactsProps) {
       className={twMerge('flex min-w-0 flex-col gap-0.5', className)}
       {...props}
     >
-      <h2 className="flex min-w-0 items-center gap-2 text-sm font-medium">
-        <RxFileText aria-hidden className="size-4 shrink-0" />
+      <h2 className="flex min-w-0 items-center gap-1.5 text-sm font-semibold">
+        <RxFileText aria-hidden className="size-4 shrink-0 text-primary" />
         <span className="truncate">{facts.fileName}</span>
       </h2>
       <p className="text-xs text-text-secondary tabular-nums">

@@ -25,9 +25,9 @@ export function DecisionAnnouncement({
     }
 
     const verb = {
-      accepted: 'Accepted',
-      edited: 'Edited and accepted',
-      rejected: 'Rejected',
+      accepted: 'Applied:',
+      edited: 'Edited and applied:',
+      rejected: 'Kept as is:',
       removed: 'Removed the decision on',
     }[step.status];
     if (step.count > 1) {

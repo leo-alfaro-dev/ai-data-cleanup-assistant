@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
+import { RxCheck, RxCross2 } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
+import { Select } from '@/components/Select';
 import type { Confidence, IssueCategory } from '@/engine/issues/issue';
 import { formatCount } from '@/lib/formatCount';
 import { confidenceLabels } from '../confidenceLabels';
@@ -45,17 +47,18 @@ export function BulkActions({
       {...props}
     >
       <Button
+        variant="tint"
         disabled={acceptableCount === 0}
         onClick={() => reviewActions.acceptAll({ category, minimumConfidence })}
       >
-        Accept all {WIDENED_COPY[minimumConfidence]} ·{' '}
+        <RxCheck aria-hidden className="size-3.5" />
+        Apply all {WIDENED_COPY[minimumConfidence]} ·{' '}
         {formatCount(acceptableCount)}
       </Button>
       <label className="flex items-center gap-1.5 text-xs text-text-secondary">
         Down to
-        <select
+        <Select
           value={minimumConfidence}
-          className="h-8 rounded-md border border-border bg-surface px-2 text-sm text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           onChange={(event) => {
             const chosen = WIDENING_CHOICES.find(
               (choice) => choice === event.target.value
@@ -68,13 +71,15 @@ export function BulkActions({
               {confidenceLabels[choice]}
             </option>
           ))}
-        </select>
+        </Select>
       </label>
       <Button
+        variant="ghost"
         disabled={rejectableCount === 0}
         onClick={() => reviewActions.rejectAll({ category })}
       >
-        Reject all · {formatCount(rejectableCount)}
+        <RxCross2 aria-hidden className="size-3.5" />
+        Keep all as is · {formatCount(rejectableCount)}
       </Button>
     </div>
   );

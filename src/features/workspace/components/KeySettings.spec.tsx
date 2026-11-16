@@ -9,7 +9,7 @@ import { KeySettings } from './KeySettings';
 async function openPopover() {
   const user = userEvent.setup();
   render(<KeySettings />);
-  await user.click(screen.getByRole('button', { name: /own key/i }));
+  await user.click(screen.getByRole('button', { name: /your key/i }));
 
   return user;
 }

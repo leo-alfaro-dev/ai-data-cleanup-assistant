@@ -42,13 +42,13 @@ describe('DuplicateGroup', () => {
     const email = rowOf('email');
 
     for (const cell of within(city).getAllByRole('cell')) {
-      expect(cell).toHaveClass('bg-duplicate/20');
+      expect(cell).toHaveClass('bg-highlight');
     }
     for (const cell of within(email).getAllByRole('cell')) {
-      expect(cell).not.toHaveClass('bg-duplicate/20');
+      expect(cell).not.toHaveClass('bg-highlight');
     }
     expect(cellOf({ column: 'name', index: 0 })).not.toHaveClass(
-      'bg-duplicate/20'
+      'bg-highlight'
     );
   });
 
@@ -58,8 +58,8 @@ describe('DuplicateGroup', () => {
     const first = cellOf({ column: 'name', index: 0 });
     const second = cellOf({ column: 'name', index: 1 });
 
-    expect(first).toHaveClass('bg-duplicate/20');
-    expect(second).toHaveClass('bg-duplicate/20');
+    expect(first).toHaveClass('bg-highlight');
+    expect(second).toHaveClass('bg-highlight');
     expect(within(first).queryByRole('img')).not.toBeInTheDocument();
     expect(
       within(second).getByRole('img', { name: 'space' })
@@ -84,7 +84,7 @@ describe('DuplicateGroup', () => {
     render(<DuplicateGroup rows={[toRowId(0), toRowId(1)]} />);
 
     for (const cell of screen.getAllByRole('cell')) {
-      expect(cell).not.toHaveClass('bg-duplicate/20');
+      expect(cell).not.toHaveClass('bg-highlight');
     }
   });
 
@@ -93,7 +93,7 @@ describe('DuplicateGroup', () => {
 
     expect(screen.getAllByText('…')).toHaveLength(3);
     for (const cell of screen.getAllByRole('cell')) {
-      expect(cell).not.toHaveClass('bg-duplicate/20');
+      expect(cell).not.toHaveClass('bg-highlight');
     }
   });
 });

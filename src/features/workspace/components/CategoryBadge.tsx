@@ -1,7 +1,5 @@
-import { twMerge } from 'tailwind-variants';
-import { Badge } from '@/components/Badge';
+import { eyebrow } from '@/components/eyebrow';
 import type { IssueCategory } from '@/engine/issues/issue';
-import { categoryTone } from '../categoryTone';
 import { issueCategories } from '../issueCategories';
 
 export type CategoryBadgeProps = React.ComponentProps<'span'> & {
@@ -14,12 +12,16 @@ export function CategoryBadge({
   ...props
 }: CategoryBadgeProps) {
   const { label, icon: Icon } = issueCategories[category];
-  const { text, tint } = categoryTone({ category });
 
   return (
-    <Badge className={twMerge(tint(), text(), className)} {...props}>
-      <Icon aria-hidden className="size-3" />
+    <span
+      className={eyebrow({
+        className: `inline-flex min-w-0 items-center gap-1.5 tracking-wider ${className}`,
+      })}
+      {...props}
+    >
+      <Icon aria-hidden className="size-3.5 shrink-0" />
       {label}
-    </Badge>
+    </span>
   );
 }

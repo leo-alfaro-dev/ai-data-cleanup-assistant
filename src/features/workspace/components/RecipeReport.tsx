@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
+import { RxReader } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
+import { BackdropIcon } from '@/components/BackdropIcon';
+import { eyebrow } from '@/components/eyebrow';
 import { countOf } from '@/lib/countOf';
 import { describeRecipeRule, skippedRuleCopy } from '../recipeCopy';
 import { useAiCalls } from '../state/aiStore';
 import type { RecipeResult } from '../state/recipeStore';
 import { summarizeAiCalls } from '../state/summarizeAiCalls';
+import { StatTile } from './StatTile';
 
 export type RecipeReportProps = React.ComponentProps<'section'> & {
   result: RecipeResult;
@@ -22,27 +26,34 @@ export function RecipeReport({
     <section
       aria-label="Recipe"
       className={twMerge(
-        'flex flex-col gap-2 rounded-lg border border-border bg-surface p-3 text-sm',
+        'relative flex flex-col gap-3 overflow-hidden rounded-xl border border-border bg-surface p-3 text-sm shadow-xs',
         className
       )}
       {...props}
     >
-      <p className="font-medium">Recipe applied: {result.fileName}</p>
-      <dl className="grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 tabular-nums">
-        <dt className="text-text-secondary">Rules applied</dt>
-        <dd className="text-right font-medium">{result.issues.length}</dd>
-        <dt className="text-text-secondary">Rules skipped</dt>
-        <dd className="text-right font-medium">{result.skipped.length}</dd>
-        <dt className="text-text-secondary">Cells changed</dt>
-        <dd className="text-right font-medium">{result.cellsChanged}</dd>
-        <dt className="text-text-secondary">Rows removed</dt>
-        <dd className="text-right font-medium">{result.rowsRemoved}</dd>
+      <BackdropIcon icon={RxReader} className="-top-4 -right-5 size-24" />
+      <div className="relative flex flex-col gap-0.5">
+        <p className={eyebrow()}>Recipe applied</p>
+        <p className="truncate font-semibold">{result.fileName}</p>
+      </div>
+      <dl className="relative grid grid-cols-2 gap-2">
+        <StatTile tone="solid" label="Rules applied">
+          {result.issues.length}
+        </StatTile>
+        <StatTile tone="tint" label="Rules skipped">
+          {result.skipped.length}
+        </StatTile>
+        <StatTile label="Cells changed">{result.cellsChanged}</StatTile>
+        <StatTile label="Rows removed">{result.rowsRemoved}</StatTile>
       </dl>
-      <p className="text-text-secondary">
+      <p className="relative text-text-secondary">
         {countOf({ count: callCount, noun: 'AI call' })}
       </p>
       {result.skipped.length > 0 && (
-        <ul aria-label="Skipped rules" className="flex flex-col gap-1">
+        <ul
+          aria-label="Skipped rules"
+          className="relative flex flex-col gap-1 border-t border-border pt-2"
+        >
           {result.skipped.map(({ index, rule, reason }) => (
             <li key={index} className="text-xs text-text-secondary">
               {describeRecipeRule(rule)}: {skippedRuleCopy[reason]}

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { RxDownload } from 'react-icons/rx';
 import { describe, expect, it, vi } from 'vitest';
 import { Modal } from './Modal';
 
@@ -9,6 +10,7 @@ describe('Modal', () => {
       <Modal
         isOpen
         title="Export"
+        icon={RxDownload}
         description="Download the files."
         onClose={vi.fn()}
       >
@@ -23,7 +25,13 @@ describe('Modal', () => {
 
   it('renders nothing while closed', () => {
     render(
-      <Modal isOpen={false} title="Export" description="x" onClose={vi.fn()}>
+      <Modal
+        isOpen={false}
+        title="Export"
+        icon={RxDownload}
+        description="x"
+        onClose={vi.fn()}
+      >
         <p>Body</p>
       </Modal>
     );
@@ -35,7 +43,13 @@ describe('Modal', () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
     render(
-      <Modal isOpen title="Export" description="x" onClose={onClose}>
+      <Modal
+        isOpen
+        title="Export"
+        icon={RxDownload}
+        description="x"
+        onClose={onClose}
+      >
         <p>Body</p>
       </Modal>
     );
@@ -55,6 +69,7 @@ describe('Modal', () => {
         isOpen
         isCloseDisabled
         title="Export"
+        icon={RxDownload}
         description="x"
         onClose={onClose}
       >

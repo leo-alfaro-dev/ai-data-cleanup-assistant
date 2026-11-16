@@ -26,14 +26,14 @@ export function PreviewSummary({
       )}
       {entry?.status === 'ready' && (
         <>
-          <p className="text-sm text-text-secondary tabular-nums">
+          <p className="text-sm font-medium tabular-nums">
             Changes{' '}
             {countOf({ count: entry.preview.counts.cells, noun: 'cell' })} in{' '}
             {countOf({ count: entry.preview.counts.rows, noun: 'row' })}.
             {entry.preview.counts.removedRows > 0 &&
               ` Removes ${countOf({ count: entry.preview.counts.removedRows, noun: 'row' })}.`}
           </p>
-          <ul aria-label="Before and after" className="flex flex-col gap-1">
+          <ul aria-label="Before and after" className="flex flex-col gap-1.5">
             {entry.preview.examples.map(({ before, after, cells }) => (
               <li
                 key={`${before}\u0000${after}`}
@@ -41,16 +41,16 @@ export function PreviewSummary({
               >
                 <VisibleValue
                   value={before}
-                  className="min-w-0 truncate rounded-sm bg-removed/10 px-1.5 py-0.5 text-removed"
+                  className="min-w-0 truncate rounded-md border border-border bg-surface px-1.5 py-0.5 text-removed"
                 />
                 <RxArrowRight
                   aria-label="becomes"
                   role="img"
-                  className="size-3.5 shrink-0 text-text-secondary"
+                  className="size-3.5 shrink-0 text-primary"
                 />
                 <VisibleValue
                   value={after}
-                  className="min-w-0 truncate rounded-sm bg-added/10 px-1.5 py-0.5 text-added"
+                  className="min-w-0 truncate rounded-md bg-tint px-1.5 py-0.5 font-medium text-added"
                 />
                 {cells > 1 && (
                   <span className="shrink-0 text-text-secondary tabular-nums">

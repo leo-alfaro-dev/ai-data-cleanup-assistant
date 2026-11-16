@@ -1,6 +1,6 @@
 # AI Data Cleanup Assistant
 
-Upload a CSV. The app finds **duplicates, inconsistent values, missing data and suspicious records**, suggests a change wherever one is safe, and lets you accept, edit, reject or undo every suggestion before you export the cleaned file. Code checks the whole file; the AI reads summaries of it and proposes rules that code validates and applies. The original file is never modified, and nothing changes without your decision.
+Upload a CSV. The app finds **duplicates, inconsistent values, missing data and suspicious records**, suggests a change wherever one is safe, and lets you apply, edit or decline every suggestion, and undo any step, before you export the cleaned file. Code checks the whole file; the AI reads summaries of it and proposes rules that code validates and applies. The original file is never modified, and nothing changes without your decision.
 
 **Live demo:** https://ai-data-cleanup-assistant.vercel.app. Choose **Load sample data** to try it without a file of your own.
 
@@ -19,7 +19,7 @@ Upload a CSV. The app finds **duplicates, inconsistent values, missing data and 
 | Identify missing data        | Checks find empty cells and common placeholders (`N/A`, `null`, `-`, `unknown`). The AI recognizes placeholders particular to the file (`no data`, `pending`).                                                                                                                                                            |
 | Identify suspicious records  | Checks find robust outliers, invalid emails, formula-like values and structural problems (ragged rows, repeated headers). The AI reviews the flagged rows and a sample, explains each, and suggests a value only when it is unambiguous.                                                                                  |
 | Suggest edits                | Most issues carry a suggestion expressed as data ([`src/engine/changes/change.ts`](src/engine/changes/change.ts)): what changes, why, how confident, and whether a check or the AI found it. Where no change is safe (a formula-like value, an invalid email, an outlier) the issue explains itself and can be dismissed. |
-| Review and accept the edits  | Accept, reject or edit each suggestion, or decide a whole category at once; undo and redo any step; review from the keyboard. Export the cleaned CSV, a change log of every cell changed, and a recipe of the accepted rules.                                                                                             |
+| Review and accept the edits  | Apply each suggestion with a button that names the change (“Trim spaces”, “Remove row 169”), edit it, or keep the data as is; decide a whole category at once; undo and redo any step; review from the keyboard. Export the cleaned CSV, a change log of every cell changed, and a recipe of the applied rules.           |
 
 ## How it works
 
@@ -48,7 +48,7 @@ flowchart LR
 - **Rules, not edits.** The model never rewrites the file. It proposes rules ("these spellings are one state"), and one decision applies a rule to every row it touches. Every change is explainable, reversible and repeatable.
 - **A recipe.** Accepted rules export as versioned JSON keyed by column header. Replaying it cleans next month's file in one step with zero AI calls, and reports any rule it had to skip ([`src/engine/recipe/`](src/engine/recipe/)). The sample includes next month's file to try it on.
 - **Measured accuracy.** Errors are planted in synthetic data and recorded, so the checks and each model are scored per category against known truth, with cost and latency ([`eval/`](eval/)).
-- **Review at volume.** Accept every certain and high-confidence suggestion in a category in one step. J and K move, A accepts, R rejects, E edits, U undoes, Shift+U redoes, O switches the grid between original and cleaned, and ? lists every shortcut.
+- **Review at volume.** Apply every certain and high-confidence suggestion in a category in one step. J and K move, A applies, R keeps as is, E edits, U undoes, Shift+U redoes, O switches the grid between original and cleaned, and ? lists every shortcut.
 - **Nothing hidden.** The header shows AI calls, tokens and cost; one click opens every request exactly as the browser sent it, with each call's model, tokens, cost and latency.
 
 ![The transparency panel: every request sent to the AI, with model, tokens, cost and time](docs/transparency.png)
@@ -77,7 +77,7 @@ P is precision and R is recall. The full table, with calls, tokens and failed ta
 - **What leaves the browser:** only the AI requests. The AI tasks start on their own once the checks finish (not when a recipe is replayed). They hold distinct values with counts (at most 200 per column, 12 columns), up to 300 candidate duplicate pairs in requests of 30 with both rows' values, and up to 40 flagged and 40 sampled rows with the 5 most common values of each column. The transparency panel shows each one exactly as sent. The file itself is never uploaded.
 - **Cell values are data, not instructions.** Prompts put them inside a delimited data block and say so ([snapshots](src/ai/tasks/normalizeValues/__snapshots__/)).
 - **Logs carry metadata only:** task, model, tokens, latency and outcome; never prompts, cell values or keys ([`src/ai/logAiCall.ts`](src/ai/logAiCall.ts)).
-- **Your own key.** **Use your own key** accepts an OpenRouter key. It is kept in memory, or in `sessionStorage` to survive a refresh, sent per request in a header, used for that call only, and never stored or logged on the server.
+- **Your own key.** **Add your key** accepts an OpenRouter key. It is kept in memory, or in `sessionStorage` to survive a refresh, sent per request in a header, used for that call only, and never stored or logged on the server.
 - **Demo limits.** The hosted demo spends from one OpenRouter key with a credit limit. A visitor gets 40 AI requests per 10 minutes on that key ([`src/ai/rateLimiter.ts`](src/ai/rateLimiter.ts)), counted per server instance, so the limit is best effort. A full run on the sample is 6 requests. The benchmark run on Gemini 2.5 Flash Lite made 7 model calls (one reply was retried), 40,010 tokens, $0.0090 ([`eval/results/google--gemini-2.5-flash-lite.json`](eval/results/google--gemini-2.5-flash-lite.json)); the run in the screenshots made 6 calls, 24.0k tokens, $0.005. At the higher cost each $5 of credit covers about 550 runs.
 - **When the AI is unavailable** (no key, a rejected key, the rate limit, the budget used up), the checks keep working, each AI task says why it failed and offers a retry, and the limit and budget messages offer your own key.
 

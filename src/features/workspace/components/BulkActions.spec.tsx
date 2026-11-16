@@ -33,20 +33,20 @@ describe('BulkActions', () => {
   it('states how many it will accept and reject before the click, and that number is what gets decided', async () => {
     render(<BulkActions category="inconsistent" />);
     const accept = screen.getByRole('button', {
-      name: 'Accept all certain and high · 2',
+      name: 'Apply all certain and high · 2',
     });
     expect(
-      screen.getByRole('button', { name: 'Reject all · 4' })
+      screen.getByRole('button', { name: 'Keep all as is · 4' })
     ).toBeEnabled();
 
     await userEvent.click(accept);
 
     expect(reviewStore$.getState().decisions.size).toBe(2);
     expect(
-      screen.getByRole('button', { name: 'Accept all certain and high · 0' })
+      screen.getByRole('button', { name: 'Apply all certain and high · 0' })
     ).toBeDisabled();
     expect(
-      screen.getByRole('button', { name: 'Reject all · 2' })
+      screen.getByRole('button', { name: 'Keep all as is · 2' })
     ).toBeEnabled();
   });
 
@@ -60,7 +60,7 @@ describe('BulkActions', () => {
     );
 
     const accept = screen.getByRole('button', {
-      name: 'Accept all with a suggestion · 3',
+      name: 'Apply all with a suggestion · 3',
     });
     await user.click(accept);
     expect(reviewStore$.getState().decisions.size).toBe(3);
@@ -70,10 +70,10 @@ describe('BulkActions', () => {
     render(<BulkActions category="missing" />);
 
     expect(
-      screen.getByRole('button', { name: 'Accept all certain and high · 0' })
+      screen.getByRole('button', { name: 'Apply all certain and high · 0' })
     ).toBeDisabled();
     expect(
-      screen.getByRole('button', { name: 'Reject all · 0' })
+      screen.getByRole('button', { name: 'Keep all as is · 0' })
     ).toBeDisabled();
   });
 });

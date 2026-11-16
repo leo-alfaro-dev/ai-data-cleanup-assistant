@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { twMerge } from 'tailwind-variants';
+import { TextInput } from '@/components/TextInput';
 import { VisibleValue } from '@/components/VisibleValue';
 import type { MapValues } from '@/engine/changes/change';
 
@@ -71,14 +72,13 @@ export function MapValuesEditor({
       {original.groups.map(({ variants }, index) => (
         <li
           key={variants.join('\u0000')}
-          className="flex flex-col gap-2 rounded-md border border-border p-2"
+          className="flex flex-col gap-2.5 rounded-lg border border-border bg-surface p-2.5"
         >
-          <label className="flex flex-col gap-1 text-xs font-medium text-text-secondary">
+          <label className="flex flex-col gap-1.5 text-xs font-medium text-text-secondary">
             Common spelling for {variants.join(', ')}
-            <input
+            <TextInput
               value={canonicals[index] ?? ''}
               spellCheck={false}
-              className="h-8 rounded-md border border-border bg-surface px-2 font-mono text-sm font-normal text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               onChange={(event) =>
                 emit({
                   nextCanonicals: canonicals.map((canonical, position) =>
@@ -95,9 +95,10 @@ export function MapValuesEditor({
           >
             {variants.map((variant) => (
               <li key={variant}>
-                <label className="flex items-center gap-1.5 text-xs">
+                <label className="flex cursor-pointer items-center gap-1.5 text-xs">
                   <input
                     type="checkbox"
+                    className="size-3.5 cursor-pointer accent-primary"
                     checked={!excluded.has(variant)}
                     onChange={(event) => {
                       const next = new Set(excluded);

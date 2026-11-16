@@ -1,5 +1,6 @@
 import { twMerge } from 'tailwind-variants';
 import { AI_MODELS, isAiModelId } from '@/ai/models';
+import { Select } from '@/components/Select';
 import { useIsAiRunning } from '../state/aiStore';
 import { settingsActions, useModelId } from '../state/settingsStore';
 
@@ -10,18 +11,12 @@ export function ModelPicker({ className = '', ...props }: ModelPickerProps) {
   const isRunning = useIsAiRunning();
 
   return (
-    <label
-      className={twMerge(
-        'flex items-center gap-2 text-xs text-text-secondary',
-        className
-      )}
-      {...props}
-    >
-      Model
-      <select
+    <label className={twMerge('flex min-w-0', className)} {...props}>
+      <span className="sr-only">Model</span>
+      <Select
         value={modelId}
         disabled={isRunning}
-        className="h-8 min-w-0 rounded-md border border-border bg-surface px-2 text-sm text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full pr-6"
         onChange={(event) => {
           const chosen = event.target.value;
           if (isAiModelId(chosen)) settingsActions.selectModel(chosen);
@@ -32,7 +27,7 @@ export function ModelPicker({ className = '', ...props }: ModelPickerProps) {
             {label}
           </option>
         ))}
-      </select>
+      </Select>
     </label>
   );
 }

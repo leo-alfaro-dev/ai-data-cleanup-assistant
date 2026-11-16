@@ -1,6 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
 import { twMerge } from 'tailwind-variants';
+import { eyebrow } from '@/components/eyebrow';
 import type { Issue } from '@/engine/issues/issue';
 import { countOf } from '@/lib/countOf';
 import { AffectedRowItem } from './AffectedRowItem';
@@ -26,15 +27,15 @@ export function AffectedRows({
 
   return (
     <div
-      className={twMerge('flex min-h-0 flex-col gap-1', className)}
+      className={twMerge('flex min-h-0 flex-col gap-1.5', className)}
       {...props}
     >
-      <h4 className="text-xs font-medium text-text-secondary">
+      <h4 className={eyebrow({ className: 'flex min-h-8 items-center' })}>
         Affected {countOf({ count: issue.rows.length, noun: 'row' })}
       </h4>
       <div
         ref={scrollRef}
-        className="max-h-48 overflow-y-auto rounded-md border border-border"
+        className="max-h-48 overflow-y-auto rounded-xl border border-border bg-surface p-1"
       >
         <div
           role="list"

@@ -20,7 +20,7 @@ export function CategorySummary({
     <div
       role="group"
       aria-label="Filter issues by category"
-      className={twMerge('grid grid-cols-2 gap-2', className)}
+      className={twMerge('grid grid-cols-4 gap-1.5', className)}
       {...props}
     >
       {ISSUE_CATEGORIES.map((category) => (

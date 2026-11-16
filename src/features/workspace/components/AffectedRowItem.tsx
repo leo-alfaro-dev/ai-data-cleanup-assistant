@@ -42,7 +42,7 @@ export function AffectedRowItem({
       onClick={() => reviewActions.jumpToRow(rowId)}
       {...props}
     >
-      <span className="w-14 shrink-0 text-text-secondary tabular-nums">
+      <span className="w-12 shrink-0 font-medium text-text-secondary tabular-nums">
         {toRowNumber(rowId)}
       </span>
       <VisibleValue
@@ -57,6 +57,11 @@ export function AffectedRowItem({
 const PREVIEW_VALUE_COUNT = 3;
 
 const affectedRowItem = tv({
-  base: 'flex h-8 w-full cursor-pointer items-center gap-3 rounded-md px-2 text-left text-xs hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
-  variants: { isFocused: { true: 'bg-muted', false: '' } },
+  base: 'flex h-8 w-full cursor-pointer items-center gap-3 rounded-lg px-2 text-left text-xs transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+  variants: {
+    isFocused: {
+      true: 'bg-tint text-text-primary',
+      false: 'hover:bg-wash',
+    },
+  },
 });

@@ -8,13 +8,15 @@ AI Data Cleanup Assistant: upload a CSV, and the app finds **duplicates, inconsi
 
 It should feel like a meticulous data analyst working beside you: it does the tedious checking, shows its work, and never touches your data without asking. Calm, precise and trustworthy, with Linear-level polish — deliberate typography and spacing, nothing accidental.
 
+It looks like a well-run workspace early in the morning: calm, competent, fresh, crafted, warm. Between a printed editorial page and a control panel — the first screen is spacious and centered, a place to think; the workspace is dense, a place to act. The logo is the craft itself: a broom standing in for the l of "Cleanup", its head stitched in rows.
+
 ### Principles
 
 - **The user decides.** Nothing changes without a decision, every decision can be undone, and the original file is never modified.
 - **Show the work.** Every suggestion says what changes, why, how confident, and who found it — a check or the AI. What left the browser, and what it cost, is one click away.
 - **Decide in bulk, inspect in detail.** One decision covers a rule across every row it touches; any rule opens to the cells it changes.
 - **Density is a feature.** The data is the interface: full density, no chrome competing with the grid.
-- **Color carries meaning.** Each category has one color, used everywhere that category appears; diff colors mean before/after and nothing else. Color is never the only signal — a label or icon goes with it.
+- **One hue, many volumes.** The interface is one deep blue at different strengths, and strength is importance: the most important thing on screen is the most filled in — solid, then tint, then white with a hairline border. Red appears only when something failed. Categories are told apart by icon and label; diff colors mean before/after and nothing else. Color is never the only signal — a label or icon goes with it.
 - **Latency is the enemy.** Large files stay responsive; check suggestions appear at once, AI suggestions land as each task finishes.
 - **Keyboard first.** The whole review loop works without a mouse.
 - **Truth is the aesthetic.** The UI and README never overstate: no invented metrics, no placeholder features. Accuracy and cost figures come only from real calls and `yarn eval`.
@@ -33,7 +35,7 @@ Use these words in code and UI; don't introduce synonyms (finding, anomaly, fix)
 - **Check** — deterministic code that finds issues across the whole file.
 - **Issue** — something wrong in the data, in one of the four categories.
 - **Suggestion** — a proposed change that resolves an issue, from a check or the AI.
-- **Decision** — the user's verdict on a suggestion: accepted, edited or rejected; pending until made, undoable after.
+- **Decision** — the user's verdict on a suggestion: accepted, edited or rejected; pending until made, undoable after. The UI words a decision by what it does to the data: the apply button names the change (“Trim spaces”, “Remove row 169”), and rejecting reads “Keep as is”.
 - **Change** — what a suggestion proposes, expressed as data.
 - **Rule** — a row-independent change (map values, trim, standardize a format, drop exact duplicates); one rule can touch many rows.
 - **Recipe** — the accepted rules, saved as versioned JSON to replay on another file without AI.
@@ -247,30 +249,23 @@ Every new component, hook, calculation or helper starts with two questions: **do
 - **Root element customization** — every component exports a `Props` type derived from its root element, destructures `className = ''` and `...props`, merges `className` (into the `tv` call, or with `twMerge` when there is no recipe), and spreads `props` on the root:
 
   ```tsx
-  export type CategoryBadgeProps = React.ComponentProps<'span'> & {
-    category: IssueCategory;
-  };
+  export type BadgeProps = React.ComponentProps<'span'> &
+    VariantProps<typeof badge>;
 
-  export function CategoryBadge({
-    category,
-    className = '',
-    ...props
-  }: CategoryBadgeProps) {
-    return (
-      <span className={categoryBadge({ category, className })} {...props} />
-    );
+  export function Badge({ variant, className = '', ...props }: BadgeProps) {
+    return <span className={badge({ variant, className })} {...props} />;
   }
 
-  const categoryBadge = tv({
-    base: 'inline-flex items-center gap-1 rounded-md px-1.5 text-xs font-medium',
+  const badge = tv({
+    base: 'inline-flex h-5 shrink-0 items-center gap-1 rounded-full px-2 text-xs font-medium whitespace-nowrap',
     variants: {
-      category: {
-        duplicate: 'bg-duplicate/10 text-duplicate',
-        inconsistent: 'bg-inconsistent/10 text-inconsistent',
-        missing: 'bg-missing/10 text-missing',
-        suspicious: 'bg-suspicious/10 text-suspicious',
+      variant: {
+        neutral: 'bg-muted text-text-secondary',
+        outline: 'border border-border bg-surface text-text-secondary',
+        positive: 'bg-tint text-primary',
       },
     },
+    defaultVariants: { variant: 'neutral' },
   });
   ```
 
@@ -285,13 +280,15 @@ Every new component, hook, calculation or helper starts with two questions: **do
 ### Styling
 
 - **Tailwind for all styling**; inline `style` only for values computed at runtime (virtualizer offsets, column widths).
-- **Tokens only.** Colors come from the `@theme` tokens in `src/app/globals.css` — surfaces, text, primary (with `on-primary`), danger, one per category, added and removed for diffs. Tailwind's default palette is switched off there (`--color-*: initial`), so palette classes like `bg-blue-500` don't exist; no hex values in components either. A missing color becomes a token first.
+- **Tokens only.** Colors come from the `@theme` tokens in `src/app/globals.css` — surfaces (`canvas`, `surface`, `wash`, `tint`, `muted`), borders, text, primary (with `primary-strong` and `on-primary`), danger, `highlight` for the selected issue's cells, added and removed for diffs. Tailwind's default palette is switched off there (`--color-*: initial`), so palette classes like `bg-blue-500` don't exist; no hex values in components either. A missing color becomes a token first.
 - **Custom tokens are colors only** — sizes, spacing and radii use Tailwind's scale. A custom `text-*` size collides with `text-*` colors in `twMerge`, which then drops one of them.
 - **`tv` for variants** instead of conditional class strings; **`twMerge` for merging**. Both come from `tailwind-variants` — no `tailwind-merge`, `clsx`, `cva` or `cn`.
 - **No Tailwind `group` classes.**
-- **Icons from `react-icons`** — `react-icons/rx` first, `react-icons/io5` when `rx` lacks one; no inline SVG icons.
+- **Icons from `react-icons`** — `react-icons/rx` first, `react-icons/io5` when `rx` lacks one; no inline SVG icons. The logo is the one drawn SVG: `src/components/Wordmark.tsx` (Outfit Bold, outlined) and its broom in `src/app/icon.svg`.
+- **Editorial labels** — a section's label uses `eyebrow` (`src/components/eyebrow.ts`): small, uppercase, widely tracked, in the brand color. A card's subject can sit faded behind its content as a `BackdropIcon`; the header bands carry the `dot-grid` utility.
 - **Interactive primitives from `radix-ui`** (dialog, dropdown menu, popover, tooltip, tabs). shadcn/ui code may be borrowed only after converting it to these conventions: `cva` → `tv`, `cn` → `twMerge`, `lucide-react` → `react-icons`.
-- **Type** — one sans for the UI and one mono for cell values in diffs, both through `next/font`; `tabular-nums` wherever numbers align.
+- **Type** — Inter for the UI and JetBrains Mono for cell values in diffs, both through `next/font`; `tabular-nums` wherever numbers align. Big numbers read as phrases ("12 of 130 decided").
+- **Shape** — buttons are pills, cards and fields moderately rounded, borders hairline, shadows barely there.
 - **Motion** only marks a change the user must notice (a decision applied, a task finishing); nothing decorative.
 
 ### Viewport & Accessibility

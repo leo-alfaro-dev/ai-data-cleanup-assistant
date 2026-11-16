@@ -5,7 +5,11 @@ import { countOf } from '@/lib/countOf';
 import { confidenceLabels } from '../confidenceLabels';
 import { describeAiNotes } from '../aiNoteCopy';
 import { describeIssue } from '../issueCopy';
-import { reviewActions, useSelectedIssueId } from '../state/reviewStore';
+import {
+  reviewActions,
+  useDecision,
+  useSelectedIssueId,
+} from '../state/reviewStore';
 import { useIssueNotes } from '../state/useIssueNotes';
 import { useFacts } from '../state/workspaceStore';
 import { sourceLabels } from '../sourceLabels';
@@ -20,6 +24,7 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
   const titleId = useId();
   const { columns } = useFacts();
   const isSelected = useSelectedIssueId() === issue.id;
+  const isDecided = useDecision(issue.id) !== undefined;
   const { title, summary } = describeIssue({ issue, columns });
   const aiNote = describeAiNotes({
     notes: useIssueNotes(issue.id),
@@ -31,21 +36,21 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
       aria-labelledby={titleId}
       aria-current={isSelected ? 'true' : undefined}
       data-issue-id={issue.id}
-      className={issueCard({ isSelected, className })}
+      className={issueCard({ isSelected, isDecided, className })}
       {...props}
     >
       <button
         type="button"
-        className="flex min-w-0 cursor-pointer flex-col gap-1 rounded-md p-1 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="flex min-w-0 cursor-pointer flex-col gap-1.5 rounded-lg p-1 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onClick={() => reviewActions.select(issue.id)}
       >
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <CategoryBadge category={issue.category} />
           <span className="text-xs text-text-secondary">
             {sourceLabels[issue.source]} · {confidenceLabels[issue.confidence]}
           </span>
         </span>
-        <span id={titleId} className="text-sm font-medium break-words">
+        <span id={titleId} className="text-sm font-semibold break-words">
           {title}
         </span>
         <span className="line-clamp-2 text-xs text-text-secondary">
@@ -55,7 +60,7 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
           <span className="text-xs text-text-secondary italic">{aiNote}</span>
         )}
         {issue.rows.length > 0 && (
-          <span className="text-xs text-text-secondary tabular-nums">
+          <span className="text-xs font-medium text-text-secondary tabular-nums">
             {countOf({ count: issue.rows.length, noun: 'row' })}
           </span>
         )}
@@ -66,11 +71,15 @@ export function IssueCard({ issue, className = '', ...props }: IssueCardProps) {
 }
 
 const issueCard = tv({
-  base: 'flex flex-col gap-1 rounded-lg border bg-surface p-2',
+  base: 'flex flex-col gap-1.5 rounded-xl border p-2 transition-colors',
   variants: {
     isSelected: {
-      true: 'border-primary',
+      true: 'border-primary ring-1 ring-primary ring-inset',
       false: 'border-border',
+    },
+    isDecided: {
+      true: 'bg-canvas',
+      false: 'bg-surface shadow-xs',
     },
   },
 });

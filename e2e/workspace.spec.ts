@@ -67,15 +67,11 @@ test.describe('the first screen', () => {
     await expect(
       page.getByRole('group', { name: 'Filter issues by category' })
     ).toBeVisible();
-    await page
-      .getByRole('region', { name: 'AI tasks' })
-      .getByText('Done', { exact: true })
-      .first()
-      .waitFor();
+    await waitForAiTasks(page);
     await filterTo(page, 'Inconsistent values');
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
     await page.getByRole('button', { name: 'Export', exact: true }).click();
 
@@ -102,8 +98,7 @@ test.describe('the keyboard', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     const label = await page.getByText(/^0 of [\d,]+ decided$/).textContent();
     const total = Number(label?.match(/of ([\d,]+)/)?.[1]?.replaceAll(',', ''));
     expect(total).toBeGreaterThan(50);
@@ -112,7 +107,8 @@ test.describe('the keyboard', () => {
       await page.keyboard.press('j');
       const selected = page.locator('article[aria-current="true"]');
       const hasSuggestion =
-        (await selected.getByRole('button', { name: 'Accept' }).count()) > 0;
+        (await selected.getByRole('button', { name: 'Keep as is' }).count()) >
+        0;
       await page.keyboard.press(hasSuggestion ? 'a' : 'r');
     }
 
@@ -147,11 +143,7 @@ test.describe('editing a suggestion', () => {
     page,
   }) => {
     await loadSample(page);
-    await expect(
-      page
-        .getByRole('region', { name: 'AI tasks' })
-        .getByText('Done', { exact: true })
-    ).toHaveCount(3);
+    await waitForAiTasks(page);
     await filterTo(page, 'Inconsistent values');
     const card = await findIssueCard({
       page,
@@ -176,9 +168,9 @@ test.describe('editing a suggestion', () => {
       .first();
     await spelling.fill('Typed Value');
     await expect(detail.getByText(/^Changes \d+ cells? in/)).toBeVisible();
-    await detail.getByRole('button', { name: 'Save and accept' }).click();
+    await detail.getByRole('button', { name: 'Save and apply' }).click();
 
-    await expect(card).toContainText('Edited and accepted');
+    await expect(card).toContainText('Edited and applied');
     await jumpTo({ page, rowNumber });
     await expect(
       page.getByRole('row', { name: new RegExp(`^${rowNumber}`) })
@@ -198,7 +190,7 @@ test.describe('the recipe', () => {
     await selectWhitespaceIssue(page);
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
 
     await page.getByRole('button', { name: 'Export', exact: true }).click();
@@ -379,7 +371,7 @@ test.describe('reviewing', () => {
 
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
     await jumpTo({ page, rowNumber });
 
@@ -399,7 +391,7 @@ test.describe('reviewing', () => {
     await loadSample(page);
     await filterTo(page, 'Inconsistent values');
     const accept = page.getByRole('button', {
-      name: /^Accept all certain and high · \d+$/,
+      name: /^Apply all certain and high · \d+$/,
     });
     const count = Number(((await accept.textContent()) ?? '').split('· ')[1]);
     expect(count).toBeGreaterThan(1);
@@ -422,7 +414,7 @@ test.describe('reviewing', () => {
     ).toBeVisible();
     await expect(
       page.getByRole('button', {
-        name: `Accept all certain and high · ${count}`,
+        name: `Apply all certain and high · ${count}`,
       })
     ).toBeEnabled();
   });
@@ -436,7 +428,7 @@ test.describe('reviewing', () => {
     await filterTo(page, 'Inconsistent values');
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
 
     await expect(
@@ -455,9 +447,7 @@ test.describe('reviewing', () => {
     const row = page.getByRole('row', { name: new RegExp(`^${rowNumber}`) });
     await expect(row).toBeVisible();
     await expect(row).toHaveAttribute('aria-current', 'true');
-    await expect(row.getByRole('cell').nth(1)).toHaveClass(
-      /bg-inconsistent\/20/
-    );
+    await expect(row.getByRole('cell').nth(1)).toHaveClass(/bg-highlight/);
   });
 });
 
@@ -469,7 +459,7 @@ test.describe('exporting', () => {
     const { rowNumber } = await selectWhitespaceIssue(page);
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
 
     await page.getByRole('button', { name: 'Export', exact: true }).click();
@@ -532,8 +522,9 @@ test.describe('the AI tasks', () => {
     await mockAiRoutes(page, { beforeAnswer: () => gate });
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    const tasks = await openAiTasks(page);
     await expect(tasks.getByText(/^Running|^Queued/).first()).toBeVisible();
+    await page.keyboard.press('Escape');
     const categories = page.getByRole('group', {
       name: 'Filter issues by category',
     });
@@ -548,7 +539,7 @@ test.describe('the AI tasks', () => {
 
     release();
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(await countOf(inconsistent)).toBeGreaterThan(before);
     const group = await findIssueCard({
       page,
@@ -565,8 +556,7 @@ test.describe('the AI tasks', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await filterTo(page, 'Duplicates');
     const card = await findIssueCard({
@@ -574,8 +564,8 @@ test.describe('the AI tasks', () => {
       name: 'Rows 47 and 169 are the same record',
     });
     await expect(card).toContainText('AI · Certain');
-    await card.getByRole('button', { name: 'Accept' }).click();
-    await expect(card.getByText('Accepted')).toBeVisible();
+    await card.getByRole('button', { name: 'Remove row 169' }).click();
+    await expect(card.getByText('Applied')).toBeVisible();
 
     await page.getByRole('button', { name: 'Export', exact: true }).click();
     const dialog = page.getByRole('dialog', { name: 'Export' });
@@ -586,8 +576,7 @@ test.describe('the AI tasks', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await filterTo(page, 'Suspicious records');
     const card = await findIssueCard({
@@ -616,7 +605,7 @@ test.describe('the AI tasks', () => {
     await mockAiRoutes(page, { failFirst: 4 });
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    const tasks = await openAiTasks(page);
     await expect(
       tasks.getByText(/No OpenRouter key is set, so the AI cannot run/)
     ).toBeVisible();
@@ -627,7 +616,7 @@ test.describe('the AI tasks', () => {
 
     await tasks.getByRole('button', { name: 'Retry' }).click();
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     await expect(tasks.getByRole('button', { name: 'Retry' })).toHaveCount(0);
   });
 });
@@ -637,8 +626,7 @@ test.describe('what was sent to the AI', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     const summary = page.getByRole('button', {
       name: /^\d+ AI calls · [\d.]+k tokens · \$/,
@@ -672,27 +660,26 @@ test.describe('the visitor key', () => {
       }
     });
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === undefined)).toBe(true);
     sent.length = 0;
 
-    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByRole('button', { name: 'Add your key' }).click();
     await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
     await page.getByRole('button', { name: 'Use this key' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Run again' }).click();
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === 'sk-or-e2e-visitor')).toBe(true);
     sent.length = 0;
 
-    await page.getByRole('button', { name: 'Own key in use' }).click();
+    await page.getByRole('button', { name: 'Your key' }).click();
     await page.getByRole('button', { name: 'Remove key' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Run again' }).click();
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === undefined)).toBe(true);
   });
@@ -701,16 +688,14 @@ test.describe('the visitor key', () => {
     page,
   }) => {
     await loadSample(page);
-    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByRole('button', { name: 'Add your key' }).click();
     await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
     await page.getByRole('button', { name: 'Use this key' }).click();
 
     await page.reload();
     await page.getByLabel('Choose a CSV file').setInputFiles(SAMPLE);
 
-    await expect(
-      page.getByRole('button', { name: 'Own key in use' })
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Your key' })).toBeVisible();
     expect(await page.evaluate(() => window.localStorage.length)).toBe(0);
   });
 });
@@ -720,8 +705,7 @@ test.describe('the model', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     const picker = page.getByRole('combobox', { name: 'Model' });
     await expect(picker).toBeEnabled();
 
@@ -734,7 +718,7 @@ test.describe('the model', () => {
     await page.getByRole('button', { name: 'Run again' }).click();
     await request;
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     await expect(picker).toBeEnabled();
     await page.getByRole('button', { name: /AI calls/ }).click();
     const panel = page.getByRole('dialog', { name: 'What was sent to the AI' });
@@ -804,8 +788,7 @@ test.describe('on a phone', () => {
   }) => {
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await expect(
       page.getByRole('button', { name: /AI calls/ })
@@ -844,6 +827,18 @@ async function loadSample(page: Page): Promise<void> {
 
 function firstNameOf(csv: string, lineIndex: number): string {
   return csv.split('\n')[lineIndex]?.split(',')[1] ?? '';
+}
+
+async function waitForAiTasks(page: Page): Promise<void> {
+  await expect(
+    page.getByRole('button', { name: 'AI tasks: 3 of 3 done' })
+  ).toBeVisible();
+}
+
+async function openAiTasks(page: Page): Promise<Locator> {
+  await page.getByRole('button', { name: /^AI tasks:/ }).click();
+
+  return page.getByRole('region', { name: 'AI tasks' });
 }
 
 async function countOf(button: Locator): Promise<number> {

@@ -1,12 +1,19 @@
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import {
+  RxArrowRight,
+  RxCheck,
   RxCheckCircled,
   RxEyeOpen,
+  RxFileText,
   RxLockClosed,
+  RxReader,
+  RxTable,
   RxUpload,
 } from 'react-icons/rx';
-import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
+import { eyebrow } from '@/components/eyebrow';
+import { IconCircle } from '@/components/IconCircle';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { countOf } from '@/lib/countOf';
 import { formatCount } from '@/lib/formatCount';
@@ -19,6 +26,8 @@ import {
 } from '../state/recipeStore';
 import { useFileDrop } from '../state/useFileDrop';
 import { workspaceActions } from '../state/workspaceStore';
+import { FailureNote } from './FailureNote';
+import { StartCard } from './StartCard';
 
 export type WelcomeScreenProps = React.ComponentProps<'section'>;
 
@@ -29,99 +38,168 @@ export function WelcomeScreen({
   const { isDragging, handlers } = useFileDrop();
   const inputRef = useRef<HTMLInputElement>(null);
   const recipeInputRef = useRef<HTMLInputElement>(null);
+  const factsTitleId = useId();
   const pending = usePendingRecipe();
   const rejection = useRecipeRejection();
 
   return (
     <section
       aria-label="Get started"
-      className={welcomeScreen({ isDragging, className })}
+      className={twMerge('relative flex flex-col gap-10', className)}
       {...handlers}
       {...props}
     >
-      <p className="max-w-prose text-base font-medium">
-        Finds duplicates, inconsistent values, missing data and suspicious
-        records in a CSV, and lets you decide what changes.
-      </p>
-      <div className="flex flex-wrap items-center gap-2">
-        <Button
-          variant="primary"
-          onClick={() => void workspaceActions.loadSample()}
+      {isDragging && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-3 z-10 flex items-center justify-center rounded-3xl border-2 border-dashed border-primary bg-wash/90"
         >
-          Load sample data
-        </Button>
-        <Button onClick={() => inputRef.current?.click()}>
-          <RxUpload aria-hidden className="size-3.5" />
-          Choose a CSV file
-        </Button>
-        <Button onClick={() => recipeInputRef.current?.click()}>
-          Apply a recipe
-        </Button>
-        <input
-          ref={recipeInputRef}
-          type="file"
-          aria-label="Choose a recipe file"
-          accept=".json,application/json"
-          tabIndex={-1}
-          className="sr-only"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            event.target.value = '';
-            if (file) void recipeActions.chooseRecipe(file);
-          }}
-        />
-        <input
-          ref={inputRef}
-          type="file"
-          aria-label="Choose a CSV file"
-          accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"
-          tabIndex={-1}
-          className="sr-only"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            event.target.value = '';
-            if (file) void workspaceActions.loadFile(file);
-          }}
-        />
+          <p className="flex items-center gap-2 text-lg font-semibold text-primary">
+            <RxUpload className="size-5" />
+            Drop the CSV to load it
+          </p>
+        </div>
+      )}
+      <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <span className="block">Every row checked.</span>{' '}
+          <span className="block">Every change yours to make.</span>
+        </h2>
+        <p className="text-base text-pretty text-text-secondary sm:text-lg">
+          Duplicates, inconsistent values, missing data and suspicious records —
+          found across the whole file, explained, and changed only when you say
+          so.
+        </p>
       </div>
-      {pending && (
-        <p className="text-sm">
-          Recipe ready: {pending.fileName},{' '}
-          {countOf({ count: pending.recipe.rules.length, noun: 'rule' })}. The
-          next file you load is cleaned with it, without AI.
-        </p>
-      )}
-      {rejection && (
-        <p role="alert" className="text-sm text-danger">
-          {rejection.fileName}: {recipeRejectionCopy[rejection.reason]}
-        </p>
-      )}
-      <Button
-        variant="ghost"
-        onClick={() => void workspaceActions.loadNextMonthSample()}
-      >
-        Try the recipe on next month’s file
-      </Button>
-      <p className="text-xs text-text-secondary">
-        The sample is {formatCount(SAMPLE_ROW_COUNT)} synthetic customer rows
-        with planted errors. Or drop your own CSV anywhere in this area: comma,
-        semicolon, tab or pipe separated, up to {MAX_FILE_BYTES / 1024 / 1024}{' '}
-        MB.
-      </p>
-      <ul
-        aria-label="How your data is handled"
-        className="grid gap-3 border-t border-border pt-4 sm:grid-cols-3"
-      >
-        {FACTS.map(({ Icon, title, text }) => (
-          <li key={title} className="flex items-start gap-2.5 text-sm">
-            <Icon aria-hidden className="mt-0.5 size-4 shrink-0" />
-            <div className="flex flex-col gap-0.5">
-              <span className="font-medium">{title}</span>
-              <span className="text-text-secondary">{text}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="grid gap-4 md:grid-cols-3">
+        <StartCard
+          tone="solid"
+          icon={RxTable}
+          label="Start here"
+          title="Try the sample"
+        >
+          <p>
+            {formatCount(SAMPLE_ROW_COUNT)} synthetic customer rows with planted
+            errors in all four categories — see what the checks and the AI find.
+          </p>
+          <Button
+            variant="inverse"
+            size="lg"
+            className="mt-auto"
+            onClick={() => void workspaceActions.loadSample()}
+          >
+            Load sample data
+          </Button>
+        </StartCard>
+        <StartCard
+          tone="tint"
+          icon={RxFileText}
+          label="Your file"
+          title="Bring your own CSV"
+        >
+          <p>
+            Comma, semicolon, tab or pipe separated, up to{' '}
+            {MAX_FILE_BYTES / 1024 / 1024} MB — choose it, or drag it here.
+          </p>
+          <Button
+            size="lg"
+            className="mt-auto"
+            onClick={() => inputRef.current?.click()}
+          >
+            <RxUpload aria-hidden className="size-4" />
+            Choose a CSV file
+          </Button>
+          <input
+            ref={inputRef}
+            type="file"
+            aria-label="Choose a CSV file"
+            accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"
+            tabIndex={-1}
+            className="sr-only"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              event.target.value = '';
+              if (file) void workspaceActions.loadFile(file);
+            }}
+          />
+        </StartCard>
+        <StartCard
+          tone="plain"
+          icon={RxReader}
+          label="Repeat a cleanup"
+          title="Replay a recipe"
+        >
+          <p>
+            Load the rules you accepted last time — they replay on the next file
+            in one step, without AI.
+          </p>
+          <Button
+            variant="ghost"
+            className="h-auto px-0 text-primary underline-offset-4 hover:bg-transparent hover:text-primary hover:underline"
+            onClick={() => void workspaceActions.loadNextMonthSample()}
+          >
+            Try the recipe on next month’s file
+            <RxArrowRight aria-hidden className="size-3.5" />
+          </Button>
+          {pending && (
+            <p className="flex items-start gap-2 rounded-xl bg-tint px-3 py-2 text-text-primary">
+              <RxCheck
+                aria-hidden
+                className="mt-0.5 size-4 shrink-0 text-primary"
+              />
+              <span>
+                Recipe ready: {pending.fileName},{' '}
+                {countOf({ count: pending.recipe.rules.length, noun: 'rule' })}.
+                The next file you load is cleaned with it, without AI.
+              </span>
+            </p>
+          )}
+          {rejection && (
+            <FailureNote>
+              {rejection.fileName}: {recipeRejectionCopy[rejection.reason]}
+            </FailureNote>
+          )}
+          <Button
+            size="lg"
+            className="mt-auto"
+            onClick={() => recipeInputRef.current?.click()}
+          >
+            Apply a recipe
+          </Button>
+          <input
+            ref={recipeInputRef}
+            type="file"
+            aria-label="Choose a recipe file"
+            accept=".json,application/json"
+            tabIndex={-1}
+            className="sr-only"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              event.target.value = '';
+              if (file) void recipeActions.chooseRecipe(file);
+            }}
+          />
+        </StartCard>
+      </div>
+      <div className="flex flex-col gap-6 border-t border-border pt-8">
+        <h2 id={factsTitleId} className={eyebrow({ className: 'text-center' })}>
+          How your data is handled
+        </h2>
+        <ul
+          aria-labelledby={factsTitleId}
+          className="grid gap-6 sm:grid-cols-3"
+        >
+          {FACTS.map(({ Icon, title, text }) => (
+            <li key={title} className="flex items-start gap-3 text-sm">
+              <IconCircle icon={Icon} />
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold">{title}</span>
+                <span className="text-text-secondary">{text}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
@@ -140,16 +218,6 @@ const FACTS = [
   {
     Icon: RxCheckCircled,
     title: 'Nothing changes without you',
-    text: 'Every change is a suggestion you accept, edit or reject. The original file is never modified.',
+    text: 'Every change is a suggestion: apply it, edit it, or keep the data as is. The original file is never modified.',
   },
 ];
-
-const welcomeScreen = tv({
-  base: 'flex flex-col items-start gap-4 rounded-lg border border-dashed p-6 transition-colors sm:p-8',
-  variants: {
-    isDragging: {
-      true: 'border-primary bg-muted',
-      false: 'border-border bg-surface',
-    },
-  },
-});

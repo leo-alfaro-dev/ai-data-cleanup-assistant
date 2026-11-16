@@ -14,8 +14,8 @@ export function IssueExamplesSkeleton({
       {...props}
     >
       <SkeletonBar className="h-4 w-48" />
-      <SkeletonBar className="h-6 w-full" />
-      <SkeletonBar className="h-6 w-full" />
+      <SkeletonBar className="h-5 w-64" />
+      <SkeletonBar className="h-5 w-56" />
     </div>
   );
 }

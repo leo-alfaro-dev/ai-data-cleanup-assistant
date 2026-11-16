@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { twMerge } from 'tailwind-variants';
+import { Select } from '@/components/Select';
 import type { MergeRows } from '@/engine/changes/change';
 import type { ColumnKey, RowId } from '@/engine/dataset/dataset';
 import { toRowNumber } from '@/engine/dataset/toRowNumber';
@@ -32,13 +33,17 @@ export function MergeRowsEditor({
   return (
     <div className={twMerge('flex flex-col gap-3', className)} {...props}>
       <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <legend className="mb-1 text-xs font-medium text-text-secondary">
+        <legend className="mb-1.5 text-xs font-medium text-text-secondary">
           Row to keep
         </legend>
         {rows.map((rowId) => (
-          <label key={rowId} className="flex items-center gap-1.5 text-sm">
+          <label
+            key={rowId}
+            className="flex cursor-pointer items-center gap-1.5 text-sm"
+          >
             <input
               type="radio"
+              className="size-3.5 cursor-pointer accent-primary"
               name={groupName}
               checked={draft.keep === rowId}
               onChange={() =>
@@ -56,12 +61,12 @@ export function MergeRowsEditor({
       {original.values.map(({ column }) => (
         <label
           key={column}
-          className="flex flex-col gap-1 text-xs font-medium text-text-secondary"
+          className="flex flex-col gap-1.5 text-xs font-medium text-text-secondary"
         >
           Value for {toColumnLabel({ columns, column })}
-          <select
+          <Select
             value={fromOf(column)}
-            className="h-8 rounded-md border border-border bg-surface px-2 font-mono text-sm font-normal text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="rounded-lg border-border-strong font-mono font-normal shadow-none"
             onChange={(event) => {
               const from = rows.find(
                 (rowId) => String(rowId) === event.target.value
@@ -79,7 +84,7 @@ export function MergeRowsEditor({
             {rows.map((rowId) => (
               <RowValueOption key={rowId} rowId={rowId} column={column} />
             ))}
-          </select>
+          </Select>
         </label>
       ))}
     </div>

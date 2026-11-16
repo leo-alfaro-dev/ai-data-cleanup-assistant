@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { RxEyeOpen } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import { countOf } from '@/lib/countOf';
@@ -25,11 +26,11 @@ export function AiCallSummary({
 
   return (
     <Button
-      variant="ghost"
-      className={twMerge('tabular-nums', className)}
+      className={twMerge('text-xs tabular-nums', className)}
       onClick={() => transparencyActions.open()}
       {...props}
     >
+      <RxEyeOpen aria-hidden className="size-3.5 text-primary" />
       {countOf({ count: callCount, noun: 'AI call' })} · {formatTokens(tokens)}{' '}
       tokens · {formatCost(cost)}
     </Button>

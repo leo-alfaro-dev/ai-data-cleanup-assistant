@@ -1,4 +1,5 @@
 import { tv, twMerge } from 'tailwind-variants';
+import { eyebrow } from '@/components/eyebrow';
 import { VisibleValue } from '@/components/VisibleValue';
 import type { RowId } from '@/engine/dataset/dataset';
 import { toRowNumber } from '@/engine/dataset/toRowNumber';
@@ -26,19 +27,19 @@ export function DuplicateGroup({
       )}
       {...props}
     >
-      <caption className="pb-1 text-left text-xs font-medium text-text-secondary">
+      <caption className={eyebrow({ className: 'pb-1.5 text-left' })}>
         Rows {rows.map(toRowNumber).join(', ')}
       </caption>
       <thead>
-        <tr>
-          <th scope="col" className="w-28 p-1 text-left font-medium">
+        <tr className="bg-wash">
+          <th scope="col" className="w-28 px-2 py-1.5 text-left font-semibold">
             Column
           </th>
           {rows.map((rowId) => (
             <th
               key={rowId}
               scope="col"
-              className="p-1 text-left font-medium tabular-nums"
+              className="px-2 py-1.5 text-left font-semibold tabular-nums"
             >
               Row {toRowNumber(rowId)}
             </th>
@@ -52,10 +53,10 @@ export function DuplicateGroup({
           const isDifferent = loaded.some((cell) => cell !== loaded[0]);
 
           return (
-            <tr key={key} className="border-t border-border">
+            <tr key={key} className="border-b border-border last:border-b-0">
               <th
                 scope="row"
-                className="truncate p-1 text-left font-normal text-text-secondary"
+                className="truncate px-2 py-1.5 text-left font-normal text-text-secondary"
               >
                 {toColumnLabel({ columns, column: key })}
               </th>
@@ -86,8 +87,8 @@ export function DuplicateGroup({
 }
 
 const duplicateCell = tv({
-  base: 'p-1 font-mono',
+  base: 'px-2 py-1.5 font-mono',
   variants: {
-    isDifferent: { true: 'bg-duplicate/20 font-semibold', false: '' },
+    isDifferent: { true: 'bg-highlight font-semibold', false: '' },
   },
 });

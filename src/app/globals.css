@@ -3,28 +3,90 @@
 @theme {
   --color-*: initial;
 
-  --color-canvas: #f6f6f7;
+  --color-canvas: #f5f8fb;
   --color-surface: #ffffff;
-  --color-border: #e4e4e7;
-  --color-muted: #f0f0f2;
+  --color-wash: #edf5fe;
+  --color-tint: #deebfd;
+  --color-muted: #ecf0f6;
+  --color-border: #dbe3ef;
+  --color-border-strong: #c0ccdc;
+  --color-grid-dot: #c0d5f0;
 
-  --color-text-primary: #18181b;
-  --color-text-secondary: #52525b;
+  --color-text-primary: #131e2d;
+  --color-text-secondary: #546172;
 
-  --color-primary: #18181b;
+  --color-primary: #1565c0;
+  --color-primary-strong: #084a93;
   --color-on-primary: #ffffff;
-  --color-danger: #b91c1c;
+  --color-danger: #b42318;
 
-  --color-duplicate: #6d28d9;
-  --color-inconsistent: #1d4ed8;
-  --color-missing: #0e7490;
-  --color-suspicious: #92400e;
-
-  --color-added: #166534;
-  --color-removed: #b91c1c;
+  --color-highlight: rgb(21 101 192 / 0.17);
+  --color-added: #0058b0;
+  --color-removed: #657180;
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(
+    var(--color-grid-dot) 1px,
+    transparent 1.25px
+  );
+  background-size: 14px 14px;
+}
+
+@utility progress-ring {
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 2.5px),
+    black calc(100% - 2px)
+  );
+}
+
+@utility select-chevron {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-text-secondary) 50%),
+    linear-gradient(135deg, var(--color-text-secondary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+
+  @media (forced-colors: active) {
+    appearance: auto;
+    background-image: none;
+  }
+}
+
+@utility animate-settle {
+  animation: settle 180ms ease-out;
+}
+
+@utility animate-blink {
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
+@layer base {
+  ::selection {
+    background-color: var(--color-tint);
+    color: var(--color-text-primary);
+  }
 }

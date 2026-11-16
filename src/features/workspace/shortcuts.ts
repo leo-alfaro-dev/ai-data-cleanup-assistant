@@ -36,8 +36,8 @@ export const SHORTCUTS: readonly Shortcut[] = [
     display: 'K',
     label: 'Previous issue',
   },
-  { action: 'accept', key: 'a', display: 'A', label: 'Accept the suggestion' },
-  { action: 'reject', key: 'r', display: 'R', label: 'Reject, or dismiss' },
+  { action: 'accept', key: 'a', display: 'A', label: 'Apply the suggestion' },
+  { action: 'reject', key: 'r', display: 'R', label: 'Keep as is, or dismiss' },
   { action: 'edit', key: 'e', display: 'E', label: 'Edit the suggestion' },
   { action: 'undo', key: 'u', display: 'U', label: 'Undo the last step' },
   {

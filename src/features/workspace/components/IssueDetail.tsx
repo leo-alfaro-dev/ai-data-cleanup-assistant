@@ -1,6 +1,7 @@
-import { RxCross2 } from 'react-icons/rx';
+import { RxCross2, RxPencil1 } from 'react-icons/rx';
 import { tv, twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
+import { eyebrow } from '@/components/eyebrow';
 import type { Issue } from '@/engine/issues/issue';
 import { ariaKeysOf } from '../shortcuts';
 import { describeChange } from '../changeCopy';
@@ -49,21 +50,23 @@ export function IssueDetail({
     <section
       aria-label="Issue detail"
       className={twMerge(
-        'flex max-h-[45%] shrink-0 flex-col gap-3 overflow-y-auto border-b border-border bg-surface p-3',
+        'flex max-h-[45%] shrink-0 flex-col gap-4 overflow-y-auto border-b border-border bg-surface px-4 py-4',
         className
       )}
       {...props}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 flex-col gap-1">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <CategoryBadge category={issue.category} />
             <span className="text-xs text-text-secondary">
               {sourceLabels[issue.source]} ·{' '}
               {confidenceLabels[issue.confidence]}
             </span>
           </div>
-          <h3 className="text-sm font-semibold break-words">{title}</h3>
+          <h3 className="text-lg font-semibold tracking-tight break-words">
+            {title}
+          </h3>
           <p className="text-sm text-text-secondary">{summary}</p>
         </div>
         <Button
@@ -77,9 +80,9 @@ export function IssueDetail({
       </div>
       <div className={detailBody({ hasRows: issue.rows.length > 0 })}>
         <div className="flex min-w-0 flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center justify-between gap-2">
-              <h4 className="text-xs font-medium text-text-secondary">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex min-h-8 items-center justify-between gap-2">
+              <h4 className={eyebrow()}>
                 What changes
                 {decision?.status === 'edited' && ' · edited'}
               </h4>
@@ -89,6 +92,7 @@ export function IssueDetail({
                   aria-keyshortcuts={ariaKeysOf('edit')}
                   onClick={() => reviewActions.startEdit()}
                 >
+                  <RxPencil1 aria-hidden className="size-3.5" />
                   Edit
                   <ShortcutHint action="edit" />
                 </Button>
@@ -126,7 +130,7 @@ export function IssueDetail({
 }
 
 const detailBody = tv({
-  base: 'grid gap-4',
+  base: 'grid gap-5',
   variants: {
     hasRows: { true: 'md:grid-cols-[minmax(0,1fr)_18rem]', false: '' },
   },

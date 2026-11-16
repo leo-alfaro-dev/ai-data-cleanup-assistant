@@ -1,47 +1,35 @@
-import { RxExclamationTriangle } from 'react-icons/rx';
-import { twMerge } from 'tailwind-variants';
+import { RxReload } from 'react-icons/rx';
 import { Button } from '@/components/Button';
 import { recipeStore$ } from '../state/recipeStore';
 import { analysisActions } from '../state/analysisStore';
+import type { FailurePanelProps } from './FailurePanel';
+import { FailurePanel } from './FailurePanel';
 
-export type AnalysisFailureProps = React.ComponentProps<'div'>;
+export type AnalysisFailureProps = Omit<
+  FailurePanelProps,
+  'title' | 'children'
+>;
 
-export function AnalysisFailure({
-  className = '',
-  ...props
-}: AnalysisFailureProps) {
+export function AnalysisFailure(props: AnalysisFailureProps) {
   return (
-    <div
-      className={twMerge(
-        'flex flex-col gap-3 rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm',
-        className
-      )}
-      {...props}
-    >
-      <div className="flex items-start gap-3">
-        <RxExclamationTriangle
-          aria-hidden
-          className="mt-0.5 size-4 shrink-0 text-danger"
-        />
-        <div className="flex flex-col gap-1">
-          <p className="font-medium">The checks could not run</p>
-          <p className="text-text-secondary">
-            The rows are listed, but the file has not been checked. Run the
-            checks again.
-          </p>
-        </div>
+    <FailurePanel title="The checks could not run" {...props}>
+      <div className="flex flex-col items-start gap-3">
+        <p className="text-text-secondary">
+          The rows are listed, but the file has not been checked. Run the checks
+          again.
+        </p>
+        <Button
+          onClick={() =>
+            void analysisActions.run({
+              runAi: !isRecipeFlow(),
+            })
+          }
+        >
+          <RxReload aria-hidden className="size-3.5" />
+          Retry
+        </Button>
       </div>
-      <Button
-        className="self-start"
-        onClick={() =>
-          void analysisActions.run({
-            runAi: !isRecipeFlow(),
-          })
-        }
-      >
-        Retry
-      </Button>
-    </div>
+    </FailurePanel>
   );
 }
 
