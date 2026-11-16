@@ -20,6 +20,7 @@ export function KeySettings(props: KeySettingsProps) {
   const hasOwnKey = useHasOwnKey();
   const isKeyRejected =
     useRejectedKeyRevision() === useOwnKeyRevision() && hasOwnKey;
+  const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [isRevealed, setIsRevealed] = useState(false);
   const inputId = useId();
@@ -27,7 +28,7 @@ export function KeySettings(props: KeySettingsProps) {
   const canSave = draft.trim() !== '';
 
   return (
-    <Popover.Root>
+    <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger asChild>
         <Button variant={hasOwnKey ? 'tint' : 'secondary'} {...props}>
           {hasOwnKey ? 'Your key' : 'Add your key'}
@@ -50,6 +51,7 @@ export function KeySettings(props: KeySettingsProps) {
               settingsActions.saveOwnKey(draft);
               setDraft('');
               setIsRevealed(false);
+              setIsOpen(false);
             }}
           >
             <label htmlFor={inputId} className={eyebrow()}>

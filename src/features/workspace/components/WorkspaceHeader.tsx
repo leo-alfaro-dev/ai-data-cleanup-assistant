@@ -33,8 +33,15 @@ export function WorkspaceHeader({
       {...props}
     >
       <h1 className="flex shrink-0 items-center">
-        <span className="sr-only">{PRODUCT_NAME}</span>
-        <Wordmark className="h-6 text-primary" />
+        <button
+          type="button"
+          title="Back to start"
+          className="flex cursor-pointer items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          onClick={() => workspaceActions.reset()}
+        >
+          <span className="sr-only">{PRODUCT_NAME}</span>
+          <Wordmark className="h-6 text-primary" />
+        </button>
       </h1>
       <DatasetFacts className="order-last w-full sm:order-none sm:w-auto sm:flex-1 sm:border-l sm:border-border sm:pl-5" />
       <div className="flex flex-wrap items-center gap-2">

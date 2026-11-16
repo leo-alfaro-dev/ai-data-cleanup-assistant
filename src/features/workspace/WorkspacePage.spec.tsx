@@ -85,6 +85,21 @@ describe('WorkspacePage', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('goes back to the start on the wordmark', async () => {
+    const user = userEvent.setup();
+    seedWorkspace('name', 'Ada');
+    render(<WorkspacePage />);
+
+    await user.click(
+      screen.getByRole('button', { name: 'AI Data Cleanup Assistant' })
+    );
+
+    expect(
+      await screen.findByLabelText('Choose a CSV file')
+    ).toBeInTheDocument();
+    expect(workspaceStore$.getState().phase.status).toBe('empty');
+  });
+
   it('keeps Export off until the checks have finished or failed', () => {
     seedWorkspace('name', 'Ada');
     analysisStore$.setState({
