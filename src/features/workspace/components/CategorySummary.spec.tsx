@@ -82,7 +82,19 @@ describe('CategorySummary', () => {
     ).toBeDisabled();
   });
 
-  it('narrows the list to a category and brings the whole list back', async () => {
+  it('shows every issue at first, under a pressed All with the total', () => {
+    render(<CategorySummary />);
+
+    expect(screen.getByRole('button', { name: 'All 6' })).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+    expect(
+      screen.getByRole('button', { name: 'Duplicates 2' })
+    ).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('narrows the list to a category and brings the whole list back with All', async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -106,12 +118,17 @@ describe('CategorySummary', () => {
     expect(
       screen.getByRole('button', { name: 'Suspicious records 3' })
     ).toHaveAttribute('aria-pressed', 'true');
-
-    await user.click(
-      screen.getByRole('button', { name: 'Suspicious records 3' })
+    expect(screen.getByRole('button', { name: 'All 6' })).toHaveAttribute(
+      'aria-pressed',
+      'false'
     );
 
+    await user.click(screen.getByRole('button', { name: 'All 6' }));
+
     expect(within(list).getAllByRole('article')).toHaveLength(6);
+    expect(
+      screen.getByRole('button', { name: 'Suspicious records 3' })
+    ).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('lists the issues by category, then by rows affected', () => {

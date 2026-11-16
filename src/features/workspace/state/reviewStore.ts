@@ -104,10 +104,10 @@ export const reviewStore$ = createGlobalState(makeInitialState(), {
 
     filterByCategory(category: ReviewState['categoryFilter']) {
       return (store) => {
-        store.setState((state) => ({
-          ...state,
-          categoryFilter: state.categoryFilter === category ? null : category,
-        }));
+        if (store.getState().categoryFilter === category) return;
+
+        store.setState((state) => ({ ...state, categoryFilter: category }));
+        store.actions.select?.(null);
       };
     },
 

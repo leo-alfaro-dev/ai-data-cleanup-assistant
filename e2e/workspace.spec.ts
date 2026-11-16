@@ -265,6 +265,33 @@ test.describe('the issues', () => {
       cards.first().getByText('Missing data', { exact: true })
     ).toBeVisible();
   });
+
+  test('closes the open issue when another category is chosen, and All lists every issue again', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const all = page
+      .getByRole('group', { name: 'Filter issues by category' })
+      .getByRole('button', { name: /^All \d/ });
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    await selectWhitespaceIssue(page);
+    const detail = page.getByRole('region', { name: 'Issue detail' });
+    await expect(detail).toBeVisible();
+
+    await filterTo(page, 'Missing data');
+
+    await expect(detail).toBeHidden();
+    await expect(all).toHaveAttribute('aria-pressed', 'false');
+
+    await all.click();
+
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page
+        .getByRole('list', { name: 'Issues' })
+        .getByRole('article', { name: 'Exact duplicate rows' })
+    ).toBeVisible();
+  });
 });
 
 test.describe('reviewing', () => {

@@ -395,15 +395,37 @@ describe('reviewStore', () => {
   });
 
   describe('filters and views', () => {
-    it('filters by a category and clears the filter when it is chosen again', () => {
+    it('filters by a category, keeps it when it is chosen again, and shows them all on null', () => {
       reviewActions.filterByCategory('missing');
       expect(reviewStore$.getState().categoryFilter).toBe('missing');
 
       reviewActions.filterByCategory('duplicate');
+      reviewActions.filterByCategory('duplicate');
       expect(reviewStore$.getState().categoryFilter).toBe('duplicate');
 
-      reviewActions.filterByCategory('duplicate');
+      reviewActions.filterByCategory(null);
       expect(reviewStore$.getState().categoryFilter).toBeNull();
+    });
+
+    it('clears the selection and the focused row when the filter changes', () => {
+      reviewActions.select(trimmed);
+      reviewActions.jumpToRow(toRowId(0));
+
+      reviewActions.filterByCategory('inconsistent');
+
+      expect(reviewStore$.getState()).toMatchObject({
+        selectedIssueId: null,
+        focusedRow: null,
+      });
+    });
+
+    it('keeps the selection when the chosen filter is chosen again', () => {
+      reviewActions.filterByCategory('inconsistent');
+      reviewActions.select(trimmed);
+
+      reviewActions.filterByCategory('inconsistent');
+
+      expect(reviewStore$.getState().selectedIssueId).toBe(trimmed);
     });
 
     it('shows the cleaned values first and switches to the original and back', () => {
