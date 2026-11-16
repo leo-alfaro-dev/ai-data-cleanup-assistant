@@ -59,6 +59,7 @@ Use these words in code and UI; don't introduce synonyms (finding, anomaly, fix)
 | AI              | OpenRouter through the `openai` SDK (Chat Completions); `server-only`                   |
 | Tests           | Vitest (Node for `.spec.ts`, jsdom + Testing Library for `.spec.tsx`), Playwright (e2e) |
 | Quality         | ESLint, Prettier, cspell, husky + lint-staged; `tsx` for scripts                        |
+| Analytics       | `@vercel/analytics` (page views on the hosted demo)                                     |
 
 Majors are listed so code targets the right APIs; `package.json` is the source of truth. **This table is the dependency list**: a new package needs a stated reason, and never a second library for a concern already covered here.
 
