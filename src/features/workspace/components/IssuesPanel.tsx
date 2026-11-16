@@ -63,8 +63,8 @@ export function IssuesPanel({ className = '', ...props }: IssuesPanelProps) {
           )}
           {issueCount > 0 && (
             <>
-              <div className="flex items-center gap-2">
-                <ReviewProgress className="min-w-0 flex-1" />
+              <div className="flex flex-wrap items-center justify-end gap-2">
+                <ReviewProgress className="min-w-48 flex-1" />
                 <HistoryButtons />
               </div>
               <IssueList />

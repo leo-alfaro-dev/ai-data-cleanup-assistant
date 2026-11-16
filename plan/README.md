@@ -209,6 +209,5 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ### Epic 11 — Story
 
-- [ ] **T11.1** Write the README
-- [ ] **T11.2** Add the five-minute demo script
-- [ ] **T11.3** Run the final QA pass and complete the submission checklist
+- [x] **T11.1** Write the README
+- [ ] **T11.2** Run the final QA pass and complete the submission checklist · _QA pass done; the lines marked "Owner: you" in `docs/submission-checklist.md` remain_
