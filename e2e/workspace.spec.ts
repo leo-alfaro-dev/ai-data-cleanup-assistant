@@ -598,7 +598,6 @@ test.describe('the visitor key', () => {
     await page.getByRole('button', { name: 'Add your key' }).click();
     await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
     await page.getByRole('button', { name: 'Use this key' }).click();
-    await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Run again' }).click();
     await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);

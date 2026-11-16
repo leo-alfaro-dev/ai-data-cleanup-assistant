@@ -32,7 +32,7 @@ describe('KeySettings', () => {
     expect(input).toHaveAttribute('type', 'text');
   });
 
-  it('saves the pasted key, clears the field and offers to remove it', async () => {
+  it('saves the pasted key and closes', async () => {
     const user = await openPopover();
     expect(screen.getByRole('button', { name: 'Use this key' })).toBeDisabled();
 
@@ -40,6 +40,19 @@ describe('KeySettings', () => {
     await user.click(screen.getByRole('button', { name: 'Use this key' }));
 
     expect(settingsStore$.getState().ownKey).toBe('sk-or-visitor');
+    expect(
+      screen.queryByRole('dialog', { name: 'Own key settings' })
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Your key' })).toHaveFocus();
+  });
+
+  it('opens again with an empty field and offers to remove the saved key', async () => {
+    const user = await openPopover();
+    await user.type(screen.getByLabelText('OpenRouter key'), 'sk-or-visitor');
+    await user.click(screen.getByRole('button', { name: 'Use this key' }));
+
+    await user.click(screen.getByRole('button', { name: 'Your key' }));
+
     expect(screen.getByLabelText('OpenRouter key')).toHaveValue('');
     expect(
       screen.getByRole('button', { name: 'Remove key' })
@@ -83,7 +96,9 @@ describe('KeySettings', () => {
 
     await user.type(screen.getByLabelText('OpenRouter key'), 'sk-or-new');
     await user.click(screen.getByRole('button', { name: 'Use this key' }));
+    await user.click(screen.getByRole('button', { name: 'Your key' }));
 
+    expect(screen.getByLabelText('OpenRouter key')).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
