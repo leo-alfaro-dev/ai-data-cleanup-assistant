@@ -67,15 +67,11 @@ test.describe('the first screen', () => {
     await expect(
       page.getByRole('group', { name: 'Filter issues by category' })
     ).toBeVisible();
-    await page
-      .getByRole('region', { name: 'AI tasks' })
-      .getByText('Done', { exact: true })
-      .first()
-      .waitFor();
+    await waitForAiTasks(page);
     await filterTo(page, 'Inconsistent values');
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
     await page.getByRole('button', { name: 'Export', exact: true }).click();
 
@@ -102,8 +98,7 @@ test.describe('the keyboard', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     const label = await page.getByText(/^0 of [\d,]+ decided$/).textContent();
     const total = Number(label?.match(/of ([\d,]+)/)?.[1]?.replaceAll(',', ''));
     expect(total).toBeGreaterThan(50);
@@ -112,7 +107,8 @@ test.describe('the keyboard', () => {
       await page.keyboard.press('j');
       const selected = page.locator('article[aria-current="true"]');
       const hasSuggestion =
-        (await selected.getByRole('button', { name: 'Accept' }).count()) > 0;
+        (await selected.getByRole('button', { name: 'Keep as is' }).count()) >
+        0;
       await page.keyboard.press(hasSuggestion ? 'a' : 'r');
     }
 
@@ -147,8 +143,12 @@ test.describe('editing a suggestion', () => {
     page,
   }) => {
     await loadSample(page);
+    await waitForAiTasks(page);
     await filterTo(page, 'Inconsistent values');
-    const card = page.getByRole('article', { name: /^Spellings of/ }).first();
+    const card = await findIssueCard({
+      page,
+      name: 'Spellings of “MA” in “state”',
+    });
     await card.getByRole('button').first().click();
     const detail = page.getByRole('region', { name: 'Issue detail' });
     const firstRow = detail
@@ -168,9 +168,9 @@ test.describe('editing a suggestion', () => {
       .first();
     await spelling.fill('Typed Value');
     await expect(detail.getByText(/^Changes \d+ cells? in/)).toBeVisible();
-    await detail.getByRole('button', { name: 'Save and accept' }).click();
+    await detail.getByRole('button', { name: 'Save and apply' }).click();
 
-    await expect(card).toContainText('Edited and accepted');
+    await expect(card).toContainText('Edited and applied');
     await jumpTo({ page, rowNumber });
     await expect(
       page.getByRole('row', { name: new RegExp(`^${rowNumber}`) })
@@ -179,101 +179,6 @@ test.describe('editing a suggestion', () => {
     await page.getByRole('button', { name: 'Export', exact: true }).click();
     const cleaned = await download({ page, button: 'Download cleaned CSV' });
     expect(cleaned.text).toContain('Typed Value');
-  });
-});
-
-test.describe('the recipe', () => {
-  test('is downloaded with the accepted rules and nothing about particular rows', async ({
-    page,
-  }) => {
-    await loadSample(page);
-    await selectWhitespaceIssue(page);
-    await page
-      .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
-      .click();
-
-    await page.getByRole('button', { name: 'Export', exact: true }).click();
-    const recipe = await download({ page, button: 'Download recipe' });
-
-    expect(recipe.name).toBe('customers.recipe.json');
-    expect(JSON.parse(recipe.text)).toMatchObject({
-      version: 1,
-      source: { fileName: 'customers.csv', rowCount: 1150 },
-      rules: [
-        {
-          kind: 'trimWhitespace',
-          column: { header: 'first_name', occurrence: 1 },
-        },
-      ],
-    });
-  });
-
-  test('cleans next month’s file without a single AI request', async ({
-    page,
-  }) => {
-    const aiRequests: string[] = [];
-    page.on('request', (request) => {
-      if (request.url().includes('/api/ai/')) aiRequests.push(request.url());
-    });
-    await page.goto('/');
-
-    await page
-      .getByLabel('Choose a recipe file')
-      .setInputFiles('public/samples/customers.recipe.json');
-    await expect(
-      page.getByText(/Recipe ready: customers.recipe.json/)
-    ).toBeVisible();
-    await page
-      .getByLabel('Choose a CSV file')
-      .setInputFiles('public/samples/customers-next-month.csv');
-
-    const report = page.getByRole('region', { name: 'Recipe' });
-    await expect(report).toContainText('0 AI calls');
-    await expect(report).not.toContainText('Rules applied0');
-    await expect(
-      page.getByRole('progressbar', { name: /^[1-9]\d* of \d+ decided$/ })
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: 'Export', exact: true }).click();
-    const cleaned = await download({ page, button: 'Download cleaned CSV' });
-    expect(cleaned.text).not.toBe(
-      readFileSync('public/samples/customers-next-month.csv', 'utf8')
-    );
-    expect(aiRequests).toEqual([]);
-  });
-
-  test('is tried on next month’s file from the first screen', async ({
-    page,
-  }) => {
-    await page.goto('/');
-
-    await page
-      .getByRole('button', { name: 'Try the recipe on next month’s file' })
-      .click();
-
-    await expect(page.getByRole('region', { name: 'Recipe' })).toContainText(
-      'customers.recipe.json'
-    );
-    await expect(
-      page.getByRole('region', { name: 'Loaded file' })
-    ).toContainText('customers-next-month.csv');
-  });
-
-  test('refuses a file that is not a recipe', async ({ page }) => {
-    await page.goto('/');
-
-    await page.getByLabel('Choose a recipe file').setInputFiles({
-      name: 'notes.json',
-      mimeType: 'application/json',
-      buffer: Buffer.from('{"hello": 1}'),
-    });
-
-    await expect(
-      page.getByText(
-        'notes.json: The file is JSON but not a recipe this app can read.'
-      )
-    ).toBeVisible();
   });
 });
 
@@ -360,6 +265,33 @@ test.describe('the issues', () => {
       cards.first().getByText('Missing data', { exact: true })
     ).toBeVisible();
   });
+
+  test('closes the open issue when another category is chosen, and All lists every issue again', async ({
+    page,
+  }) => {
+    await loadSample(page);
+    const all = page
+      .getByRole('group', { name: 'Filter issues by category' })
+      .getByRole('button', { name: /^All \d/ });
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    await selectWhitespaceIssue(page);
+    const detail = page.getByRole('region', { name: 'Issue detail' });
+    await expect(detail).toBeVisible();
+
+    await filterTo(page, 'Missing data');
+
+    await expect(detail).toBeHidden();
+    await expect(all).toHaveAttribute('aria-pressed', 'false');
+
+    await all.click();
+
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page
+        .getByRole('list', { name: 'Issues' })
+        .getByRole('article', { name: 'Exact duplicate rows' })
+    ).toBeVisible();
+  });
 });
 
 test.describe('reviewing', () => {
@@ -371,7 +303,7 @@ test.describe('reviewing', () => {
 
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
     await jumpTo({ page, rowNumber });
 
@@ -390,13 +322,14 @@ test.describe('reviewing', () => {
   }) => {
     await loadSample(page);
     await filterTo(page, 'Inconsistent values');
-    const accept = page.getByRole('button', {
-      name: /^Accept all certain and high · \d+$/,
-    });
-    const count = Number(((await accept.textContent()) ?? '').split('· ')[1]);
+    const apply = page.getByRole('button', { name: 'Apply suggestions' });
+    await apply.click();
+    const choice = page.getByRole('menuitem').first();
+    const label = (await choice.textContent()) ?? '';
+    const count = Number(/(\d+)$/.exec(label)?.[1]);
     expect(count).toBeGreaterThan(1);
 
-    await accept.click();
+    await choice.click();
 
     await expect(
       page.getByRole('progressbar', {
@@ -412,11 +345,8 @@ test.describe('reviewing', () => {
     await expect(
       page.getByRole('progressbar', { name: /^0 of \d+ decided$/ })
     ).toBeVisible();
-    await expect(
-      page.getByRole('button', {
-        name: `Accept all certain and high · ${count}`,
-      })
-    ).toBeEnabled();
+    await apply.click();
+    await expect(page.getByRole('menuitem').first()).toHaveText(label);
   });
 
   test('shows how many issues are decided', async ({ page }) => {
@@ -428,7 +358,7 @@ test.describe('reviewing', () => {
     await filterTo(page, 'Inconsistent values');
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
 
     await expect(
@@ -447,9 +377,7 @@ test.describe('reviewing', () => {
     const row = page.getByRole('row', { name: new RegExp(`^${rowNumber}`) });
     await expect(row).toBeVisible();
     await expect(row).toHaveAttribute('aria-current', 'true');
-    await expect(row.getByRole('cell').nth(1)).toHaveClass(
-      /bg-inconsistent\/20/
-    );
+    await expect(row.getByRole('cell').nth(1)).toHaveClass(/bg-highlight/);
   });
 });
 
@@ -461,7 +389,7 @@ test.describe('exporting', () => {
     const { rowNumber } = await selectWhitespaceIssue(page);
     await page
       .getByRole('article', { name: 'Extra spaces in “first_name”' })
-      .getByRole('button', { name: 'Accept' })
+      .getByRole('button', { name: 'Trim spaces' })
       .click();
 
     await page.getByRole('button', { name: 'Export', exact: true }).click();
@@ -524,8 +452,9 @@ test.describe('the AI tasks', () => {
     await mockAiRoutes(page, { beforeAnswer: () => gate });
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    const tasks = await openAiTasks(page);
     await expect(tasks.getByText(/^Running|^Queued/).first()).toBeVisible();
+    await page.keyboard.press('Escape');
     const categories = page.getByRole('group', {
       name: 'Filter issues by category',
     });
@@ -540,14 +469,14 @@ test.describe('the AI tasks', () => {
 
     release();
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(await countOf(inconsistent)).toBeGreaterThan(before);
     const group = await findIssueCard({
       page,
-      name: 'Spellings of “MN” in “state”',
+      name: 'Spellings of “MA” in “state”',
     });
     await expect(group).toBeVisible();
-    await expect(group).toContainText('AI · Certain');
+    await expect(group).toContainText('AI · Very sure');
     await expect(
       page.getByRole('article', { name: 'Inconsistent casing in “state”' })
     ).toHaveCount(0);
@@ -557,17 +486,16 @@ test.describe('the AI tasks', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await filterTo(page, 'Duplicates');
     const card = await findIssueCard({
       page,
       name: 'Rows 47 and 169 are the same record',
     });
-    await expect(card).toContainText('AI · High');
-    await card.getByRole('button', { name: 'Accept' }).click();
-    await expect(card.getByText('Accepted')).toBeVisible();
+    await expect(card).toContainText('AI · Certain');
+    await card.getByRole('button', { name: 'Remove row 169' }).click();
+    await expect(card.getByText('Applied')).toBeVisible();
 
     await page.getByRole('button', { name: 'Export', exact: true }).click();
     const dialog = page.getByRole('dialog', { name: 'Export' });
@@ -578,8 +506,7 @@ test.describe('the AI tasks', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await filterTo(page, 'Suspicious records');
     const card = await findIssueCard({
@@ -593,7 +520,7 @@ test.describe('the AI tasks', () => {
     await expect(review).toBeVisible();
     await expect(review.getByText('Suspicious').first()).toBeVisible();
     await expect(
-      review.getByText(/about 100 times the typical/).first()
+      review.getByText(/unusually high compared to the typical range/).first()
     ).toBeVisible();
     await expect(
       page.getByRole('region', { name: 'Issue detail' }).getByRole('heading', {
@@ -608,7 +535,7 @@ test.describe('the AI tasks', () => {
     await mockAiRoutes(page, { failFirst: 4 });
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
+    const tasks = await openAiTasks(page);
     await expect(
       tasks.getByText(/No OpenRouter key is set, so the AI cannot run/)
     ).toBeVisible();
@@ -619,7 +546,7 @@ test.describe('the AI tasks', () => {
 
     await tasks.getByRole('button', { name: 'Retry' }).click();
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     await expect(tasks.getByRole('button', { name: 'Retry' })).toHaveCount(0);
   });
 });
@@ -629,8 +556,7 @@ test.describe('what was sent to the AI', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     const summary = page.getByRole('button', {
       name: /^\d+ AI calls · [\d.]+k tokens · \$/,
@@ -646,7 +572,7 @@ test.describe('what was sent to the AI', () => {
     await panel.getByRole('button', { name: /Confirm duplicate rows/ }).click();
     await expect(panel.getByText('Request, exactly as sent')).toBeVisible();
     await expect(panel.locator('pre')).toContainText(
-      '"model":"anthropic/claude-haiku-5.5"'
+      '"model":"google/gemini-2.5-flash-lite"'
     );
     await expect(panel.locator('pre')).toContainText('"pairs"');
     expect(await panel.textContent()).not.toMatch(/sk-or-/);
@@ -664,27 +590,26 @@ test.describe('the visitor key', () => {
       }
     });
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === undefined)).toBe(true);
     sent.length = 0;
 
-    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByRole('button', { name: 'Add your key' }).click();
     await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
     await page.getByRole('button', { name: 'Use this key' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Run again' }).click();
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === 'sk-or-e2e-visitor')).toBe(true);
     sent.length = 0;
 
-    await page.getByRole('button', { name: 'Own key in use' }).click();
+    await page.getByRole('button', { name: 'Your key' }).click();
     await page.getByRole('button', { name: 'Remove key' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Run again' }).click();
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     expect(sent.length).toBeGreaterThan(0);
     expect(sent.every((key) => key === undefined)).toBe(true);
   });
@@ -693,16 +618,14 @@ test.describe('the visitor key', () => {
     page,
   }) => {
     await loadSample(page);
-    await page.getByRole('button', { name: 'Use your own key' }).click();
+    await page.getByRole('button', { name: 'Add your key' }).click();
     await page.getByLabel('OpenRouter key').fill('sk-or-e2e-visitor');
     await page.getByRole('button', { name: 'Use this key' }).click();
 
     await page.reload();
     await page.getByLabel('Choose a CSV file').setInputFiles(SAMPLE);
 
-    await expect(
-      page.getByRole('button', { name: 'Own key in use' })
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Your key' })).toBeVisible();
     expect(await page.evaluate(() => window.localStorage.length)).toBe(0);
   });
 });
@@ -712,21 +635,20 @@ test.describe('the model', () => {
     page,
   }) => {
     await loadSample(page);
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     const picker = page.getByRole('combobox', { name: 'Model' });
     await expect(picker).toBeEnabled();
 
-    await picker.selectOption({ label: 'Gemini 2.5 Flash Lite' });
+    await picker.selectOption({ label: 'Claude Haiku 5.5' });
     const request = page.waitForRequest(
       (sent) =>
         sent.url().endsWith('/api/ai/normalize-values') &&
-        sent.postDataJSON().model === 'google/gemini-2.5-flash-lite'
+        sent.postDataJSON().model === 'anthropic/claude-haiku-5.5'
     );
     await page.getByRole('button', { name: 'Run again' }).click();
     await request;
 
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
     await expect(picker).toBeEnabled();
     await page.getByRole('button', { name: /AI calls/ }).click();
     const panel = page.getByRole('dialog', { name: 'What was sent to the AI' });
@@ -734,10 +656,10 @@ test.describe('the model', () => {
       8
     );
     await expect(
-      panel.getByText(/Gemini 2.5 Flash Lite · Answered/).first()
+      panel.getByText(/Claude Haiku 5.5 · Answered/).first()
     ).toBeVisible();
     await expect(
-      panel.getByText(/Claude Haiku 5.5 · Answered/).first()
+      panel.getByText(/Gemini 2.5 Flash Lite · Answered/).first()
     ).toBeVisible();
   });
 
@@ -796,8 +718,7 @@ test.describe('on a phone', () => {
   }) => {
     await loadSample(page);
 
-    const tasks = page.getByRole('region', { name: 'AI tasks' });
-    await expect(tasks.getByText('Done', { exact: true })).toHaveCount(3);
+    await waitForAiTasks(page);
 
     await expect(
       page.getByRole('button', { name: /AI calls/ })
@@ -836,6 +757,18 @@ async function loadSample(page: Page): Promise<void> {
 
 function firstNameOf(csv: string, lineIndex: number): string {
   return csv.split('\n')[lineIndex]?.split(',')[1] ?? '';
+}
+
+async function waitForAiTasks(page: Page): Promise<void> {
+  await expect(
+    page.getByRole('button', { name: 'AI tasks: 3 of 3 done' })
+  ).toBeVisible();
+}
+
+async function openAiTasks(page: Page): Promise<Locator> {
+  await page.getByRole('button', { name: /^AI tasks:/ }).click();
+
+  return page.getByRole('region', { name: 'AI tasks' });
 }
 
 async function countOf(button: Locator): Promise<number> {

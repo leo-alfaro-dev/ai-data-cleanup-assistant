@@ -225,7 +225,7 @@ describe('reviewing from the keyboard', () => {
 
     expect(screen.getAllByRole('article')).toHaveLength(3);
     expect(
-      screen.getAllByRole('button', { name: 'Accept' })[0]
+      screen.getAllByRole('button', { name: 'Trim spaces' })[0]
     ).toHaveAttribute('aria-keyshortcuts', 'a');
   });
 });
@@ -252,7 +252,7 @@ describe('DecisionAnnouncement', () => {
     const announcement = screen.getAllByTestId('announcement')[0];
 
     await user.keyboard('ja');
-    expect(announcement).toHaveTextContent('Accepted Blank rows.');
+    expect(announcement).toHaveTextContent('Applied: Blank rows.');
 
     await user.keyboard('u');
     expect(announcement).toHaveTextContent(

@@ -1,4 +1,4 @@
-# Epic 1 — A CSV becomes data
+# Epic 1: A CSV becomes data
 
 **Outcome:** drop a CSV and see its facts (rows, columns, delimiter), parsed off the main thread and proven on the production build.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** a 50 MB file loads with a progress bar while the page stays responsive.
 
-## T1.1 — Parse CSV files into an immutable dataset
+## T1.1: Parse CSV files into an immutable dataset
 
 **After:** T0.1
 
@@ -33,7 +33,7 @@
 - Specs cover: comma, semicolon and tab files; a quoted delimiter, a quoted line break and an escaped quote; a byte order mark; CRLF line breaks; a short and a long ragged row; empty and repeated headers; a header-only file; empty input; values keeping their surrounding spaces; a Windows-1252 file with accents decoding correctly.
 - `yarn verify` passes.
 
-## T1.2 — Add Button and ProgressBar primitives
+## T1.2: Add Button and ProgressBar primitives
 
 **After:** T0.1
 
@@ -51,7 +51,7 @@
 - Component specs: a disabled button does not fire; the progress bar exposes its value and label to assistive technology.
 - Screenshots of each variant.
 
-## T1.3 — Load a CSV in a Web Worker and show its facts
+## T1.3: Load a CSV in a Web Worker and show its facts
 
 **After:** T1.1, T1.2
 

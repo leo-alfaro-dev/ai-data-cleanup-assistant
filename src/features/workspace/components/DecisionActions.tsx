@@ -6,21 +6,28 @@ import { Badge } from '@/components/Badge';
 import type { ButtonProps } from '@/components/Button';
 import { Button } from '@/components/Button';
 import type { Issue } from '@/engine/issues/issue';
-import { ariaKeysOf } from '../shortcuts';
-import { reviewActions, useDecision } from '../state/reviewStore';
-import { ShortcutHint } from './ShortcutHint';
+import { applyLabel } from '../applyLabel';
+import type { ShortcutAction } from '../shortcuts';
+import {
+  reviewActions,
+  useDecision,
+  useSelectedIssueId,
+} from '../state/reviewStore';
+import { ShortcutTooltip } from './ShortcutTooltip';
 
 export type DecisionActionsProps = React.ComponentProps<'div'> & {
   issue: Issue;
 };
 
 // The main button keeps its place whichever decision is made, so keyboard focus stays on it.
+// Only the selected issue's apply button is solid: the one the A key acts on.
 export function DecisionActions({
   issue,
   className = '',
   ...props
 }: DecisionActionsProps) {
   const decision = useDecision(issue.id);
+  const isSelected = useSelectedIssueId() === issue.id;
   const mainButton = useRef<HTMLButtonElement>(null);
   const hasSuggestion = issue.suggestion !== null;
 
@@ -28,7 +35,7 @@ export function DecisionActions({
     label: string;
     icon: IconType | null;
     variant: ButtonProps['variant'];
-    shortcut: string | undefined;
+    shortcut: ShortcutAction | null;
     run: () => void;
   } = (() => {
     if (decision !== undefined) {
@@ -36,16 +43,16 @@ export function DecisionActions({
         label: 'Clear decision',
         icon: RxReset,
         variant: 'ghost',
-        shortcut: undefined,
+        shortcut: null,
         run: () => reviewActions.resetDecision(issue.id),
       };
     }
-    if (hasSuggestion) {
+    if (issue.suggestion !== null) {
       return {
-        label: 'Accept',
+        label: applyLabel(issue.suggestion),
         icon: RxCheck,
-        variant: 'primary',
-        shortcut: ariaKeysOf('accept'),
+        variant: isSelected ? 'primary' : 'tint',
+        shortcut: 'accept',
         run: () => reviewActions.accept(issue.id),
       };
     }
@@ -54,49 +61,47 @@ export function DecisionActions({
       label: 'Dismiss',
       icon: null,
       variant: 'secondary',
-      shortcut: ariaKeysOf('reject'),
+      shortcut: 'reject',
       run: () => reviewActions.reject(issue.id),
     };
   })();
 
   return (
     <div
-      className={twMerge('flex items-center justify-end gap-2', className)}
+      className={twMerge('flex items-center justify-end gap-1.5', className)}
       {...props}
     >
       {decision === undefined && hasSuggestion && (
-        <Button
-          aria-keyshortcuts={ariaKeysOf('reject')}
-          onClick={() => {
-            reviewActions.reject(issue.id);
-            mainButton.current?.focus();
-          }}
-        >
-          <RxCross2 aria-hidden className="size-3.5" />
-          Reject
-          <ShortcutHint action="reject" />
-        </Button>
+        <ShortcutTooltip action="reject">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              reviewActions.reject(issue.id);
+              mainButton.current?.focus();
+            }}
+          >
+            <RxCross2 aria-hidden className="size-3.5" />
+            Keep as is
+          </Button>
+        </ShortcutTooltip>
       )}
       {decision !== undefined && (
-        <Badge variant="outline">
+        <Badge
+          variant={decision.status === 'rejected' ? 'neutral' : 'positive'}
+          className="motion-safe:animate-settle"
+        >
           {decision.status !== 'rejected' && (
             <RxCheck aria-hidden className="size-3" />
           )}
           {decisionCopy({ status: decision.status, hasSuggestion })}
         </Badge>
       )}
-      <Button
-        ref={mainButton}
-        variant={main.variant}
-        aria-keyshortcuts={main.shortcut}
-        onClick={main.run}
-      >
-        {main.icon && <main.icon aria-hidden className="size-3.5" />}
-        {main.label}
-        {main.shortcut !== undefined && (
-          <ShortcutHint action={hasSuggestion ? 'accept' : 'reject'} />
-        )}
-      </Button>
+      <ShortcutTooltip action={main.shortcut}>
+        <Button ref={mainButton} variant={main.variant} onClick={main.run}>
+          {main.icon && <main.icon aria-hidden className="size-3.5" />}
+          {main.label}
+        </Button>
+      </ShortcutTooltip>
     </div>
   );
 }
@@ -108,8 +113,8 @@ function decisionCopy({
   status: 'accepted' | 'edited' | 'rejected';
   hasSuggestion: boolean;
 }): string {
-  if (status === 'accepted') return 'Accepted';
-  if (status === 'edited') return 'Edited and accepted';
+  if (status === 'accepted') return 'Applied';
+  if (status === 'edited') return 'Edited and applied';
 
-  return hasSuggestion ? 'Rejected' : 'Dismissed';
+  return hasSuggestion ? 'Kept as is' : 'Dismissed';
 }

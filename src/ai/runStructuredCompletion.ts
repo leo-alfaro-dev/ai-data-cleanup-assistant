@@ -18,7 +18,7 @@ const DEFAULT_DEADLINE_MS = 55_000;
 // A retry with less time left than this would only time out.
 const MIN_RETRY_MS = 8_000;
 
-const MAX_ATTEMPTS = 2;
+export const MAX_ATTEMPTS = 2;
 
 /**
  * Asks for JSON that matches the schema and validates the reply. An invalid reply gets one retry

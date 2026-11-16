@@ -5,29 +5,18 @@ import { toColumnKey } from '@/engine/dataset/toColumnKey';
 import { toRowId } from '@/engine/dataset/toRowId';
 import { exportCleanedFiles } from './exportCleanedFiles';
 
-const SOURCE = {
-  fileName: 'people.csv',
-  createdAt: '2026-01-02T03:04:05.000Z',
-};
-
 describe('exportCleanedFiles', () => {
   it('returns the input rows and an empty log when nothing is accepted', () => {
     const dataset = toDataset('name,city', 'Ada, Paris ', 'Bo,Rome');
 
-    const files = exportCleanedFiles({
-      dataset,
-      accepted: [],
-      recipeSource: SOURCE,
-    });
+    const files = exportCleanedFiles({ dataset, accepted: [] });
 
     expect(files).toEqual({
       csv: 'name,city\nAda, Paris \nBo,Rome\n',
       changeLog: 'row,column,column_number,action,before,after,change,issue\n',
-      recipe: expect.any(String),
       cellsChanged: 0,
       rowsRemoved: 0,
     });
-    expect(JSON.parse(files.recipe)).toMatchObject({ rules: [] });
   });
 
   it('writes the cleaned values and one log line per changed cell and removed row', () => {
@@ -49,7 +38,6 @@ describe('exportCleanedFiles', () => {
           },
         }),
       ],
-      recipeSource: SOURCE,
     });
 
     expect(files.csv).toBe('name,city\nAda,Paris\nBo,Rome\n');
@@ -60,10 +48,6 @@ describe('exportCleanedFiles', () => {
       '',
     ]);
     expect(files).toMatchObject({ cellsChanged: 1, rowsRemoved: 1 });
-    expect(JSON.parse(files.recipe).rules).toEqual([
-      { kind: 'dropDuplicateRows', mode: 'exact' },
-      { kind: 'trimWhitespace', column: { header: 'city', occurrence: 1 } },
-    ]);
   });
 
   it('does not count the encoding conversion as a changed cell', () => {
@@ -75,7 +59,6 @@ describe('exportCleanedFiles', () => {
         format: { ...dataset.format, encoding: 'windows-1252' },
       },
       accepted: [],
-      recipeSource: SOURCE,
     });
 
     expect(files.changeLog).toContain('converted');

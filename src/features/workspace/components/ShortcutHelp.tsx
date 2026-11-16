@@ -1,3 +1,4 @@
+import { RxKeyboard } from 'react-icons/rx';
 import { Kbd } from '@/components/Kbd';
 import { Modal } from '@/components/Modal';
 import { SHORTCUTS } from '../shortcuts';
@@ -5,7 +6,7 @@ import { helpActions, useIsHelpOpen } from '../state/helpStore';
 
 export type ShortcutHelpProps = Omit<
   React.ComponentProps<typeof Modal>,
-  'isOpen' | 'title' | 'description' | 'onClose' | 'children'
+  'isOpen' | 'title' | 'icon' | 'description' | 'onClose' | 'children'
 >;
 
 export function ShortcutHelp(props: ShortcutHelpProps) {
@@ -16,14 +17,18 @@ export function ShortcutHelp(props: ShortcutHelpProps) {
       isOpen={isOpen}
       title="Keyboard shortcuts"
       description="Single keys work anywhere except while typing in a field."
+      icon={RxKeyboard}
       onClose={() => helpActions.close()}
       {...props}
     >
-      <dl className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2 text-sm">
+      <dl className="flex flex-col divide-y divide-border text-sm">
         {SHORTCUTS.map(({ action, display, label }) => (
-          <div key={action} className="contents">
-            <dt>
-              <Kbd>{display}</Kbd>
+          <div
+            key={action}
+            className="flex flex-row-reverse items-center justify-between gap-4 py-2 first:pt-0 last:pb-0"
+          >
+            <dt className="shrink-0">
+              <Kbd className="min-w-6 text-text-primary">{display}</Kbd>
             </dt>
             <dd className="text-text-secondary">{label}</dd>
           </div>

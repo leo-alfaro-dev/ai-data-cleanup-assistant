@@ -9,10 +9,13 @@ describe('ownKeyOffer', () => {
     }
   );
 
-  it.each(['invalidKey', 'timeout', 'unexpected', 'aiNotConfigured'] as const)(
-    'offers nothing when the reason is %s',
-    (reason) => {
-      expect(ownKeyOffer(reason)).toBeNull();
-    }
-  );
+  it.each([
+    'invalidKey',
+    'timeout',
+    'unexpected',
+    'aiNotConfigured',
+    'providerRateLimited',
+  ] as const)('offers nothing when the reason is %s', (reason) => {
+    expect(ownKeyOffer(reason)).toBeNull();
+  });
 });

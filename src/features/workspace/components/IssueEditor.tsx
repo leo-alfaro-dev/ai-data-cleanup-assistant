@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { RxCheck, RxReset } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
 import type { Change } from '@/engine/changes/change';
@@ -47,7 +48,10 @@ export function IssueEditor({
   return (
     <div
       data-shortcuts="off"
-      className={twMerge('flex flex-col gap-3', className)}
+      className={twMerge(
+        'flex flex-col gap-3 rounded-xl border border-primary/25 bg-wash p-3',
+        className
+      )}
       onKeyDown={(event) => {
         if (event.key === 'Escape') close(() => reviewActions.cancelEdit());
       }}
@@ -89,7 +93,8 @@ export function IssueEditor({
             )
           }
         >
-          Save and accept
+          <RxCheck aria-hidden className="size-3.5" />
+          Save and apply
         </Button>
         <Button onClick={() => close(() => reviewActions.cancelEdit())}>
           Cancel
@@ -101,6 +106,7 @@ export function IssueEditor({
             change(suggestion);
           }}
         >
+          <RxReset aria-hidden className="size-3.5" />
           Reset to suggestion
         </Button>
       </div>

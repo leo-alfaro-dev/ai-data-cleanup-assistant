@@ -48,7 +48,7 @@ export function PanelTabs({ className = '', ...props }: PanelTabsProps) {
         >
           {panelLabels[panel]}{' '}
           {panel === 'issues' && issueCount > 0 && (
-            <span className="text-xs tabular-nums">
+            <span className="rounded-full bg-tint px-1.5 text-xs font-semibold text-primary tabular-nums">
               {formatCount(issueCount)}
             </span>
           )}
@@ -68,10 +68,10 @@ const panelTabs = tv({
 });
 
 const panelTab = tv({
-  base: 'flex h-10 cursor-pointer items-center gap-2 border-b-2 px-3 text-sm font-medium focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+  base: 'flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 border-b-2 px-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
   variants: {
     isActive: {
-      true: 'border-primary text-text-primary',
+      true: 'border-primary text-primary',
       false: 'border-transparent text-text-secondary hover:text-text-primary',
     },
   },

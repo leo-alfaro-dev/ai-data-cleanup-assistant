@@ -1,5 +1,6 @@
 import { Accordion } from 'radix-ui';
 import { useMemo } from 'react';
+import { RxEyeOpen } from 'react-icons/rx';
 import { twMerge } from 'tailwind-variants';
 import { Modal } from '@/components/Modal';
 import { countOf } from '@/lib/countOf';
@@ -13,10 +14,11 @@ import {
   useIsTransparencyOpen,
 } from '../state/transparencyStore';
 import { AiCallItem } from './AiCallItem';
+import { StatTile } from './StatTile';
 
 export type TransparencyPanelProps = Omit<
   React.ComponentProps<typeof Modal>,
-  'isOpen' | 'title' | 'description' | 'onClose' | 'children'
+  'isOpen' | 'title' | 'icon' | 'description' | 'onClose' | 'children'
 >;
 
 export function TransparencyPanel({
@@ -33,30 +35,28 @@ export function TransparencyPanel({
       isOpen={isOpen}
       title="What was sent to the AI"
       description="Every request of this file, as the browser sent it, and what each cost."
+      icon={RxEyeOpen}
       className={twMerge('max-w-3xl', className)}
       onClose={() => transparencyActions.close()}
       {...props}
     >
-      <dl className="grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 text-sm tabular-nums">
-        <dt className="text-text-secondary">Model calls</dt>
-        <dd className="text-right font-medium">
+      <dl className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+        <StatTile tone="solid" label="Model calls">
           {countOf({ count: callCount, noun: 'call' })}
-        </dd>
-        <dt className="text-text-secondary">Tokens</dt>
-        <dd className="text-right font-medium">{formatTokens(tokens)}</dd>
-        <dt className="text-text-secondary">Cost</dt>
-        <dd className="text-right font-medium">{formatCost(cost)}</dd>
-        <dt className="text-text-secondary">
-          Model time, calls added together
-        </dt>
-        <dd className="text-right font-medium">{formatLatency(latencyMs)}</dd>
-        <dt className="text-text-secondary">Claims left out</dt>
-        <dd className="text-right font-medium">
+        </StatTile>
+        <StatTile tone="tint" label="Cost">
+          {formatCost(cost)}
+        </StatTile>
+        <StatTile label="Tokens">{formatTokens(tokens)}</StatTile>
+        <StatTile label="Model time, calls added together">
+          {formatLatency(latencyMs)}
+        </StatTile>
+        <StatTile label="Claims left out">
           {droppedClaims} of {claimCount}
-        </dd>
+        </StatTile>
       </dl>
       {calls.length === 0 && (
-        <p className="text-sm text-text-secondary">
+        <p className="rounded-xl border border-dashed border-border-strong px-4 py-6 text-center text-sm text-text-secondary">
           Nothing has been sent yet.
         </p>
       )}

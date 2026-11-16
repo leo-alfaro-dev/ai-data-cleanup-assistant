@@ -24,7 +24,7 @@ export function DataGridHeader({
       role="row"
       aria-rowindex={1}
       className={twMerge(
-        'sticky top-0 z-20 border-b border-border bg-muted text-xs font-medium',
+        'sticky top-0 z-20 border-b border-border-strong bg-wash text-xs font-semibold',
         className
       )}
       style={{ width, height: HEADER_HEIGHT, ...style }}
@@ -33,7 +33,7 @@ export function DataGridHeader({
       <div
         role="columnheader"
         aria-colindex={1}
-        className="sticky left-0 z-10 flex h-full items-center justify-end border-r border-border bg-muted px-2 text-text-secondary tabular-nums"
+        className="sticky left-0 z-10 flex h-full items-center justify-end border-r border-border-strong bg-wash px-2 font-medium text-text-secondary tabular-nums"
         style={{ width: ROW_NUMBER_WIDTH }}
       >
         Row
@@ -62,5 +62,7 @@ const headerCell = tv({
 
 const headerLabel = tv({
   base: 'min-w-0 truncate',
-  variants: { isUnnamed: { true: 'text-text-secondary italic', false: '' } },
+  variants: {
+    isUnnamed: { true: 'font-normal text-text-secondary italic', false: '' },
+  },
 });

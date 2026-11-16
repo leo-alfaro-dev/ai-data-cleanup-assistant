@@ -1,9 +1,10 @@
 import { ImageResponse } from 'next/og';
+import { Wordmark } from '@/components/Wordmark';
+import { ISSUE_CATEGORIES } from '@/engine/issues/issue';
 import { issueCategories } from '@/features/workspace/issueCategories';
-import type { IssueCategory } from '@/engine/issues/issue';
+import { PRODUCT_NAME } from '@/features/workspace/productName';
 
-export const alt =
-  'AI Data Cleanup Assistant: duplicates, inconsistent values, missing data and suspicious records in a CSV, reviewed by you.';
+export const alt = `${PRODUCT_NAME}: duplicates, inconsistent values, missing data and suspicious records in a CSV, reviewed by you.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -15,48 +16,45 @@ export default function Image() {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: 80,
-        background: '#f6f6f7',
-        color: '#18181b',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 28,
+        background: WASH,
+        backgroundImage: `radial-gradient(circle at center, ${GRID_DOT} 0%, ${GRID_DOT} 14%, transparent 18%)`,
+        backgroundSize: '28px 28px',
+        color: PRIMARY,
       }}
     >
-      <div style={{ display: 'flex', gap: 16 }}>
-        {CATEGORY_COLORS.map(({ category, color }) => (
+      <div style={{ display: 'flex', fontSize: 26, letterSpacing: 9 }}>
+        AI DATA
+      </div>
+      <Wordmark style={{ width: 642, height: 156, color: PRIMARY }} />
+      <div style={{ display: 'flex', fontSize: 26, letterSpacing: 9 }}>
+        ASSISTANT
+      </div>
+      <div style={{ display: 'flex', gap: 14, marginTop: 34 }}>
+        {ISSUE_CATEGORIES.map((category) => (
           <div
             key={category}
             style={{
               display: 'flex',
               padding: '10px 22px',
-              borderRadius: 10,
-              fontSize: 28,
-              fontWeight: 600,
-              color,
-              background: '#ffffff',
-              border: `2px solid ${color}`,
+              borderRadius: 999,
+              background: TINT,
+              fontSize: 26,
             }}
           >
             {issueCategories[category].label}
           </div>
         ))}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ fontSize: 88, fontWeight: 700, letterSpacing: -2 }}>
-          AI Data Cleanup Assistant
-        </div>
-        <div style={{ fontSize: 36, color: '#52525b' }}>
-          Upload a CSV. Review each suggestion. Export the cleaned file.
-        </div>
-      </div>
     </div>,
     size
   );
 }
 
-// Hex values: the renderer has no stylesheet. They mirror the category tokens in globals.css.
-const CATEGORY_COLORS: { category: IssueCategory; color: string }[] = [
-  { category: 'duplicate', color: '#6d28d9' },
-  { category: 'inconsistent', color: '#1d4ed8' },
-  { category: 'missing', color: '#0e7490' },
-  { category: 'suspicious', color: '#92400e' },
-];
+// Hex values: the renderer has no stylesheet. They mirror the tokens in globals.css.
+const PRIMARY = '#1565c0';
+const WASH = '#edf5fe';
+const TINT = '#deebfd';
+const GRID_DOT = '#c0d5f0';

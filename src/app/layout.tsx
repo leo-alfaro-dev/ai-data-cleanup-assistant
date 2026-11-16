@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { twMerge } from 'tailwind-variants';
+import { PRODUCT_NAME } from '@/features/workspace/productName';
 import './globals.css';
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -8,12 +9,12 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       className={twMerge(
-        geistSans.variable,
-        geistMono.variable,
+        inter.variable,
+        jetBrainsMono.variable,
         'h-full antialiased'
       )}
     >
-      <body className="flex min-h-full flex-col bg-canvas font-sans text-text-primary">
+      <body className="flex min-h-full flex-col bg-surface font-sans text-text-primary">
         {children}
       </body>
     </html>
@@ -24,23 +25,28 @@ const DESCRIPTION =
   'Find duplicates, inconsistent values, missing data and suspicious records in a CSV, and decide what changes.';
 
 export const metadata: Metadata = {
-  title: 'AI Data Cleanup Assistant',
+  title: PRODUCT_NAME,
   description: DESCRIPTION,
   openGraph: {
-    title: 'AI Data Cleanup Assistant',
+    title: PRODUCT_NAME,
     description: DESCRIPTION,
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Data Cleanup Assistant',
+    title: PRODUCT_NAME,
     description: DESCRIPTION,
   },
 };
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+  axes: ['opsz'],
+});
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+// Cell values: its 0, O, 1, l and I never look alike.
+const jetBrainsMono = JetBrains_Mono({
+  variable: '--font-jetbrains-mono',
   subsets: ['latin'],
 });

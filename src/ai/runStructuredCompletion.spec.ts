@@ -236,7 +236,7 @@ describe('runStructuredCompletion', () => {
   it.each([
     [401, 'invalidKey'],
     [402, 'budgetExhausted'],
-    [429, 'rateLimited'],
+    [429, 'providerRateLimited'],
     [503, 'modelUnavailable'],
     [500, 'unexpected'],
   ])(
@@ -272,7 +272,7 @@ describe('runStructuredCompletion', () => {
 
     const result = await run(client);
 
-    expect(result).toMatchObject({ ok: false, reason: 'rateLimited' });
+    expect(result).toMatchObject({ ok: false, reason: 'providerRateLimited' });
   });
 
   it('rejects when the call is aborted, and never retries', async () => {

@@ -1,22 +1,27 @@
-// A full run on the sample makes 6 calls and a file at every cap about 14, so this lets one
-// visitor start a few runs, with retries, per window.
-export const HOSTED_CALLS_PER_WINDOW = 40;
-export const HOSTED_WINDOW_MS = 10 * 60 * 1000;
+import type { HostedQuota } from './hostedQuota';
+import {
+  HOSTED_REQUESTS_PER_WINDOW,
+  HOSTED_WINDOW_MS,
+} from './hostedRequestLimit';
 
 type Window = { startedAt: number; count: number };
 
+export type RateLimit = HostedQuota & { isAllowed: boolean };
+
 export type RateLimiter = {
-  /** Counts one call for the address and says whether it is within the limit. */
-  take: (address: string) => boolean;
+  /** Counts one request for the address unless it is past the limit, and reports the window. */
+  take: (address: string) => RateLimit;
 };
 
 export function createRateLimiter({
   limit,
   windowMs,
+  isEnforced = true,
   now = Date.now,
 }: {
   limit: number;
   windowMs: number;
+  isEnforced?: boolean;
   now?: () => number;
 }): RateLimiter {
   const windows = new Map<string, Window>();
@@ -26,15 +31,17 @@ export function createRateLimiter({
       const current = now();
       dropExpired({ windows, now: current, windowMs });
 
-      const window = windows.get(address);
-      if (!window) {
-        windows.set(address, { startedAt: current, count: 1 });
-        return true;
-      }
-      if (window.count >= limit) return false;
+      const window = windows.get(address) ?? { startedAt: current, count: 0 };
+      windows.set(address, window);
+      const isAllowed = !isEnforced || window.count < limit;
+      if (isAllowed) window.count += 1;
 
-      window.count += 1;
-      return true;
+      return {
+        isAllowed,
+        used: window.count,
+        limit,
+        resetsAt: window.startedAt + windowMs,
+      };
     },
   };
 }
@@ -54,7 +61,9 @@ function dropExpired({
   }
 }
 
+// Under `next dev` the hosted key is the developer's own: requests are counted, never refused.
 export const hostedRateLimiter = createRateLimiter({
-  limit: HOSTED_CALLS_PER_WINDOW,
+  limit: HOSTED_REQUESTS_PER_WINDOW,
   windowMs: HOSTED_WINDOW_MS,
+  isEnforced: process.env.NODE_ENV !== 'development',
 });

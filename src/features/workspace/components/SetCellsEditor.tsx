@@ -1,4 +1,5 @@
 import { twMerge } from 'tailwind-variants';
+import { TextInput } from '@/components/TextInput';
 import type { SetCells } from '@/engine/changes/change';
 import { toRowNumber } from '@/engine/dataset/toRowNumber';
 import { useFacts } from '../state/workspaceStore';
@@ -28,12 +29,11 @@ export function SetCellsEditor({
       <ul aria-label="Cells to correct" className="flex flex-col gap-2">
         {shown.map(({ rowId, column, value }, index) => (
           <li key={`${rowId}:${column}`}>
-            <label className="flex flex-col gap-1 text-xs font-medium text-text-secondary">
+            <label className="flex flex-col gap-1.5 text-xs font-medium text-text-secondary">
               Row {toRowNumber(rowId)}, {toColumnLabel({ columns, column })}
-              <input
+              <TextInput
                 value={value}
                 spellCheck={false}
-                className="h-8 rounded-md border border-border bg-surface px-2 font-mono text-sm font-normal text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 onChange={(event) =>
                   onChange({
                     ...draft,

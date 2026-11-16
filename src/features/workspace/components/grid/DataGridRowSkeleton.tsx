@@ -25,7 +25,7 @@ export function DataGridRowSkeleton({
       {...props}
     >
       <div
-        className="sticky left-0 z-10 border-r border-b border-border bg-surface"
+        className="sticky left-0 z-10 border-r border-b border-r-border-strong border-b-border bg-wash"
         style={{ width: ROW_NUMBER_WIDTH }}
       />
       {columns.map(({ column, left, width: columnWidth }) => (

@@ -6,6 +6,7 @@ export const AI_FAILURE_STATUS: Record<AiFailureReason, number> = {
   invalidKey: 401,
   budgetExhausted: 402,
   rateLimited: 429,
+  providerRateLimited: 429,
   modelUnavailable: 502,
   timeout: 504,
   invalidModelOutput: 502,

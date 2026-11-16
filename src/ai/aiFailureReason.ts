@@ -4,6 +4,7 @@ export const AI_FAILURE_REASONS = [
   'invalidKey',
   'budgetExhausted',
   'rateLimited',
+  'providerRateLimited',
   'modelUnavailable',
   'timeout',
   'invalidModelOutput',

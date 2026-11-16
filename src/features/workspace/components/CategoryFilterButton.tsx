@@ -1,7 +1,6 @@
 import { tv } from 'tailwind-variants';
 import type { IssueCategory } from '@/engine/issues/issue';
 import { formatCount } from '@/lib/formatCount';
-import { categoryTone } from '../categoryTone';
 import { issueCategories } from '../issueCategories';
 
 export type CategoryFilterButtonProps = React.ComponentProps<'button'> & {
@@ -10,6 +9,7 @@ export type CategoryFilterButtonProps = React.ComponentProps<'button'> & {
   isActive: boolean;
 };
 
+// The label comes first in the DOM, so the button is named "Duplicates 80"; the count shows first.
 export function CategoryFilterButton({
   category,
   count,
@@ -18,31 +18,51 @@ export function CategoryFilterButton({
   ...props
 }: CategoryFilterButtonProps) {
   const { label, icon: Icon } = issueCategories[category];
-  const { text } = categoryTone({ category });
+  const isEmpty = count === 0;
+  const slots = categoryFilterButton({ isActive, isEmpty });
 
   return (
     <button
       type="button"
       aria-pressed={isActive}
-      disabled={count === 0}
-      className={categoryFilterButton({ isActive, className })}
+      disabled={isEmpty}
+      className={slots.root({ className })}
       {...props}
     >
-      <span className="flex min-w-0 items-center gap-1.5">
-        <Icon aria-hidden className={`size-3.5 shrink-0 ${text()}`} />
-        <span className="truncate">{label}</span>
-      </span>{' '}
-      <span className="font-medium tabular-nums">{formatCount(count)}</span>
+      <Icon aria-hidden className={slots.icon()} />
+      <span className={slots.label()}>{label}</span>{' '}
+      <span className={slots.count()}>{formatCount(count)}</span>
     </button>
   );
 }
 
 const categoryFilterButton = tv({
-  base: 'flex h-8 min-w-0 cursor-pointer items-center justify-between gap-2 rounded-md border px-2.5 text-xs transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50',
+  slots: {
+    root: 'relative flex min-w-0 cursor-pointer flex-col-reverse items-start justify-end gap-1 rounded-xl border px-2 py-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed',
+    icon: 'absolute top-2 right-2 size-3.5',
+    label: 'text-xs leading-tight font-medium hyphens-auto',
+    count: 'text-xl leading-none font-semibold tracking-tight tabular-nums',
+  },
   variants: {
     isActive: {
-      true: 'border-primary bg-muted text-text-primary',
-      false: 'border-border bg-surface text-text-secondary hover:bg-muted',
+      true: {
+        root: 'border-primary-strong bg-primary text-on-primary shadow-sm shadow-primary/20',
+        icon: 'text-on-primary/85',
+        label: 'text-on-primary/85',
+      },
+      false: {
+        root: 'border-border bg-surface text-text-primary shadow-xs hover:border-primary/40 hover:bg-wash disabled:border-dashed disabled:bg-transparent disabled:text-text-secondary disabled:shadow-none',
+        icon: 'text-primary',
+        label: 'text-primary',
+      },
     },
+    isEmpty: { true: {}, false: {} },
   },
+  compoundVariants: [
+    {
+      isActive: false,
+      isEmpty: true,
+      class: { icon: 'text-text-secondary', label: 'text-text-secondary' },
+    },
+  ],
 });

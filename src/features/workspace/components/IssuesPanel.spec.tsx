@@ -97,7 +97,8 @@ describe('IssuesPanel', () => {
 
   it.each(['rateLimited', 'budgetExhausted', 'aiNotConfigured'] as const)(
     'shows why the AI stopped on %s and keeps the issues of the checks on screen',
-    (reason) => {
+    async (reason) => {
+      const user = userEvent.setup();
       aiStore$.setState((state) => ({
         ...state,
         run: {
@@ -117,6 +118,9 @@ describe('IssuesPanel', () => {
       }));
 
       render(<IssuesPanel />);
+      await user.click(
+        screen.getByRole('button', { name: 'AI tasks: 0 of 1 done, 1 failed' })
+      );
 
       expect(
         screen.getByText(aiFailureCopy[reason], { exact: false })
@@ -127,7 +131,10 @@ describe('IssuesPanel', () => {
     }
   );
 
-  it('offers the own key on a spent budget, but not to a visitor already using one', () => {
+  it('offers the own key on a spent budget, but not to a visitor already using one', async () => {
+    const user = userEvent.setup();
+    const openAiTasks = () =>
+      user.click(screen.getByRole('button', { name: /^AI tasks/ }));
     const showBudgetFailure = () =>
       aiStore$.setState((state) => ({
         ...state,
@@ -148,11 +155,13 @@ describe('IssuesPanel', () => {
       }));
     showBudgetFailure();
     const { unmount } = render(<IssuesPanel />);
+    await openAiTasks();
     expect(screen.getByText(/use your own OpenRouter key/)).toBeInTheDocument();
     unmount();
 
     settingsActions.saveOwnKey('sk-or-visitor');
     render(<IssuesPanel />);
+    await openAiTasks();
 
     expect(screen.getByText(/budget is used up/)).toBeInTheDocument();
     expect(

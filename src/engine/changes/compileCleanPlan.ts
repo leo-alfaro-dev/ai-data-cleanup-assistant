@@ -1,7 +1,6 @@
 import type { Dataset } from '@/engine/dataset/dataset';
 import type { AcceptedChange } from './acceptedChange';
 import type { CleanPlan } from './cleanPlan';
-import { compareAcceptedChanges } from './compareAcceptedChanges';
 import { compileCellValues } from './compileCellValues';
 import { compileColumnRules } from './compileColumnRules';
 import { compileRemovedRows } from './compileRemovedRows';
@@ -26,10 +25,18 @@ export function compileCleanPlan({
 function toOrderedEntries(
   accepted: readonly AcceptedChange[]
 ): readonly PlanEntry[] {
-  return [...accepted]
-    .sort(compareAcceptedChanges)
-    .map(({ issueId, change }) => ({
-      change,
-      origin: { issueId, kind: change.kind },
-    }));
+  return [...accepted].sort(compareIssueIds).map(({ issueId, change }) => ({
+    change,
+    origin: { issueId, kind: change.kind },
+  }));
+}
+
+function compareIssueIds(
+  first: AcceptedChange,
+  second: AcceptedChange
+): number {
+  if (first.issueId < second.issueId) return -1;
+  if (first.issueId > second.issueId) return 1;
+
+  return 0;
 }

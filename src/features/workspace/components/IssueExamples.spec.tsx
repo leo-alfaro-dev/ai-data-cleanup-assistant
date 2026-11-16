@@ -55,20 +55,19 @@ describe('IssueExamples', () => {
     expect(within(second).queryByText(/×/)).not.toBeInTheDocument();
   });
 
-  it('counts the cells, the rows and the rows removed', () => {
+  it('shows no list for a change with no values to compare, such as removing rows', () => {
     showPreview({
       status: 'ready',
       preview: preview({
-        counts: { cells: 12, rows: 10, removedRows: 3 },
+        counts: { cells: 0, rows: 0, removedRows: 3 },
         examples: [],
       }),
     });
 
-    render(<IssueExamples issue={issue} />);
+    const { container } = render(<IssueExamples issue={issue} />);
 
-    expect(
-      screen.getByText('Changes 12 cells in 10 rows. Removes 3 rows.')
-    ).toBeInTheDocument();
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('.animate-pulse')).toHaveLength(0);
   });
 
   it('shows an empty value as the muted mark', () => {

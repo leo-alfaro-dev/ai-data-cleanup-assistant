@@ -51,7 +51,7 @@ describe('IssueCard', () => {
       screen.getByRole('article', { name: 'Extra spaces in “name”' })
     ).toBeInTheDocument();
     expect(screen.getByText('Inconsistent values')).toBeInTheDocument();
-    expect(screen.getByText('Check · High')).toBeInTheDocument();
+    expect(screen.getByText('Check · Very sure')).toBeInTheDocument();
     expect(screen.getByText('2 rows')).toBeInTheDocument();
   });
 
@@ -94,17 +94,17 @@ describe('IssueCard', () => {
     expect(screen.getByText('AI found it plausible')).toBeInTheDocument();
   });
 
-  it('offers Accept and Reject on a pending issue with a suggestion', () => {
+  it('offers the change, named, and Keep as is on a pending issue with a suggestion', () => {
     render(<IssueCard issue={fixable} />);
 
-    expect(screen.getByRole('button', { name: 'Accept' })).toBeEnabled();
-    expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Trim spaces' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Keep as is' })).toBeEnabled();
     expect(
       screen.queryByRole('button', { name: 'Clear decision' })
     ).not.toBeInTheDocument();
   });
 
-  it('shows Accepted and Undo after accepting, and counts it as decided', async () => {
+  it('shows Applied and Clear decision after applying, and counts it as decided', async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -116,24 +116,24 @@ describe('IssueCard', () => {
       screen.getByRole('progressbar', { name: '0 of 2 decided' })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Accept' }));
+    await user.click(screen.getByRole('button', { name: 'Trim spaces' }));
 
-    expect(screen.getByText('Accepted')).toBeInTheDocument();
+    expect(screen.getByText('Applied')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Clear decision' })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'Accept' })
+      screen.queryByRole('button', { name: 'Trim spaces' })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'Reject' })
+      screen.queryByRole('button', { name: 'Keep as is' })
     ).not.toBeInTheDocument();
     expect(
       screen.getByRole('progressbar', { name: '1 of 2 decided' })
     ).toBeInTheDocument();
   });
 
-  it('shows Rejected after rejecting, and the pending buttons again after Undo', async () => {
+  it('shows Kept as is after keeping, and the pending buttons again after Clear decision', async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -142,17 +142,19 @@ describe('IssueCard', () => {
       </>
     );
 
-    await user.click(screen.getByRole('button', { name: 'Reject' }));
+    await user.click(screen.getByRole('button', { name: 'Keep as is' }));
 
-    expect(screen.getByText('Rejected')).toBeInTheDocument();
+    expect(screen.getByText('Kept as is')).toBeInTheDocument();
     expect(
       screen.getByRole('progressbar', { name: '1 of 2 decided' })
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Clear decision' }));
 
-    expect(screen.getByRole('button', { name: 'Accept' })).toBeInTheDocument();
-    expect(screen.queryByText('Rejected')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Trim spaces' })
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Kept as is')).not.toBeInTheDocument();
     expect(
       screen.getByRole('progressbar', { name: '0 of 2 decided' })
     ).toBeInTheDocument();
@@ -163,10 +165,7 @@ describe('IssueCard', () => {
     render(<IssueCard issue={unfixable} />);
 
     expect(
-      screen.queryByRole('button', { name: 'Accept' })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: 'Reject' })
+      screen.queryByRole('button', { name: 'Keep as is' })
     ).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Dismiss' }));
@@ -178,13 +177,13 @@ describe('IssueCard', () => {
   });
 
   describe('keyboard focus', () => {
-    it('stays on the main button after Accept, which becomes Undo, and after Undo', async () => {
+    it('stays on the main button after applying, which becomes Clear decision, and after clearing', async () => {
       const user = userEvent.setup();
       render(<IssueCard issue={fixable} />);
       await user.tab();
       await user.tab();
       await user.tab();
-      expect(screen.getByRole('button', { name: 'Accept' })).toHaveFocus();
+      expect(screen.getByRole('button', { name: 'Trim spaces' })).toHaveFocus();
 
       await user.keyboard('{Enter}');
       expect(
@@ -192,14 +191,14 @@ describe('IssueCard', () => {
       ).toHaveFocus();
 
       await user.keyboard('{Enter}');
-      expect(screen.getByRole('button', { name: 'Accept' })).toHaveFocus();
+      expect(screen.getByRole('button', { name: 'Trim spaces' })).toHaveFocus();
     });
 
-    it('moves from Reject to the main button, which becomes Undo', async () => {
+    it('moves from Keep as is to the main button, which becomes Clear decision', async () => {
       const user = userEvent.setup();
       render(<IssueCard issue={fixable} />);
 
-      await user.click(screen.getByRole('button', { name: 'Reject' }));
+      await user.click(screen.getByRole('button', { name: 'Keep as is' }));
 
       expect(
         screen.getByRole('button', { name: 'Clear decision' })

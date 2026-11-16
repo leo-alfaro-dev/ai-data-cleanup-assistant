@@ -11,24 +11,24 @@ export function IssueCardSkeleton({
     <div
       aria-hidden
       className={twMerge(
-        'flex flex-col gap-1 rounded-lg border border-border bg-surface p-2',
+        'flex flex-col gap-1.5 rounded-xl border border-border bg-surface p-2 shadow-xs',
         className
       )}
       {...props}
     >
-      <div className="flex flex-col gap-1 p-1">
-        <div className="flex items-center gap-2">
-          <SkeletonBar className="h-5 w-28" />
-          <SkeletonBar className="h-3 w-16" />
+      <div className="flex flex-col gap-1.5 p-1">
+        <div className="flex items-center justify-between gap-3">
+          <SkeletonBar className="h-4 w-32" />
+          <SkeletonBar className="h-3 w-20" />
         </div>
         <SkeletonBar className="h-4 w-3/4" />
         <SkeletonBar className="h-3 w-full" />
         <SkeletonBar className="h-3 w-5/6" />
         <SkeletonBar className="h-3 w-12" />
       </div>
-      <div className="flex items-center justify-end gap-2">
-        <SkeletonBar className="h-8 w-[4.5rem]" />
-        <SkeletonBar className="h-8 w-[4.5rem]" />
+      <div className="flex items-center justify-end gap-1.5">
+        <SkeletonBar className="h-8 w-22 rounded-full" />
+        <SkeletonBar className="h-8 w-22 rounded-full" />
       </div>
     </div>
   );

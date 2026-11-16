@@ -4,6 +4,7 @@ import { toRowId } from '@/engine/dataset/toRowId';
 import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { toIssueId } from '@/engine/issues/toIssueId';
+import { withoutEmDashes } from '@/lib/withoutEmDashes';
 import type { AssessSuspiciousRowsResult } from './assessSuspiciousRowsContract';
 
 /**
@@ -36,7 +37,7 @@ export function toAssessSuspiciousRowsIssues({
           rowId,
           isSuspicious: verdict.isSuspicious,
           column,
-          reason: verdict.reason,
+          reason: withoutEmDashes(verdict.reason),
           confidence: verdict.confidence,
           suggestedValue: verdict.suggestedValue,
         });
@@ -59,7 +60,7 @@ export function toAssessSuspiciousRowsIssues({
               cells: [{ rowId, column, value: verdict.suggestedValue }],
             }
           : null,
-      details: { kind: 'assessedRow', reason: verdict.reason },
+      details: { kind: 'assessedRow', reason: withoutEmDashes(verdict.reason) },
     });
   }
 

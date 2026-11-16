@@ -130,6 +130,26 @@ describe('toAssessSuspiciousRowsIssues', () => {
     ]);
   });
 
+  it('shows the reason of the model without em dashes, in an issue and in a note', () => {
+    const { issues, notes } = toAssessSuspiciousRowsIssues({
+      dataset,
+      result: result(
+        { rowId: 3, column: 2, reason: 'Too small \u2014 odd for this file.' },
+        {
+          rowId: 1,
+          flaggedBy: ['invalid-emails:1'],
+          reason: 'No @ \u2014 not an email.',
+        }
+      ),
+    });
+
+    expect(issues[0]?.details).toEqual({
+      kind: 'assessedRow',
+      reason: 'Too small, odd for this file.',
+    });
+    expect(notes[0]?.reason).toBe('No @, not an email.');
+  });
+
   it('adds a note for a flagged row the model finds plausible, so the issue can say so', () => {
     const { notes } = toAssessSuspiciousRowsIssues({
       dataset,

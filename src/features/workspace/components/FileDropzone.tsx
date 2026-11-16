@@ -1,5 +1,6 @@
 import { RxUpload } from 'react-icons/rx';
 import { tv } from 'tailwind-variants';
+import { IconCircle } from '@/components/IconCircle';
 import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { useFileDrop } from '../state/useFileDrop';
 import { workspaceActions } from '../state/workspaceStore';
@@ -15,10 +16,12 @@ export function FileDropzone({ className = '', ...props }: FileDropzoneProps) {
       {...handlers}
       {...props}
     >
-      <RxUpload aria-hidden className="size-5 text-text-secondary" />
-      <span className="text-sm font-medium">
+      <IconCircle icon={RxUpload} size="lg" />
+      <span className="text-sm font-semibold">
         Drop a CSV file here, or{' '}
-        <span className="underline underline-offset-4">choose one</span>
+        <span className="text-primary underline decoration-primary/40 underline-offset-4">
+          choose one
+        </span>
       </span>
       <span className="text-xs text-text-secondary">
         Comma, semicolon, tab or pipe separated · up to{' '}
@@ -40,11 +43,12 @@ export function FileDropzone({ className = '', ...props }: FileDropzoneProps) {
 }
 
 const fileDropzone = tv({
-  base: 'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed px-6 py-16 text-center transition-colors has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary',
+  base: 'flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-14 text-center transition-colors has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary',
   variants: {
     isDragging: {
-      true: 'border-primary bg-muted',
-      false: 'border-border bg-surface hover:bg-muted',
+      true: 'border-primary bg-wash',
+      false:
+        'border-border-strong bg-surface hover:border-primary/50 hover:bg-wash',
     },
   },
 });

@@ -15,21 +15,16 @@ import { MAX_FILE_BYTES } from '@/engine/dataset/maxFileBytes';
 import { parseCsv } from '@/engine/dataset/parseCsv';
 import type { CleanedFiles } from '@/engine/export/cleanedFiles';
 import { exportCleanedFiles } from '@/engine/export/exportCleanedFiles';
-import type { Recipe } from '@/engine/recipe/recipe';
-import { replayRecipe } from '@/engine/recipe/replayRecipe';
-import type { ReplayResult } from '@/engine/recipe/replayResult';
 import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { findNearDuplicateCandidates } from '@/engine/matching/findNearDuplicateCandidates';
 import { profileDataset } from '@/engine/profile/profileDataset';
 import type { AiRequests } from '@/ai/aiRequests';
 import type { AiTaskResult } from '@/ai/aiTaskResult';
+import { toTaskIssues } from '@/ai/toTaskIssues';
 import { buildAssessSuspiciousRowsRequests } from '@/ai/tasks/assessSuspiciousRows/buildAssessSuspiciousRowsRequests';
-import { toAssessSuspiciousRowsIssues } from '@/ai/tasks/assessSuspiciousRows/toAssessSuspiciousRowsIssues';
 import { buildConfirmDuplicatesRequests } from '@/ai/tasks/confirmDuplicates/buildConfirmDuplicatesRequests';
-import { toConfirmDuplicatesIssues } from '@/ai/tasks/confirmDuplicates/toConfirmDuplicatesIssues';
 import { buildNormalizeValuesRequests } from '@/ai/tasks/normalizeValues/buildNormalizeValuesRequests';
-import { toNormalizeValuesIssues } from '@/ai/tasks/normalizeValues/toNormalizeValuesIssues';
 import type { NearDuplicateCandidate } from '@/engine/matching/nearDuplicateCandidate';
 import type { ColumnProfile } from '@/engine/profile/columnProfile';
 import { tryCatch } from '@/lib/tryCatch';
@@ -39,7 +34,6 @@ import { pauseForCancel } from './pauseForCancel';
 import { toAnalysisProgress } from './toAnalysisProgress';
 
 let dataset: Dataset | null = null;
-let fileName = '';
 let profile: readonly ColumnProfile[] | null = null;
 let candidates: readonly NearDuplicateCandidate[] | null = null;
 let checkIssues: readonly Issue[] | null = null;
@@ -53,7 +47,6 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
       { ok: true; facts: FileFacts } | { ok: false; reason: LoadFailureReason }
     > => {
       dataset = null;
-      fileName = file.name;
       profile = null;
       candidates = null;
       checkIssues = null;
@@ -154,54 +147,14 @@ export const datasetWorker = defineWorker(({ onMessage }) => ({
 
   buildAiIssues: (
     taskResult: AiTaskResult
-  ): { issues: Issue[]; notes: AiNote[] } => {
-    if (!dataset) return { issues: [], notes: [] };
-
-    switch (taskResult.task) {
-      case 'normalizeValues':
-        return {
-          issues: toNormalizeValuesIssues({
-            result: taskResult.result,
-            dataset,
-          }),
-          notes: [],
-        };
-      case 'confirmDuplicates':
-        return {
-          issues: toConfirmDuplicatesIssues({
-            result: taskResult.result,
-            dataset,
-          }),
-          notes: [],
-        };
-      case 'assessSuspiciousRows':
-        return toAssessSuspiciousRowsIssues({
-          result: taskResult.result,
-          dataset,
-        });
-    }
-  },
+  ): { issues: Issue[]; notes: AiNote[] } =>
+    dataset ? toTaskIssues({ taskResult, dataset }) : { issues: [], notes: [] },
 
   preview: (change: Change): ChangePreview | null =>
     dataset ? previewChange({ change, dataset }) : null,
 
-  exportFiles: ({
-    accepted,
-    createdAt,
-  }: {
-    accepted: AcceptedChange[];
-    createdAt: string;
-  }): CleanedFiles | null =>
-    dataset
-      ? exportCleanedFiles({
-          dataset,
-          accepted,
-          recipeSource: { fileName, createdAt },
-        })
-      : null,
-
-  replayRecipe: (recipe: Recipe): ReplayResult | null =>
-    dataset ? replayRecipe({ dataset, recipe }) : null,
+  exportFiles: (accepted: AcceptedChange[]): CleanedFiles | null =>
+    dataset ? exportCleanedFiles({ dataset, accepted }) : null,
 }));
 
 export type DatasetWorker = typeof datasetWorker;

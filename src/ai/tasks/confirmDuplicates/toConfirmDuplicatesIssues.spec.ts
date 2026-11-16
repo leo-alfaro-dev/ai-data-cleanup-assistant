@@ -35,6 +35,17 @@ function result(
 }
 
 describe('toConfirmDuplicatesIssues', () => {
+  it('shows the reason of the model without em dashes', () => {
+    const [issue] = toConfirmDuplicatesIssues({
+      result: result({ reason: 'One person \u2014 typed twice.' }),
+      dataset,
+    });
+
+    expect(issue?.details).toMatchObject({
+      reason: 'One person, typed twice.',
+    });
+  });
+
   it('turns a confirmed pair into a duplicate issue from the AI that merges the two rows', () => {
     const issues = toConfirmDuplicatesIssues({ result: result({}), dataset });
 

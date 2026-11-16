@@ -1,10 +1,10 @@
-# Epic 0 — Foundation
+# Epic 0: Foundation
 
 **Outcome:** every later task starts from green checks, and the app has a public URL that redeploys on every push.
 
 **Why it matters:** tooling and hosting problems are cheapest to find while the app is one screen. A live URL from the first hour also means a demo exists at every later commit.
 
-## T0.1 — Scaffold the Next.js app with tests, lint and pre-commit checks
+## T0.1: Scaffold the Next.js app with tests, lint and pre-commit checks
 
 **Status:** done, committed in `45a19eb` together with T0.2
 
@@ -12,19 +12,19 @@ Next.js 16, React 19 and Tailwind 4 with the design tokens, a minimal workspace 
 
 **Verified:** `yarn verify` and `yarn integrations` pass. The lint rules were proven with probe files that broke each one on purpose; the key scan caught a planted fake key; screenshots at 1440px and 390px.
 
-## T0.2 — Add CI workflow running the checks and e2e on push
+## T0.2: Add CI workflow running the checks and e2e on push
 
 **Status:** done, committed in `45a19eb`. Its first run happens on the first push.
 
 **Files:** `.github/workflows/ci.yml`: format, spellcheck, key scan, lint, typecheck, unit specs, then e2e on the production build.
 
-## T0.3 — Add the development plan and update CLAUDE.md
+## T0.3: Add the development plan and update CLAUDE.md
 
 **Status:** done, committed in `684f16d`
 
 **Files:** `plan/`, `CLAUDE.md` and `cspell.json`. The `CLAUDE.md` changes are the pointer to this plan and the decisions made while planning (D1, D3, D4, D5, D7, D8 and D10 in [README.md](README.md)), plus `IssueId` as the key for decisions and the five files of an AI task folder.
 
-## T0.4 — Deploy the walking skeleton to Vercel
+## T0.4: Deploy the walking skeleton to Vercel
 
 **After:** T0.1 · **Needs you**
 

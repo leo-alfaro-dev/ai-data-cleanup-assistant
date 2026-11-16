@@ -5,7 +5,7 @@ import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { tryCatch } from '@/lib/tryCatch';
 import type { AiJob, AiJobState } from './aiJob';
-import { runAiTasks } from './runAiTasks';
+import { runAiTasks } from '@/ai/runAiTasks';
 
 export type SettledAiJob = {
   job: AiJob;

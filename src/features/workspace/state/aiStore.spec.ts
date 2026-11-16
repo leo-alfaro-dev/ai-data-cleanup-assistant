@@ -131,6 +131,32 @@ describe('aiStore', () => {
     vi.unstubAllGlobals();
   });
 
+  it('keeps the highest hosted-key count of the window, whichever answer lands last', async () => {
+    worker.buildAiRequests.mockReturnValue(
+      CancelablePromise.resolve(requests(2))
+    );
+    const { held } = holdFetch();
+    const running = aiActions.startRun();
+    await vi.waitFor(() => expect(held).toHaveLength(2));
+    const withQuota = (key: number, used: number) =>
+      Response.json({
+        ok: true,
+        result: resultOf(key),
+        calls: [call],
+        quota: { used, limit: 50, resetsAt: 1_000 },
+      });
+
+    held[1]?.resolve(withQuota(held[1].key, 2));
+    held[0]?.resolve(withQuota(held[0].key, 1));
+    await running;
+
+    expect(aiStore$.getState().quota).toEqual({
+      used: 2,
+      limit: 50,
+      resetsAt: 1_000,
+    });
+  });
+
   it('runs every request with the model, lands the issues and records each call as it was sent', async () => {
     worker.buildAiRequests.mockReturnValue(
       CancelablePromise.resolve(requests(2))
@@ -160,7 +186,7 @@ describe('aiStore', () => {
     const [entry] = state.calls;
     expect(entry).toMatchObject({
       task: 'normalizeValues',
-      model: 'anthropic/claude-haiku-5.5',
+      model: 'google/gemini-2.5-flash-lite',
       outcome: 'ok',
       claimCount: 4,
       droppedClaims: 1,
@@ -168,7 +194,7 @@ describe('aiStore', () => {
     });
     expect(entry?.requestBody).toBe(
       JSON.stringify({
-        model: 'anthropic/claude-haiku-5.5',
+        model: 'google/gemini-2.5-flash-lite',
         request: request(0),
       })
     );

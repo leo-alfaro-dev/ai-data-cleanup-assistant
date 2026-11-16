@@ -90,7 +90,7 @@ describe('IssueEditor on a value mapping', () => {
     await user.clear(input);
     await user.type(input, 'Paris City');
     await screen.findAllByText(/^Changes \d+ cells? in/);
-    await user.click(screen.getByRole('button', { name: 'Save and accept' }));
+    await user.click(screen.getByRole('button', { name: 'Save and apply' }));
 
     const decision = reviewStore$.getState().decisions.get(casing);
     expect(decision).toMatchObject({
@@ -137,7 +137,7 @@ describe('IssueEditor on a value mapping', () => {
     for (const box of screen.getAllByRole('checkbox')) await user.click(box);
 
     expect(
-      screen.getByRole('button', { name: 'Save and accept' })
+      screen.getByRole('button', { name: 'Save and apply' })
     ).toBeDisabled();
   });
 });

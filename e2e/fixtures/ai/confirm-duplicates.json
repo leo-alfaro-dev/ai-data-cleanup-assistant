@@ -1103,14 +1103,10 @@
         "duplicates": [
           {
             "rows": [45, 167],
-            "confidence": "high",
-            "reason": "Same email, phone, address, date, plan and spend; only name capitalization differs.",
+            "confidence": "certain",
+            "reason": "The records are identical except for the first_name case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1119,14 +1115,10 @@
           },
           {
             "rows": [56, 922],
-            "confidence": "high",
-            "reason": "Same email, phone, address and spend; last name 'Brow' looks like a truncated 'Brown'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the last_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1136,13 +1128,9 @@
           {
             "rows": [57, 770],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1152,13 +1140,9 @@
           {
             "rows": [61, 676],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1168,13 +1152,9 @@
           {
             "rows": [64, 978],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1184,13 +1164,9 @@
           {
             "rows": [87, 218],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1200,13 +1176,9 @@
           {
             "rows": [109, 602],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1216,13 +1188,9 @@
           {
             "rows": [112, 786],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1232,13 +1200,9 @@
           {
             "rows": [127, 728],
             "confidence": "certain",
-            "reason": "Same person; email differs only in capitalization.",
+            "reason": "The records are identical except for the email case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 3,
                 "keep": "first"
@@ -1247,14 +1211,10 @@
           },
           {
             "rows": [138, 811],
-            "confidence": "high",
-            "reason": "Same email, phone and address; first name 'Tra' is a typo of 'Tara'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the first_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1264,13 +1224,9 @@
           {
             "rows": [141, 1025],
             "confidence": "certain",
-            "reason": "Same person; first name capitalization differs only.",
+            "reason": "The records are identical except for the first_name case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1280,13 +1236,9 @@
           {
             "rows": [143, 618],
             "confidence": "certain",
-            "reason": "Same person; last name capitalization differs only.",
+            "reason": "The records are identical except for the last_name case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1295,14 +1247,10 @@
           },
           {
             "rows": [192, 1107],
-            "confidence": "high",
-            "reason": "Same email, phone and address; first name 'Zob' is a typo of 'Zoe'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the first_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1312,13 +1260,9 @@
           {
             "rows": [207, 570],
             "confidence": "certain",
-            "reason": "Same person; last name capitalization differs only.",
+            "reason": "The records are identical except for the last_name case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1328,13 +1272,9 @@
           {
             "rows": [212, 523],
             "confidence": "certain",
-            "reason": "Same person; first name capitalization differs only.",
+            "reason": "The records are identical except for the first_name case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1343,14 +1283,10 @@
           },
           {
             "rows": [236, 878],
-            "confidence": "high",
-            "reason": "Same email, phone and address; last name 'Le' is a truncated 'Lee'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the last_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1360,13 +1296,9 @@
           {
             "rows": [283, 959],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1376,13 +1308,9 @@
           {
             "rows": [307, 367],
             "confidence": "certain",
-            "reason": "Same person; email differs only in capitalization.",
+            "reason": "The records are identical except for the email case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 3,
                 "keep": "first"
@@ -1392,13 +1320,9 @@
           {
             "rows": [335, 569],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1407,14 +1331,10 @@
           },
           {
             "rows": [377, 807],
-            "confidence": "high",
-            "reason": "Same email, phone and address; last name 'Marsinez' is a typo of 'Martinez'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the last_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1423,14 +1343,10 @@
           },
           {
             "rows": [388, 749],
-            "confidence": "high",
-            "reason": "Same person; second row has a blank country where the first has United States.",
+            "confidence": "certain",
+            "reason": "The records are identical except for the country value, which is empty in the second record.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 7,
                 "keep": "first"
@@ -1440,13 +1356,9 @@
           {
             "rows": [389, 1137],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1455,14 +1367,10 @@
           },
           {
             "rows": [421, 841],
-            "confidence": "high",
-            "reason": "Same person; second row has a blank plan where the first has Business.",
+            "confidence": "certain",
+            "reason": "The records are identical except for the plan value, which is empty in the second record.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 9,
                 "keep": "first"
@@ -1472,13 +1380,9 @@
           {
             "rows": [513, 650],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1488,13 +1392,9 @@
           {
             "rows": [613, 968],
             "confidence": "certain",
-            "reason": "Same person; email differs only in capitalization.",
+            "reason": "The records are identical except for the email case.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 3,
                 "keep": "first"
@@ -1504,13 +1404,9 @@
           {
             "rows": [623, 716],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1519,14 +1415,10 @@
           },
           {
             "rows": [632, 837],
-            "confidence": "high",
-            "reason": "Same email, phone and address; first name 'Samael' is a typo of 'Samuel'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the first_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 1,
                 "keep": "first"
@@ -1536,13 +1428,9 @@
           {
             "rows": [664, 877],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1552,13 +1440,9 @@
           {
             "rows": [690, 751],
             "confidence": "certain",
-            "reason": "Same person; phone differs only in formatting.",
+            "reason": "The records are identical except for the phone number format.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 4,
                 "keep": "first"
@@ -1567,14 +1451,10 @@
           },
           {
             "rows": [768, 780],
-            "confidence": "high",
-            "reason": "Same email, phone and address; last name 'Nguyuen' is a typo of 'Nguyen'.",
+            "confidence": "certain",
+            "reason": "The records are identical except for a typo in the last_name.",
             "keep": "first",
             "choices": [
-              {
-                "column": 0,
-                "keep": "first"
-              },
               {
                 "column": 2,
                 "keep": "first"
@@ -1582,18 +1462,18 @@
             ]
           }
         ],
-        "claimCount": 90,
+        "claimCount": 60,
         "droppedClaims": 0
       },
       "calls": [
         {
           "task": "confirmDuplicates",
-          "model": "anthropic/claude-haiku-5.5",
-          "promptTokens": 7107,
-          "completionTokens": 4846,
-          "totalTokens": 11953,
-          "cost": 0.0031337,
-          "latencyMs": 17977,
+          "model": "google/gemini-2.5-flash-lite",
+          "promptTokens": 5539,
+          "completionTokens": 2649,
+          "totalTokens": 8188,
+          "cost": 0.0016135,
+          "latencyMs": 5424,
           "outcome": "valid"
         }
       ]

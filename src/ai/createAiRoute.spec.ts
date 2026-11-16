@@ -76,6 +76,7 @@ describe('createAiRoute', () => {
       ok: false,
       reason: 'invalidRequest',
       calls: [],
+      quota: null,
     });
     expect(runTask).not.toHaveBeenCalled();
   });
@@ -125,6 +126,7 @@ describe('createAiRoute', () => {
       ok: true,
       result: { answer: 'yes' },
       calls: [],
+      quota: { used: 1, limit: 1000, resetsAt: expect.any(Number) },
     });
     expect(createClient).toHaveBeenCalledWith({ apiKey: 'hosted-key' });
     expect(runTask).toHaveBeenCalledWith({
@@ -192,6 +194,7 @@ describe('createAiRoute', () => {
     ['invalidKey', 401],
     ['budgetExhausted', 402],
     ['rateLimited', 429],
+    ['providerRateLimited', 429],
     ['modelUnavailable', 502],
     ['timeout', 504],
     ['invalidModelOutput', 502],
@@ -218,7 +221,12 @@ describe('createAiRoute', () => {
       );
 
       expect(response.status).toBe(status);
-      expect(await response.json()).toEqual({ ok: false, reason, calls });
+      expect(await response.json()).toEqual({
+        ok: false,
+        reason,
+        calls,
+        quota: { used: 1, limit: 1000, resetsAt: expect.any(Number) },
+      });
     }
   );
 
@@ -286,6 +294,7 @@ describe('createAiRoute', () => {
         ok: false,
         reason: 'rateLimited',
         calls: [],
+        quota: { used: 1, limit: 1, resetsAt: expect.any(Number) },
       });
       expect(other.status).toBe(200);
       expect(runTask).toHaveBeenCalledTimes(2);
@@ -303,6 +312,16 @@ describe('createAiRoute', () => {
 
       expect(statuses).toEqual([200, 200, 200]);
       expect(runTask).toHaveBeenCalledTimes(3);
+    });
+
+    it('reports no count on the visitor key, where no limit applies', async () => {
+      const { route } = makeRoute({ limit: 1 });
+
+      const response = await route(
+        post({ body, headers: { 'x-openrouter-key': 'visitor-secret' } })
+      );
+
+      expect(await response.json()).toMatchObject({ ok: true, quota: null });
     });
 
     it('does not count a request the contract refused', async () => {

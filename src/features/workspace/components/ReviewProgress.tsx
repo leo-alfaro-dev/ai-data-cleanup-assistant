@@ -5,7 +5,7 @@ import { useDecisions } from '../state/reviewStore';
 
 export type ReviewProgressProps = Omit<
   React.ComponentProps<typeof ProgressBar>,
-  'value' | 'label'
+  'value' | 'label' | 'emphasis'
 >;
 
 export function ReviewProgress(props: ReviewProgressProps) {
@@ -15,6 +15,7 @@ export function ReviewProgress(props: ReviewProgressProps) {
 
   return (
     <ProgressBar
+      emphasis="headline"
       value={share}
       label={`${formatCount(decided)} of ${formatCount(total)} decided`}
       {...props}

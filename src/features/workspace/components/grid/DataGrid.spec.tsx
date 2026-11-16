@@ -190,16 +190,16 @@ describe('DataGrid', () => {
   });
 
   describe('the selected issue', () => {
-    it('highlights its cells in the category color, and nothing else', () => {
+    it('highlights its cells, and nothing else', () => {
       render(<DataGrid />);
       act(() => reviewActions.select(trim));
 
       const highlighted = cellContaining('Ada');
-      expect(highlighted).toHaveClass('bg-inconsistent/20');
-      expect(cellContaining('Bo')).not.toHaveClass('bg-inconsistent/20');
+      expect(highlighted).toHaveClass('bg-highlight');
+      expect(cellContaining('Bo')).not.toHaveClass('bg-highlight');
       expect(
         within(rowNumbered('2')).getByText('1').closest('[role="cell"]')
-      ).not.toHaveClass('bg-inconsistent/20');
+      ).not.toHaveClass('bg-highlight');
     });
 
     it('highlights the whole row for an issue that covers whole rows', () => {
@@ -208,9 +208,9 @@ describe('DataGrid', () => {
       act(() => reviewActions.select(duplicates));
 
       for (const cell of within(rowNumbered('5')).getAllByRole('cell')) {
-        expect(cell).toHaveClass('bg-duplicate/20');
+        expect(cell).toHaveClass('bg-highlight');
       }
-      expect(rowNumbered('3').querySelector('.bg-duplicate\\/20')).toBeNull();
+      expect(rowNumbered('3').querySelector('.bg-highlight')).toBeNull();
     });
 
     it('lists only the rows of the issue when asked', () => {

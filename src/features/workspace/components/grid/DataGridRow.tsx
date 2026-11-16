@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import { tv, twMerge } from 'tailwind-variants';
+import { tv } from 'tailwind-variants';
 import { cleanCell } from '@/engine/changes/cleanCell';
 import type { RowId } from '@/engine/dataset/dataset';
 import { toRowNumber } from '@/engine/dataset/toRowNumber';
 import type { Issue } from '@/engine/issues/issue';
 import { memoizeByReference } from '@/lib/memoizeByReference';
-import { categoryTone } from '../../categoryTone';
 import { useFocusedRow, useReviewView } from '../../state/reviewStore';
 import { useCleanPlan } from '../../state/useCleanPlan';
 import { useRow } from '../../state/useRow';
@@ -43,12 +42,8 @@ export const DataGridRow = memo(function DataGridRow({
 
   const isFocused = focusedRow === rowId;
   const isRemoved = view === 'cleaned' && plan.removedRows.has(rowId);
-  const issueCategory =
-    issue && toRowSet(issue).has(rowId) ? issue.category : null;
-  const rowHighlight =
-    issueCategory !== null && issue?.column === null
-      ? categoryTone({ category: issueCategory }).highlight()
-      : '';
+  const isIssueRow = issue !== undefined && toRowSet(issue).has(rowId);
+  const isWholeRowIssue = isIssueRow && issue?.column === null;
 
   return (
     <div
@@ -62,13 +57,12 @@ export const DataGridRow = memo(function DataGridRow({
       <div
         role="rowheader"
         aria-colindex={1}
-        className="sticky left-0 z-10 flex items-center justify-end border-r border-b border-border bg-surface px-2 text-xs text-text-secondary tabular-nums"
+        className={rowHeader({ isHighlighted: isWholeRowIssue, isFocused })}
         style={{ width: ROW_NUMBER_WIDTH }}
       >
-        <span
-          aria-hidden
-          className={twMerge('absolute inset-0', rowHighlight)}
-        />
+        {isWholeRowIssue && (
+          <span aria-hidden className="absolute inset-0 bg-highlight" />
+        )}
         <span className="relative">{toRowNumber(rowId)}</span>
         {isRemoved && <span className="sr-only">, removed</span>}
       </div>
@@ -79,7 +73,7 @@ export const DataGridRow = memo(function DataGridRow({
             ? cleanCell({ plan, rowId, column: column.key, value: original })
             : { isChanged: false as const, value: original };
         const isIssueCell =
-          issueCategory !== null &&
+          isIssueRow &&
           (issue?.column === null || issue?.column === column.key);
 
         return (
@@ -90,7 +84,7 @@ export const DataGridRow = memo(function DataGridRow({
             isNumeric={isNumeric}
             isRemoved={isRemoved}
             changedFrom={cleaned.isChanged ? original : null}
-            highlight={isIssueCell ? issueCategory : null}
+            isHighlighted={isIssueCell}
             left={left}
             width={columnWidth}
           />
@@ -111,5 +105,14 @@ const dataGridRow = tv({
       true: 'z-10 outline-2 -outline-offset-2 outline-primary',
       false: '',
     },
+  },
+});
+
+// Sticky, so it stays opaque: the highlight is a layer over the wash, not its background.
+const rowHeader = tv({
+  base: 'sticky left-0 z-10 flex items-center justify-end border-r border-b border-r-border-strong border-b-border bg-wash px-2 text-xs text-text-secondary tabular-nums',
+  variants: {
+    isHighlighted: { true: 'text-text-primary', false: '' },
+    isFocused: { true: 'font-semibold text-text-primary', false: '' },
   },
 });

@@ -7,6 +7,7 @@ import { toIssueId } from '@/engine/issues/toIssueId';
 import { toMergeRows } from '@/engine/matching/toMergeRows';
 import { isBlank } from '@/engine/values/isBlank';
 import { isPlaceholder } from '@/engine/values/isPlaceholder';
+import { withoutEmDashes } from '@/lib/withoutEmDashes';
 import type { ConfirmDuplicatesResult } from './confirmDuplicatesContract';
 
 /**
@@ -58,7 +59,11 @@ export function toConfirmDuplicatesIssues({
             (left, right) => left.column - right.column
           ),
         },
-        details: { kind: 'confirmedDuplicate', keptRow: kept, reason },
+        details: {
+          kind: 'confirmedDuplicate',
+          keptRow: kept,
+          reason: withoutEmDashes(reason),
+        },
       };
     }
   );

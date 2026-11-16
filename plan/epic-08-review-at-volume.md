@@ -1,4 +1,4 @@
-# Epic 8 — Review at volume
+# Epic 8: Review at volume
 
 **Outcome:** a reviewer clears dozens of issues in seconds, never loses work, and can correct a suggestion before accepting it.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** the whole sample reviewed in under twenty seconds without touching the mouse, then one keystroke undoes the last step.
 
-## T8.1 — Decide in bulk and undo any step
+## T8.1: Decide in bulk and undo any step
 
 **After:** T5.3
 
@@ -28,7 +28,7 @@
 - Component spec: the button states how many issues it will accept, and that number is what gets accepted.
 - e2e: bulk accept a category, then undo.
 
-## T8.2 — Review from the keyboard
+## T8.2: Review from the keyboard
 
 **After:** T8.1
 
@@ -52,7 +52,7 @@
 - e2e: the sample is fully reviewed using only the keyboard.
 - Screenshots showing the focused card and the help dialog.
 
-## T8.3 — Edit a suggestion before accepting it
+## T8.3: Edit a suggestion before accepting it
 
 **After:** T5.4
 
