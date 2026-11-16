@@ -1,4 +1,4 @@
-# Epic 4 — Checks
+# Epic 4: Checks
 
 **Outcome:** code finds all four categories across the whole file, with no AI involved, and every check has a score against the planted errors.
 
@@ -13,7 +13,7 @@
 - Each issue carries its rows, its `details`, and a `suggestion` or `null`. A check never invents a value.
 - Each task ends by running `yarn eval --checks-only`, updating `eval/results/checks-only.json`, and reporting the table.
 
-## T4.1 — Find exact and normalized duplicate rows
+## T4.1: Find exact and normalized duplicate rows
 
 **After:** T3.2
 
@@ -33,7 +33,7 @@
 - Specs: two identical rows are found; rows that differ by one character are not; rows that differ only by case or spacing are found by the normalized check and not by the exact one; three copies form one group that keeps the first.
 - The duplicates row of the baseline shows the exact copies found.
 
-## T4.2 — Find whitespace, casing, date-format and type inconsistencies
+## T4.2: Find whitespace, casing, date-format and type inconsistencies
 
 **After:** T3.2
 
@@ -56,7 +56,7 @@
 - Specs from both sides for each check. Among them: an ambiguous date stays untouched and is listed; a column of names produces no casing issue; `N/A` in a number column is not a type mismatch, because T4.3 owns it.
 - The inconsistent-values row of the baseline is filled.
 
-## T4.3 — Find empty cells and placeholder values
+## T4.3: Find empty cells and placeholder values
 
 **After:** T3.2
 
@@ -75,7 +75,7 @@
 - Specs from both sides: `N/A` is found and `Nancy` is not; `-` is found and `-5` is not; `none` filling a third of a plan column is found with `medium` confidence; the empty-cells issue has no suggestion.
 - The missing-data row of the baseline is filled.
 
-## T4.4 — Find outliers, invalid emails, formula-like cells and structural issues
+## T4.4: Find outliers, invalid emails, formula-like cells and structural issues
 
 **After:** T3.2
 
@@ -99,7 +99,7 @@
 - Specs from both sides: a column of 1 to 100 with one 10,000 is flagged, and a column that is naturally wide is not; `jo@exmaple.com` gets `jo@example.com` when `example.com` dominates, and no suggestion when domains are varied; `=SUM(A1)` is flagged, `-12.5` and `+1 555 0100` are not.
 - The suspicious-records row of the baseline is filled.
 
-## T4.5 — Find shared identifiers and near-duplicate candidates
+## T4.5: Find shared identifiers and near-duplicate candidates
 
 **After:** T4.1
 

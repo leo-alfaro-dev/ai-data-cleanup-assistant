@@ -65,7 +65,7 @@ describe('buildSummary', () => {
     const lines = summary.split('\n').filter((line) => line.startsWith('| '));
     expect(lines[0]).toContain('Duplicates');
     expect(lines[2]).toBe(
-      '| Checks only | P 100.0% · R 50.0% | P 100.0% · R 50.0% | P 100.0% · R 50.0% | P 100.0% · R 50.0% | 100.0% | $0 | — |'
+      '| Checks only | P 100.0% · R 50.0% | P 100.0% · R 50.0% | P 100.0% · R 50.0% | P 100.0% · R 50.0% | 100.0% | $0 | n/a |'
     );
     expect(lines[3]).toContain('| vendor/model-a |');
     expect(lines[3]).toContain('P 90.0% · R 80.0%');
@@ -73,7 +73,7 @@ describe('buildSummary', () => {
     expect(lines[4]).toContain('| vendor/model-b |');
   });
 
-  it('shows a ratio over nothing as a dash, and pools the suggestion accuracy', () => {
+  it('shows a ratio over nothing as n/a, and pools the suggestion accuracy', () => {
     const summary = buildSummary({
       checksOnly,
       models: [
@@ -87,7 +87,7 @@ describe('buildSummary', () => {
       ],
     });
 
-    expect(summary).toContain('P — · R —');
+    expect(summary).toContain('P n/a · R n/a');
     expect(summary).toContain('83.3%');
   });
 

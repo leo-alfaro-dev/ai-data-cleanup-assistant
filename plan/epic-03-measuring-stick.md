@@ -1,4 +1,4 @@
-# Epic 3 — Measuring stick
+# Epic 3: Measuring stick
 
 **Outcome:** a synthetic dataset in which every error is planted and recorded, and a scorer that says what share of them the app finds.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** `yarn eval --checks-only` printing a table of zeros that Epic 4 will fill.
 
-## T3.1 — Generate synthetic customer data with planted, recorded errors
+## T3.1: Generate synthetic customer data with planted, recorded errors
 
 **After:** T2.3
 
@@ -44,7 +44,7 @@
 
 **Also update:** `CLAUDE.md` commands gain `yarn eval:data`; the Testing section notes that eval code has specs too.
 
-## T3.2 — Score found issues against planted errors
+## T3.2: Score found issues against planted errors
 
 **After:** T3.1, T2.2
 

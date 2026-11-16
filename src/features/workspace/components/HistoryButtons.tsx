@@ -1,8 +1,7 @@
 import { twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
-import { ariaKeysOf } from '../shortcuts';
 import { reviewActions, useCanRedo, useCanUndo } from '../state/reviewStore';
-import { ShortcutHint } from './ShortcutHint';
+import { ShortcutTooltip } from './ShortcutTooltip';
 
 export type HistoryButtonsProps = React.ComponentProps<'div'>;
 
@@ -20,24 +19,24 @@ export function HistoryButtons({
       className={twMerge('flex items-center gap-1', className)}
       {...props}
     >
-      <Button
-        variant="ghost"
-        disabled={!canUndo}
-        aria-keyshortcuts={ariaKeysOf('undo')}
-        onClick={() => reviewActions.undo()}
-      >
-        Undo
-        <ShortcutHint action="undo" />
-      </Button>
-      <Button
-        variant="ghost"
-        disabled={!canRedo}
-        aria-keyshortcuts={ariaKeysOf('redo')}
-        onClick={() => reviewActions.redo()}
-      >
-        Redo
-        <ShortcutHint action="redo" />
-      </Button>
+      <ShortcutTooltip action="undo">
+        <Button
+          variant="ghost"
+          disabled={!canUndo}
+          onClick={() => reviewActions.undo()}
+        >
+          Undo
+        </Button>
+      </ShortcutTooltip>
+      <ShortcutTooltip action="redo">
+        <Button
+          variant="ghost"
+          disabled={!canRedo}
+          onClick={() => reviewActions.redo()}
+        >
+          Redo
+        </Button>
+      </ShortcutTooltip>
     </div>
   );
 }

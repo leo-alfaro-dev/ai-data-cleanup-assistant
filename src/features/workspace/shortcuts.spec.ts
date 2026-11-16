@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ariaKeysOf, displayOf, SHORTCUTS } from './shortcuts';
+import { ariaKeysOf, SHORTCUTS, shortcutOf } from './shortcuts';
 
 describe('SHORTCUTS', () => {
   it('gives every action once and every key and Shift combination once', () => {
@@ -13,6 +13,6 @@ describe('SHORTCUTS', () => {
   it('reads the key and the display of an action from the list', () => {
     expect(ariaKeysOf('undo')).toBe('u');
     expect(ariaKeysOf('redo')).toBe('Shift+u');
-    expect(displayOf('redo')).toBe('Shift U');
+    expect(shortcutOf('redo')?.display).toBe('Shift U');
   });
 });

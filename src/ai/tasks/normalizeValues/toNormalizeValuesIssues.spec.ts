@@ -134,6 +134,40 @@ describe('toNormalizeValuesIssues', () => {
     ]);
   });
 
+  it('shows the reasons of the model without em dashes and leaves the values alone', () => {
+    const [group, placeholders] = toNormalizeValuesIssues({
+      dataset,
+      result: result({
+        groups: [
+          {
+            canonical: 'California',
+            isCanonicalInFile: true,
+            variants: ['CA', 'Calif.'],
+            reason: 'All name California \u2014 one is abbreviated.',
+            confidence: 'high',
+          },
+        ],
+        placeholders: [
+          {
+            value: 'pending',
+            reason: 'Not a state \u2014 a status.',
+            confidence: 'high',
+          },
+        ],
+      }),
+    });
+
+    expect(group?.details).toMatchObject({
+      reason: 'All name California, one is abbreviated.',
+      canonical: 'California',
+    });
+    expect(placeholders?.details).toMatchObject({
+      placeholders: [
+        { value: 'pending', reason: 'Not a state, a status.', count: 1 },
+      ],
+    });
+  });
+
   it('gives each issue an id of its own and satisfies the issue contract', () => {
     const issues = toNormalizeValuesIssues({
       dataset,

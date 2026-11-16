@@ -5,6 +5,7 @@ import type { Issue } from '@/engine/issues/issue';
 import { toIssueId } from '@/engine/issues/toIssueId';
 import { lowestConfidence } from '@/engine/issues/lowestConfidence';
 import { normalizeWhitespace } from '@/engine/values/normalizeWhitespace';
+import { withoutEmDashes } from '@/lib/withoutEmDashes';
 import type { NormalizeValuesResult } from './normalizeValuesContract';
 
 /**
@@ -59,7 +60,7 @@ export function toNormalizeValuesIssues({
           variants: group.variants.flatMap((value) =>
             countOf(value) > 0 ? [{ value, count: countOf(value) }] : []
           ),
-          reason: group.reason,
+          reason: withoutEmDashes(group.reason),
         },
       },
     ];
@@ -87,7 +88,7 @@ export function toNormalizeValuesIssues({
         kind: 'aiPlaceholders',
         placeholders: result.placeholders.map(({ value, reason }) => ({
           value,
-          reason,
+          reason: withoutEmDashes(reason),
           count: countOf(value),
         })),
       },

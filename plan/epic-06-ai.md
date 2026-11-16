@@ -1,4 +1,4 @@
-# Epic 6 — AI proposes rules
+# Epic 6: AI proposes rules
 
 **Outcome:** the model reads compact summaries and proposes rules; code validates them against what was sent and turns them into suggestions; every call is visible with its cost. This is checkpoint B: the brief is fully met.
 
@@ -20,7 +20,7 @@
 
 Each also has a thin route at `/api/ai/<task-name>`, and one real call whose reply is saved under `e2e/fixtures/ai/` for the mocked e2e runs.
 
-## T6.1 — Add the OpenRouter gateway with validated structured output
+## T6.1: Add the OpenRouter gateway with validated structured output
 
 **After:** T0.1
 
@@ -49,7 +49,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 
 - Specs with a fake client: valid output passes; invalid then valid is one retry and a success; invalid twice is `invalidModelOutput`; statuses 401, 402, 429, 5xx and a timeout map to their reasons; an abort rejects without a retry; usage is recorded for every call.
 
-## T6.2 — Add the normalize-values AI task
+## T6.2: Add the normalize-values AI task
 
 **After:** T6.1, T2.2
 
@@ -84,7 +84,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - Specs: the request builder picks the right columns and respects the caps, including the small-file rule; the prompt snapshot is reviewed; the runner drops a variant that was not sent and counts it; the issues are built correctly; the route answers `400 invalidRequest` to a bad body and `aiNotConfigured` without a key.
 - One real call on the sample's `state` column groups the planted spellings. The reply is pasted in the report and saved as the fixture.
 
-## T6.3 — Run AI tasks from the browser with progress, abort and retry
+## T6.3: Run AI tasks from the browser with progress, abort and retry
 
 **After:** T6.2, T5.2
 
@@ -112,7 +112,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - e2e with the route mocked from the fixture: AI issues appear after the check issues, and the AI task shows as done.
 - Screenshots at the three widths.
 
-## T6.4 — Add the confirm-duplicates AI task
+## T6.4: Add the confirm-duplicates AI task
 
 **After:** T6.3, T4.5
 
@@ -138,7 +138,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - One real call on the sample's candidates confirms the planted near copies and rejects a look-alike pair of different people. The reply is in the report and saved as the fixture.
 - e2e: a merge suggestion appears and can be accepted.
 
-## T6.5 — Add the assess-suspicious-rows AI task
+## T6.5: Add the assess-suspicious-rows AI task
 
 **After:** T6.3, T4.4
 
@@ -171,7 +171,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - A hand-made file of 15 rows, written to look like something a reviewer would try, gets sensible issues from a real run. The result is in the report.
 - Fixture saved; e2e passes.
 
-## T6.6 — Show what was sent to the AI and what it cost
+## T6.6: Show what was sent to the AI and what it cost
 
 **After:** T6.3
 
@@ -194,7 +194,7 @@ Each also has a thin route at `/api/ai/<task-name>`, and one real call whose rep
 - e2e: after a mocked run, the header shows the call count and the panel lists the request.
 - Screenshots at the three widths.
 
-## T6.7 — Choose the model for a run
+## T6.7: Choose the model for a run
 
 **After:** T6.3
 

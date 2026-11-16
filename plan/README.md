@@ -133,32 +133,32 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 
 ## Status
 
-### Epic 0 — Foundation
+### Epic 0: Foundation
 
 - [x] **T0.1** Scaffold the Next.js app with tests, lint and pre-commit checks
 - [x] **T0.2** Add CI workflow running the checks and e2e on push
 - [x] **T0.3** Add the development plan and update CLAUDE.md
 - [x] **T0.4** Deploy the walking skeleton to Vercel · _needs you_
 
-### Epic 1 — A CSV becomes data
+### Epic 1: A CSV becomes data
 
 - [x] **T1.1** Parse CSV files into an immutable dataset
 - [x] **T1.2** Add Button and ProgressBar primitives
 - [x] **T1.3** Load a CSV in a Web Worker and show its facts
 
-### Epic 2 — Understand the data
+### Epic 2: Understand the data
 
 - [x] **T2.1** Add value helpers for blanks, comparison, numbers, dates and types
 - [x] **T2.2** Profile each column: types, distinct values and numeric spread
 - [x] **T2.3** Model issues and changes, and derive cleaned cells
 - [x] **T2.4** Export the cleaned CSV and a change log from the engine
 
-### Epic 3 — Measuring stick
+### Epic 3: Measuring stick
 
 - [x] **T3.1** Generate synthetic customer data with planted, recorded errors
 - [x] **T3.2** Score found issues against planted errors
 
-### Epic 4 — Checks
+### Epic 4: Checks
 
 - [x] **T4.1** Find exact and normalized duplicate rows
 - [x] **T4.2** Find whitespace, casing, date-format and type inconsistencies
@@ -166,7 +166,7 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 - [x] **T4.4** Find outliers, invalid emails, formula-like cells and structural issues
 - [x] **T4.5** Find shared identifiers and near-duplicate candidates
 
-### Epic 5 — Review workspace
+### Epic 5: Review workspace
 
 - [x] **T5.1** Show the data in a virtualized grid
 - [x] **T5.2** Run the checks in the worker and list issues by category
@@ -174,7 +174,7 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 - [x] **T5.4** Inspect an issue: examples, affected rows and grid focus
 - [x] **T5.5** Download the cleaned CSV and the change log
 
-### Epic 6 — AI proposes rules
+### Epic 6: AI proposes rules
 
 - [x] **T6.1** Add the OpenRouter gateway with validated structured output
 - [x] **T6.2** Add the normalize-values AI task
@@ -184,30 +184,30 @@ In this folder, "task" means a numbered unit of work. A request to a model is al
 - [x] **T6.6** Show what was sent to the AI and what it cost
 - [x] **T6.7** Choose the model for a run
 
-### Epic 7 — Safe live demo
+### Epic 7: Safe live demo
 
 - [x] **T7.1** Rate-limit hosted-key calls and explain limit and budget failures
 - [x] **T7.2** Let visitors use their own OpenRouter key
 - [ ] **T7.3** Set up the production key and spend cap, and link the live demo · _needs you_ (limits sized and README note written; the key, cap and live check remain)
 - [x] **T7.4** Design the first screen: sample data, privacy facts and metadata
 
-### Epic 8 — Review at volume
+### Epic 8: Review at volume
 
 - [x] **T8.1** Decide in bulk and undo any step
 - [x] **T8.2** Review from the keyboard
 - [x] **T8.3** Edit a suggestion before accepting it
 
-### Epic 9 — Recipe
+### Epic 9: Recipe
 
 - [x] **T9.1** Export accepted rules as a recipe
 - [x] **T9.2** Replay a recipe on another file without AI
 
-### Epic 10 — Proof
+### Epic 10: Proof
 
 - [x] **T10.1** Benchmark models on planted errors: accuracy, cost and latency · _needs your approval of the spend_
 - [x] **T10.2** Choose the default model and limits from the benchmark
 
-### Epic 11 — Story
+### Epic 11: Story
 
 - [x] **T11.1** Write the README
 - [ ] **T11.2** Run the final QA pass and complete the submission checklist · _QA pass done; the lines marked "Owner: you" in `docs/submission-checklist.md` remain_

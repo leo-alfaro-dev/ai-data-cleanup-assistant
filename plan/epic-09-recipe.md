@@ -1,4 +1,4 @@
-# Epic 9 — Recipe
+# Epic 9: Recipe
 
 **Outcome:** the accepted rules become a file. Next month's export is cleaned in one step, with no AI call.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** load next month's file with last month's recipe. It is clean before the progress bar finishes, and the panel reads "0 AI calls".
 
-## T9.1 — Export accepted rules as a recipe
+## T9.1: Export accepted rules as a recipe
 
 **After:** T5.5
 
@@ -28,7 +28,7 @@
 - Specs: only rules are included; columns are written as header text, with the occurrence for a repeated header; a recipe survives a round trip through JSON and the schema.
 - e2e: download the recipe and parse it.
 
-## T9.2 — Replay a recipe on another file without AI
+## T9.2: Replay a recipe on another file without AI
 
 **After:** T9.1
 

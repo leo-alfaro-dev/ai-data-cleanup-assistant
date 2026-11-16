@@ -51,7 +51,7 @@ describe('IssueCard', () => {
       screen.getByRole('article', { name: 'Extra spaces in “name”' })
     ).toBeInTheDocument();
     expect(screen.getByText('Inconsistent values')).toBeInTheDocument();
-    expect(screen.getByText('Check · High')).toBeInTheDocument();
+    expect(screen.getByText('Check · Very sure')).toBeInTheDocument();
     expect(screen.getByText('2 rows')).toBeInTheDocument();
   });
 

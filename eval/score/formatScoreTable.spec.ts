@@ -50,7 +50,7 @@ describe('formatScoreTable', () => {
         .split(/\s{2,}/)
         .slice(1)
     ).toEqual(['6', '5', '83.3%', '4', '3', '75.0%', '3', '3', '100.0%']);
-    expect(table.split('\n')[1]).toContain('—');
+    expect(table.split('\n')[1]).toContain('n/a');
   });
 
   it('pads every line to the same width', () => {

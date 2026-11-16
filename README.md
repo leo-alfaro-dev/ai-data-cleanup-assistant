@@ -48,7 +48,7 @@ flowchart LR
 - **Rules, not edits.** The model never rewrites the file. It proposes rules ("these spellings are one state"), and one decision applies a rule to every row it touches. Every change is explainable, reversible and repeatable.
 - **A recipe.** Accepted rules export as versioned JSON keyed by column header. Replaying it cleans next month's file in one step with zero AI calls, and reports any rule it had to skip ([`src/engine/recipe/`](src/engine/recipe/)). The sample includes next month's file to try it on.
 - **Measured accuracy.** Errors are planted in synthetic data and recorded, so the checks and each model are scored per category against known truth, with cost and latency ([`eval/`](eval/)).
-- **Review at volume.** Apply every certain and high-confidence suggestion in a category in one step. J and K move, A applies, R keeps as is, E edits, U undoes, Shift+U redoes, O switches the grid between original and cleaned, and ? lists every shortcut.
+- **Review at volume.** Apply a category's suggestions in one step: only the certain ones, the certain and very sure ones, or all of them. J and K move, A applies, R keeps as is, E edits, U undoes, Shift+U redoes, O switches the grid between original and cleaned, and ? lists every shortcut.
 - **Nothing hidden.** The header shows AI calls, tokens and cost; one click opens every request exactly as the browser sent it, with each call's model, tokens, cost and latency.
 
 ![The transparency panel: every request sent to the AI, with model, tokens, cost and time](docs/transparency.png)
@@ -59,7 +59,7 @@ Errors are planted in a synthetic customer file (1,150 rows, seed 20250601) and 
 
 | Run                            | Duplicates          | Inconsistent values | Missing data        | Suspicious records  | Suggestion accuracy | Cost per run | Time per run |
 | ------------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------ | ------------ |
-| Checks only                    | P 100.0% · R 100.0% | P 100.0% · R 69.2%  | P 100.0% · R 100.0% | P 100.0% · R 100.0% | 100.0%              | $0           | —            |
+| Checks only                    | P 100.0% · R 100.0% | P 100.0% · R 69.2%  | P 100.0% · R 100.0% | P 100.0% · R 100.0% | 100.0%              | $0           | n/a          |
 | `anthropic/claude-haiku-5.5`   | P 100.0% · R 100.0% | P 100.0% · R 100.0% | P 100.0% · R 100.0% | P 100.0% · R 100.0% | 90.1%               | $0.0094      | 34.3 s       |
 | `google/gemini-2.5-flash-lite` | P 100.0% · R 100.0% | P 100.0% · R 100.0% | P 100.0% · R 100.0% | P 100.0% · R 100.0% | 100.0%              | $0.0090      | 19.4 s       |
 | `openai/gpt-5-mini`            | P 100.0% · R 100.0% | P 12.5% · R 86.2%   | P 100.0% · R 100.0% | P 100.0% · R 100.0% | 24.2%               | ≥ $0.0214    | 71.3 s       |
@@ -78,7 +78,7 @@ P is precision and R is recall. The full table, with calls, tokens and failed ta
 - **Cell values are data, not instructions.** Prompts put them inside a delimited data block and say so ([snapshots](src/ai/tasks/normalizeValues/__snapshots__/)).
 - **Logs carry metadata only:** task, model, tokens, latency and outcome; never prompts, cell values or keys ([`src/ai/logAiCall.ts`](src/ai/logAiCall.ts)).
 - **Your own key.** **Add your key** accepts an OpenRouter key. It is kept in memory, or in `sessionStorage` to survive a refresh, sent per request in a header, used for that call only, and never stored or logged on the server.
-- **Demo limits.** The hosted demo spends from one OpenRouter key with a credit limit. A visitor gets 40 AI requests per 10 minutes on that key ([`src/ai/rateLimiter.ts`](src/ai/rateLimiter.ts)), counted per server instance, so the limit is best effort. A full run on the sample is 6 requests. The benchmark run on Gemini 2.5 Flash Lite made 7 model calls (one reply was retried), 40,010 tokens, $0.0090 ([`eval/results/google--gemini-2.5-flash-lite.json`](eval/results/google--gemini-2.5-flash-lite.json)); the run in the screenshots made 6 calls, 24.0k tokens, $0.005. At the higher cost each $5 of credit covers about 550 runs.
+- **Demo limits.** The hosted demo spends from one OpenRouter key with a credit limit. A visitor gets 50 AI requests per 10 minutes on that key ([`src/ai/hostedRequestLimit.ts`](src/ai/hostedRequestLimit.ts)), counted per server instance, so the limit is best effort. The AI tasks window shows how many are used and when the count resets; `yarn dev` counts them without refusing any. A full run on the sample is 6 requests. The benchmark run on Gemini 2.5 Flash Lite made 7 model calls (one reply was retried), 40,010 tokens, $0.0090 ([`eval/results/google--gemini-2.5-flash-lite.json`](eval/results/google--gemini-2.5-flash-lite.json)); the run in the screenshots made 6 calls, 24.0k tokens, $0.005. At the higher cost each $5 of credit covers about 550 runs.
 - **When the AI is unavailable** (no key, a rejected key, the rate limit, the budget used up), the checks keep working, each AI task says why it failed and offers a retry, and the limit and budget messages offer your own key.
 
 ## Run it locally
@@ -148,12 +148,3 @@ The engine imports nothing from React, Next or the browser, so the worker, the s
 
 - **The production shape for large files and teams:** uploads to object storage, parsing and checks in a queue with workers instead of the browser, and a database for recipes, decisions and an audit trail of who accepted what.
 - **From [`plan/stretch.md`](plan/stretch.md):** a second pass that re-runs the checks on the cleaned data; column dependencies (fill a missing city from its zip, flag contradictions); a one-call dataset summary shown on screen and given to the other AI tasks; number-format standardization; a one-click 100,000-row sample; a dark theme; signing in with OpenRouter instead of pasting a key.
-
-## How AI was used to build it
-
-The app was built with Claude Code, working from two documents that are part of the repository:
-
-- [`CLAUDE.md`](CLAUDE.md) sets the conventions: vocabulary, architecture, data invariants, code style and what "done" means.
-- [`plan/`](plan/README.md) splits the work into 12 epics and 44 tasks, each with what to build and how it is proven.
-
-Each epic was built task by task, checked with `yarn verify` and the end-to-end suite, and, from Epic 1 on, committed as one commit, so `git log` reads as the plan. From Epic 7 on, each epic was also reviewed by a separate model session for bugs and convention breaks, and fixed until that review approved it. Prompts were reviewed through their snapshot specs, and the benchmark's cost ceiling was printed and approved before any paid call ran.

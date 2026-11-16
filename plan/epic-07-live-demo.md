@@ -1,4 +1,4 @@
-# Epic 7 — Safe live demo
+# Epic 7: Safe live demo
 
 **Outcome:** a public URL anyone can open, with sample data one click away, that a single visitor cannot drain or break. This is checkpoint C.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** open the link in a private window, click Load sample data, and watch the full flow with nothing installed and no key.
 
-## T7.1 — Rate-limit hosted-key calls and explain limit and budget failures
+## T7.1: Rate-limit hosted-key calls and explain limit and budget failures
 
 **After:** T6.3
 
@@ -29,7 +29,7 @@
 - Specs: the limit trips at the threshold and resets after the window; own-key calls are not counted; the address is read correctly from the header; each reason has its copy.
 - Component spec: each failure shows its message, and the checks' issues are still on screen.
 
-## T7.2 — Let visitors use their own OpenRouter key
+## T7.2: Let visitors use their own OpenRouter key
 
 **After:** T7.1
 
@@ -52,7 +52,7 @@
 - e2e: set a key and the mocked route receives the header; remove it and the header is gone.
 - Screenshots at the three widths.
 
-## T7.3 — Set up the production key and spend cap, and link the live demo
+## T7.3: Set up the production key and spend cap, and link the live demo
 
 **After:** T7.2, T0.4 · **Needs you**
 
@@ -74,7 +74,7 @@
 - A deliberately wrong own key gives `invalidKey`, and the app keeps working on the checks.
 - The limits are written in the README, and CI is green.
 
-## T7.4 — Design the first screen: sample data, privacy facts and metadata
+## T7.4: Design the first screen: sample data, privacy facts and metadata
 
 **After:** T5.2
 

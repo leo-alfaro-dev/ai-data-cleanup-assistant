@@ -60,7 +60,9 @@ describe('AiReview', () => {
       within(elementAt(items, 0)).getByText('Suspicious')
     ).toBeInTheDocument();
     expect(within(elementAt(items, 0)).getByText('amount')).toBeInTheDocument();
-    expect(within(elementAt(items, 0)).getByText('High')).toBeInTheDocument();
+    expect(
+      within(elementAt(items, 0)).getByText('Very sure')
+    ).toBeInTheDocument();
     expect(
       within(elementAt(items, 0)).getByText('Far above every other amount.')
     ).toBeInTheDocument();

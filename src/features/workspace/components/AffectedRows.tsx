@@ -35,7 +35,7 @@ export function AffectedRows({
       </h4>
       <div
         ref={scrollRef}
-        className="max-h-48 overflow-y-auto rounded-xl border border-border bg-surface p-1"
+        className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-border bg-surface p-1 max-md:max-h-48"
       >
         <div
           role="list"

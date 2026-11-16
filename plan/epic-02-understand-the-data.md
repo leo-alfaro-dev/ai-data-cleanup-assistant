@@ -1,4 +1,4 @@
-# Epic 2 — Understand the data
+# Epic 2: Understand the data
 
 **Outcome:** the engine can describe every column, and can express any cleanup as data: a change that is previewed, applied, undone and exported. All of it is pure TypeScript with specs.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** nothing on screen yet. The proof is the spec list: order-independent changes, a frozen original, and a round trip that reproduces the input.
 
-## T2.1 — Add value helpers for blanks, comparison, numbers, dates and types
+## T2.1: Add value helpers for blanks, comparison, numbers, dates and types
 
 **After:** T1.1
 
@@ -30,7 +30,7 @@
 
 - Each helper has a spec from both sides: what it accepts and what it must leave alone. Among them: `1,234.50` is a number and `12-34` is not; `02/30/2024` is not a date; `03/04/2024` is ambiguous and `13/04/2024` is not; `"  a  b "` and `"a b"` share a comparison key; a non-breaking space counts as blank.
 
-## T2.2 — Profile each column: types, distinct values and numeric spread
+## T2.2: Profile each column: types, distinct values and numeric spread
 
 **After:** T2.1
 
@@ -53,7 +53,7 @@ A profile holds, per column: blank and non-blank counts; distinct values with co
 
 - Specs: a numeric column with one extreme value (the median and deviation ignore it); a categorical column; an identifier column; a column with no dominant type; an all-blank column; truncation at the distinct limit.
 
-## T2.3 — Model issues and changes, and derive cleaned cells
+## T2.3: Model issues and changes, and derive cleaned cells
 
 **After:** T2.1
 
@@ -83,7 +83,7 @@ A profile holds, per column: blank and non-blank counts; distinct values with co
 
 **Also update:** nothing. `CLAUDE.md` already states D1, D3 and D5.
 
-## T2.4 — Export the cleaned CSV and a change log from the engine
+## T2.4: Export the cleaned CSV and a change log from the engine
 
 **After:** T2.3
 

@@ -390,13 +390,14 @@ test.describe('reviewing', () => {
   }) => {
     await loadSample(page);
     await filterTo(page, 'Inconsistent values');
-    const accept = page.getByRole('button', {
-      name: /^Apply all certain and high · \d+$/,
-    });
-    const count = Number(((await accept.textContent()) ?? '').split('· ')[1]);
+    const apply = page.getByRole('button', { name: 'Apply suggestions' });
+    await apply.click();
+    const choice = page.getByRole('menuitem').first();
+    const label = (await choice.textContent()) ?? '';
+    const count = Number(/(\d+)$/.exec(label)?.[1]);
     expect(count).toBeGreaterThan(1);
 
-    await accept.click();
+    await choice.click();
 
     await expect(
       page.getByRole('progressbar', {
@@ -412,11 +413,8 @@ test.describe('reviewing', () => {
     await expect(
       page.getByRole('progressbar', { name: /^0 of \d+ decided$/ })
     ).toBeVisible();
-    await expect(
-      page.getByRole('button', {
-        name: `Apply all certain and high · ${count}`,
-      })
-    ).toBeEnabled();
+    await apply.click();
+    await expect(page.getByRole('menuitem').first()).toHaveText(label);
   });
 
   test('shows how many issues are decided', async ({ page }) => {
@@ -546,7 +544,7 @@ test.describe('the AI tasks', () => {
       name: 'Spellings of “MA” in “state”',
     });
     await expect(group).toBeVisible();
-    await expect(group).toContainText('AI · High');
+    await expect(group).toContainText('AI · Very sure');
     await expect(
       page.getByRole('article', { name: 'Inconsistent casing in “state”' })
     ).toHaveCount(0);

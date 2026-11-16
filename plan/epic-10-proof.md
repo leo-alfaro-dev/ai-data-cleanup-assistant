@@ -1,4 +1,4 @@
-# Epic 10 — Proof
+# Epic 10: Proof
 
 **Outcome:** a table in the README: how much of the planted errors each model finds, how often it raises a false alarm, what a run costs and how long it takes. The default model is chosen from that table.
 
@@ -6,7 +6,7 @@
 
 **Show after this epic:** the table, and one sentence: "the default model was chosen because it finds X% of the planted errors for $Y a run".
 
-## T10.1 — Benchmark models on planted errors: accuracy, cost and latency
+## T10.1: Benchmark models on planted errors: accuracy, cost and latency
 
 **After:** T6.5, T3.2 · **Needs your approval of the spend**
 
@@ -41,7 +41,7 @@
 
 **Also update:** `CLAUDE.md` commands, with the final form of `yarn eval`.
 
-## T10.2 — Choose the default model and limits from the benchmark
+## T10.2: Choose the default model and limits from the benchmark
 
 **After:** T10.1
 

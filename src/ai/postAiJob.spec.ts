@@ -56,6 +56,21 @@ describe('postAiJob', () => {
     vi.unstubAllGlobals();
   });
 
+  it('passes on the hosted-key count the route reported, success or failure', async () => {
+    const quota = { used: 7, limit: 50, resetsAt: 1_000 };
+    answerWith({ ok: true, result, calls: [call], quota });
+    expect((await post()).quota).toEqual(quota);
+
+    answerWith({ ok: false, reason: 'rateLimited', calls: [], quota }, 429);
+    expect((await post()).quota).toEqual(quota);
+  });
+
+  it('reports no count when the route gave none', async () => {
+    answerWith({ ok: true, result, calls: [call] });
+
+    expect((await post()).quota).toBeNull();
+  });
+
   it('posts the model and the request as JSON to the route of the task, and returns the exact body it sent', async () => {
     const fetchMock = answerWith({ ok: true, result, calls: [call] });
 

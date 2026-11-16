@@ -20,7 +20,7 @@ export type Shortcut = {
   label: string;
 };
 
-// The one list: the listener, the help dialog and the hints on buttons all read it.
+// The one list: the listener, the help dialog and the tooltips on buttons all read it.
 export const SHORTCUTS: readonly Shortcut[] = [
   {
     action: 'nextIssue',
@@ -62,15 +62,13 @@ export const SHORTCUTS: readonly Shortcut[] = [
   { action: 'help', key: '?', display: '?', label: 'Show the shortcuts' },
 ];
 
+export function shortcutOf(action: ShortcutAction): Shortcut | undefined {
+  return SHORTCUTS.find((shortcut) => shortcut.action === action);
+}
+
 export function ariaKeysOf(action: ShortcutAction): string {
-  const shortcut = SHORTCUTS.find((candidate) => candidate.action === action);
+  const shortcut = shortcutOf(action);
   if (!shortcut) return '';
 
   return shortcut.shift ? `Shift+${shortcut.key}` : shortcut.key;
-}
-
-export function displayOf(action: ShortcutAction): string {
-  return (
-    SHORTCUTS.find((shortcut) => shortcut.action === action)?.display ?? ''
-  );
 }

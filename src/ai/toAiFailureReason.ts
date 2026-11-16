@@ -38,7 +38,7 @@ function fromStatus({
     return isBudget ? 'budgetExhausted' : 'unexpected';
   }
   if (status === 408) return 'timeout';
-  if (status === 429) return 'rateLimited';
+  if (status === 429) return 'providerRateLimited';
   if (status === 404 || status === 502 || status === 503) {
     return 'modelUnavailable';
   }

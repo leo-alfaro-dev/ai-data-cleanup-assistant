@@ -20,38 +20,43 @@ export function AiReview({ issue, className = '', ...props }: AiReviewProps) {
 
   return (
     <div className={twMerge('flex flex-col gap-1.5', className)} {...props}>
-      <h4 className={eyebrow()}>AI review</h4>
-      <ul aria-label="AI review" className="flex flex-col gap-2">
+      <h4 className={eyebrow({ className: 'flex items-center gap-2' })}>
+        <AiAvatar />
+        AI review
+      </h4>
+      <ul
+        aria-label="AI review"
+        className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface"
+      >
         {notes.map((note) => (
           <li
             key={`${note.rowId}:${note.column}`}
-            className="flex gap-2.5 rounded-xl border border-border bg-surface p-3 text-sm"
+            className="flex flex-col gap-1 px-3 py-2 text-sm"
           >
-            <AiAvatar className="mt-px" />
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary">
+            <p>
+              <span className="mr-2 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary">
                 <span className="font-semibold text-text-primary tabular-nums">
                   Row {toRowNumber(note.rowId)}
                 </span>
                 <Badge variant={note.isSuspicious ? 'outline' : 'positive'}>
                   {note.isSuspicious ? 'Suspicious' : 'Plausible'}
                 </Badge>
-                {note.column !== null && (
+                {note.column !== null && note.column !== issue.column && (
                   <span>{toColumnLabel({ columns, column: note.column })}</span>
                 )}
                 <span>{confidenceLabels[note.confidence]}</span>
-              </div>
-              <p>{note.reason}</p>
-              {note.suggestedValue !== null && (
-                <p className="flex flex-wrap items-center gap-1.5 text-xs text-text-secondary">
-                  Suggested value, not applied:
-                  <VisibleValue
-                    value={note.suggestedValue}
-                    className="rounded-md bg-tint px-1.5 py-0.5 font-mono text-added"
-                  />
-                </p>
-              )}
-            </div>
+              </span>
+              {note.reason}
+            </p>
+            {note.suggestedValue !== null && (
+              <p className="flex flex-wrap items-center gap-1.5 text-xs text-text-secondary">
+                Suggested value, not applied:
+                <VisibleValue
+                  value={note.suggestedValue}
+                  className="rounded-md bg-tint px-1.5 py-0.5 font-mono text-added"
+                />
+              </p>
+            )}
           </li>
         ))}
       </ul>

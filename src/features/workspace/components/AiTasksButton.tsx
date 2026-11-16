@@ -4,6 +4,7 @@ import { RxCheck, RxExclamationTriangle } from 'react-icons/rx';
 import { tv } from 'tailwind-variants';
 import type { ButtonProps } from '@/components/Button';
 import { Button } from '@/components/Button';
+import { aiTasksProgressCopy } from '../aiTasksProgressCopy';
 import type { AiRun } from '../state/aiRun';
 import type { AiTaskSummary } from '../state/aiTaskSummary';
 import { useAiRun } from '../state/aiStore';
@@ -86,14 +87,10 @@ function toStatus(summaries: readonly AiTaskSummary[]): {
   label: string;
   progress: number;
 } {
-  const doneCount = summaries.filter(({ status }) => status === 'done').length;
-  const failedCount = summaries.filter(
-    ({ status }) => status === 'failed'
-  ).length;
-  const failed = failedCount > 0 ? `, ${failedCount} failed` : '';
-  const label = `AI tasks: ${doneCount} of ${summaries.length} done${failed}`;
-
-  const isSettled = doneCount + failedCount === summaries.length;
+  const label = `AI tasks: ${aiTasksProgressCopy(summaries)}`;
+  const isSettled = summaries.every(
+    ({ status }) => status === 'done' || status === 'failed'
+  );
   if (!isSettled) {
     const total = summaries.reduce((sum, summary) => sum + summary.total, 0);
     const settled = summaries.reduce(
@@ -105,7 +102,9 @@ function toStatus(summaries: readonly AiTaskSummary[]): {
     return { tone: 'running', label, progress };
   }
 
-  return { tone: failedCount > 0 ? 'failed' : 'done', label, progress: 100 };
+  const hasFailed = summaries.some(({ status }) => status === 'failed');
+
+  return { tone: hasFailed ? 'failed' : 'done', label, progress: 100 };
 }
 
 const VARIANTS: Record<Tone, ButtonProps['variant']> = {

@@ -2,6 +2,7 @@ import type { CancelablePromise } from 'easy-cancelable-promise';
 import { createGlobalState } from 'react-global-state-hooks';
 import { postAiJob } from '@/ai/postAiJob';
 import type { AiTaskName } from '@/ai/aiTaskName';
+import type { HostedQuota } from '@/ai/hostedQuota';
 import type { AiNote } from '@/engine/issues/aiNote';
 import type { Issue } from '@/engine/issues/issue';
 import { tryCatch } from '@/lib/tryCatch';
@@ -11,6 +12,7 @@ import type { AiJob } from './aiJob';
 import type { AiRun } from './aiRun';
 import { buildAiJobs } from './buildAiJobs';
 import { isAiRunInFlight } from './isAiRunInFlight';
+import { latestQuota } from './latestQuota';
 import type { RunId } from './runId';
 import { toRunId } from './runId';
 import { runAiJobs } from './runAiJobs';
@@ -88,13 +90,23 @@ export const aiStore$ = createGlobalState(makeInitialState(), {
           jobs,
           signal: controller.signal,
           isCurrent: () => store.metadata.runId === runId,
-          post: (request) =>
-            postAiJob({
+          post: async (request) => {
+            const answer = await postAiJob({
               job: request,
               model,
               ownKey,
               signal: controller.signal,
-            }),
+            });
+            const { quota } = answer;
+            if (quota) {
+              store.setState((current) => ({
+                ...current,
+                quota: latestQuota({ current: current.quota, incoming: quota }),
+              }));
+            }
+
+            return answer;
+          },
           buildIssues: (taskResult) =>
             getDatasetWorker().buildAiIssues(taskResult),
           onState: ({ key, state }) =>
@@ -149,6 +161,10 @@ export const useAiCalls = aiStore$.createSelectorHook((state) => state.calls);
 
 export const useAiNotes = aiStore$.createSelectorHook((state) => state.notes);
 
+export const useHostedQuota = aiStore$.createSelectorHook(
+  (state) => state.quota
+);
+
 // A request the server never answered recorded no call, so it is not a call to sum up.
 export const useHasAiCalls = aiStore$.createSelectorHook((state) =>
   state.calls.some(({ records }) => records.length > 0)
@@ -176,6 +192,7 @@ function makeInitialState(): {
   notes: readonly AiNote[];
   rejectedKeyRevision: number | null;
   calls: readonly AiCallEntry[];
+  quota: HostedQuota | null;
   isPreparing: boolean;
 } {
   return {
@@ -184,6 +201,7 @@ function makeInitialState(): {
     notes: [],
     rejectedKeyRevision: null,
     calls: [],
+    quota: null,
     isPreparing: false,
   };
 }

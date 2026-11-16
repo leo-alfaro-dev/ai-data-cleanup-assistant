@@ -1,4 +1,4 @@
-# Epic 5 — Review workspace
+# Epic 5: Review workspace
 
 **Outcome:** a complete product without AI. Load a file, see every row, review issues grouped by category, accept or reject, watch the cleaned data change, export. This is checkpoint A.
 
@@ -23,7 +23,7 @@
 
 Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both stay mounted and the inactive one is `hidden`, so neither loses its scroll position and both keep following the stores.
 
-## T5.1 — Show the data in a virtualized grid
+## T5.1: Show the data in a virtualized grid
 
 **After:** T1.3
 
@@ -47,7 +47,7 @@ Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both
 - A 100,000 × 20 file, generated into a scratch folder and not committed, loads and scrolls without freezing. Load time and scroll behavior are stated in the report.
 - No page-level horizontal scroll at 390px. Screenshots at the three widths.
 
-## T5.2 — Run the checks in the worker and list issues by category
+## T5.2: Run the checks in the worker and list issues by category
 
 **After:** T4.1 to T4.5, T5.1
 
@@ -74,7 +74,7 @@ Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both
 - e2e on the sample: all four categories show a count above zero.
 - Screenshots at the three widths.
 
-## T5.3 — Accept or reject suggestions and show the cleaned data
+## T5.3: Accept or reject suggestions and show the cleaned data
 
 **After:** T5.2, T2.3
 
@@ -99,7 +99,7 @@ Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both
 - e2e: accept the whitespace issue on the sample; a known cell shows its cleaned value; the toggle shows the original again.
 - Screenshots at the three widths.
 
-## T5.4 — Inspect an issue: examples, affected rows and grid focus
+## T5.4: Inspect an issue: examples, affected rows and grid focus
 
 **After:** T5.3
 
@@ -121,7 +121,7 @@ Below the `lg` breakpoint the two columns become two tabs, Issues and Data. Both
 - e2e: select an issue, jump to a row, and that row is visible and highlighted.
 - Screenshots at the three widths.
 
-## T5.5 — Download the cleaned CSV and the change log
+## T5.5: Download the cleaned CSV and the change log
 
 **After:** T5.3, T2.4
 

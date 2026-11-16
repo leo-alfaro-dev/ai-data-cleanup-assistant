@@ -66,9 +66,9 @@ export function WelcomeScreen({
           <span className="block">Every change yours to make.</span>
         </h2>
         <p className="text-base text-pretty text-text-secondary sm:text-lg">
-          Duplicates, inconsistent values, missing data and suspicious records —
-          found across the whole file, explained, and changed only when you say
-          so.
+          Duplicates, inconsistent values, missing data and suspicious records
+          are found across the whole file, explained, and changed only when you
+          say so.
         </p>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
@@ -80,7 +80,7 @@ export function WelcomeScreen({
         >
           <p>
             {formatCount(SAMPLE_ROW_COUNT)} synthetic customer rows with planted
-            errors in all four categories — see what the checks and the AI find.
+            errors in all four categories. See what the checks and the AI find.
           </p>
           <Button
             variant="inverse"
@@ -99,7 +99,7 @@ export function WelcomeScreen({
         >
           <p>
             Comma, semicolon, tab or pipe separated, up to{' '}
-            {MAX_FILE_BYTES / 1024 / 1024} MB — choose it, or drag it here.
+            {MAX_FILE_BYTES / 1024 / 1024} MB. Choose it, or drag it here.
           </p>
           <Button
             size="lg"
@@ -130,7 +130,7 @@ export function WelcomeScreen({
           title="Replay a recipe"
         >
           <p>
-            Load the rules you accepted last time — they replay on the next file
+            Load the rules you accepted last time. They replay on the next file
             in one step, without AI.
           </p>
           <Button

@@ -1,9 +1,8 @@
 import { ToggleGroup } from 'radix-ui';
 import { tv, twMerge } from 'tailwind-variants';
 import { Button } from '@/components/Button';
-import { ariaKeysOf } from '../../shortcuts';
 import { CategoryBadge } from '../CategoryBadge';
-import { ShortcutHint } from '../ShortcutHint';
+import { ShortcutTooltip } from '../ShortcutTooltip';
 import {
   reviewActions,
   useIsOnlyIssueRows,
@@ -26,12 +25,11 @@ export function GridToolbar({ className = '', ...props }: GridToolbarProps) {
       )}
       {...props}
     >
-      <div className="flex items-center gap-2">
+      <ShortcutTooltip action="toggleView">
         <ToggleGroup.Root
           type="single"
           value={view}
           aria-label="Which values the grid shows"
-          aria-keyshortcuts={ariaKeysOf('toggleView')}
           className="inline-flex rounded-full border border-border bg-canvas p-0.5"
           onValueChange={(next) => {
             if (next === 'original' || next === 'cleaned') {
@@ -46,8 +44,7 @@ export function GridToolbar({ className = '', ...props }: GridToolbarProps) {
             Cleaned
           </ToggleGroup.Item>
         </ToggleGroup.Root>
-        <ShortcutHint action="toggleView" />
-      </div>
+      </ShortcutTooltip>
       {issue && (
         <div className="flex min-w-0 items-center gap-3">
           <CategoryBadge category={issue.category} />

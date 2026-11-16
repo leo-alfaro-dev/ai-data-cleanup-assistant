@@ -4,6 +4,7 @@ import { tryCatch } from '@/lib/tryCatch';
 import type { AiClient } from './aiClient';
 import type { AiFailureReason } from './aiFailureReason';
 import { AI_FAILURE_STATUS } from './aiFailureStatus';
+import type { HostedQuota } from './hostedQuota';
 import type { AiModelId } from './models';
 import { OWN_KEY_HEADER } from './ownKeyHeader';
 import { isAiModelId } from './models';
@@ -39,9 +40,15 @@ export function createAiRoute<Payload, Result>({
     model: z.custom<AiModelId>(isAiModelId),
     request: requestSchema,
   });
-  const fail = (reason: AiFailureReason) =>
+  const fail = ({
+    reason,
+    quota = null,
+  }: {
+    reason: AiFailureReason;
+    quota?: HostedQuota | null;
+  }) =>
     Response.json(
-      { ok: false, reason, calls: [] },
+      { ok: false, reason, calls: [], quota },
       { status: AI_FAILURE_STATUS[reason] }
     );
 
@@ -50,16 +57,22 @@ export function createAiRoute<Payload, Result>({
       request.json()
     );
     const body = unreadable ? null : bodySchema.safeParse(json);
-    if (!body?.success) return fail('invalidRequest');
+    if (!body?.success) return fail({ reason: 'invalidRequest' });
 
     const visitorKey = request.headers.get(OWN_KEY_HEADER)?.trim();
     const apiKey = visitorKey || process.env.OPENROUTER_API_KEY;
-    if (!apiKey) return fail('aiNotConfigured');
+    if (!apiKey) return fail({ reason: 'aiNotConfigured' });
 
-    const isWithinLimit =
-      Boolean(visitorKey) ||
-      rateLimiter.take(readVisitorAddress(request.headers));
-    if (!isWithinLimit) return fail('rateLimited');
+    const limit = visitorKey
+      ? null
+      : rateLimiter.take(readVisitorAddress(request.headers));
+    const quota: HostedQuota | null = limit && {
+      used: limit.used,
+      limit: limit.limit,
+      resetsAt: limit.resetsAt,
+    };
+    if (limit && !limit.isAllowed)
+      return fail({ reason: 'rateLimited', quota });
 
     const { result: outcome, error } = await tryCatch(() =>
       run({
@@ -75,7 +88,7 @@ export function createAiRoute<Payload, Result>({
       }
       console.error('ai-route-failed', task);
 
-      return fail('unexpected');
+      return fail({ reason: 'unexpected', quota });
     }
 
     if (outcome.ok) {
@@ -83,11 +96,12 @@ export function createAiRoute<Payload, Result>({
         ok: true,
         result: outcome.result,
         calls: outcome.calls,
+        quota,
       });
     }
 
     return Response.json(
-      { ok: false, reason: outcome.reason, calls: outcome.calls },
+      { ok: false, reason: outcome.reason, calls: outcome.calls, quota },
       { status: AI_FAILURE_STATUS[outcome.reason] }
     );
   };

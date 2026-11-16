@@ -6,13 +6,12 @@ import { Wordmark } from '@/components/Wordmark';
 import { PRODUCT_NAME } from '../productName';
 import { useHasAiCalls } from '../state/aiStore';
 import { useAnalysisPhase } from '../state/analysisStore';
-import { ariaKeysOf } from '../shortcuts';
 import { helpActions } from '../state/helpStore';
 import { exportActions } from '../state/exportStore';
 import { workspaceActions } from '../state/workspaceStore';
 import { AiCallSummary } from './AiCallSummary';
 import { DatasetFacts } from './DatasetFacts';
-import { ShortcutHint } from './ShortcutHint';
+import { ShortcutTooltip } from './ShortcutTooltip';
 
 export type WorkspaceHeaderProps = React.ComponentProps<'header'>;
 
@@ -40,14 +39,11 @@ export function WorkspaceHeader({
       <DatasetFacts className="order-last w-full sm:order-none sm:w-auto sm:flex-1 sm:border-l sm:border-border sm:pl-5" />
       <div className="flex flex-wrap items-center gap-2">
         {hasAiCalls && <AiCallSummary />}
-        <Button
-          variant="ghost"
-          aria-keyshortcuts={ariaKeysOf('help')}
-          onClick={() => helpActions.open()}
-        >
-          Shortcuts
-          <ShortcutHint action="help" />
-        </Button>
+        <ShortcutTooltip action="help">
+          <Button variant="ghost" onClick={() => helpActions.open()}>
+            Shortcuts
+          </Button>
+        </ShortcutTooltip>
         <Button onClick={() => workspaceActions.reset()}>
           Load another file
         </Button>

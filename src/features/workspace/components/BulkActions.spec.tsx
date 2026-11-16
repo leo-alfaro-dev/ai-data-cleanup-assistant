@@ -30,50 +30,63 @@ describe('BulkActions', () => {
     });
   });
 
-  it('states how many it will accept and reject before the click, and that number is what gets decided', async () => {
-    render(<BulkActions category="inconsistent" />);
-    const accept = screen.getByRole('button', {
-      name: 'Apply all certain and high · 2',
-    });
-    expect(
-      screen.getByRole('button', { name: 'Keep all as is · 4' })
-    ).toBeEnabled();
-
-    await userEvent.click(accept);
-
-    expect(reviewStore$.getState().decisions.size).toBe(2);
-    expect(
-      screen.getByRole('button', { name: 'Apply all certain and high · 0' })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole('button', { name: 'Keep all as is · 2' })
-    ).toBeEnabled();
-  });
-
-  it('widens the confidence it accepts down to, and the count follows', async () => {
+  it('lists how many each choice applies, leaving out a level that adds none', async () => {
     const user = userEvent.setup();
     render(<BulkActions category="inconsistent" />);
 
-    await user.selectOptions(
-      screen.getByRole('combobox', { name: 'Down to' }),
-      'Low'
+    await user.click(screen.getByRole('button', { name: 'Apply suggestions' }));
+
+    expect(
+      screen.getAllByRole('menuitem').map((item) => item.textContent)
+    ).toEqual([
+      'Only the certain ones 1',
+      'Certain and very sure 2',
+      'All of them 3',
+    ]);
+  });
+
+  it('applies the choice, and the number it showed is what gets decided', async () => {
+    const user = userEvent.setup();
+    render(<BulkActions category="inconsistent" />);
+    expect(
+      screen.getByRole('button', { name: 'Keep all 4 as is' })
+    ).toBeEnabled();
+
+    await user.click(screen.getByRole('button', { name: 'Apply suggestions' }));
+    await user.click(
+      screen.getByRole('menuitem', { name: 'Certain and very sure 2' })
     );
 
-    const accept = screen.getByRole('button', {
-      name: 'Apply all with a suggestion · 3',
-    });
-    await user.click(accept);
-    expect(reviewStore$.getState().decisions.size).toBe(3);
+    expect(reviewStore$.getState().decisions.size).toBe(2);
+    expect(
+      screen.getByRole('button', { name: 'Keep all 2 as is' })
+    ).toBeEnabled();
+    await user.click(screen.getByRole('button', { name: 'Apply suggestions' }));
+    expect(
+      screen.getAllByRole('menuitem').map((item) => item.textContent)
+    ).toEqual(['All of them 1']);
+  });
+
+  it('keeps every pending issue as is, with or without a suggestion', async () => {
+    const user = userEvent.setup();
+    render(<BulkActions category="inconsistent" />);
+
+    await user.click(screen.getByRole('button', { name: 'Keep all 4 as is' }));
+
+    expect(reviewStore$.getState().decisions.size).toBe(4);
+    expect(
+      screen.getByRole('button', { name: 'Apply suggestions' })
+    ).toBeDisabled();
   });
 
   it('shows nothing to do for a category without issues', () => {
     render(<BulkActions category="missing" />);
 
     expect(
-      screen.getByRole('button', { name: 'Apply all certain and high · 0' })
+      screen.getByRole('button', { name: 'Apply suggestions' })
     ).toBeDisabled();
     expect(
-      screen.getByRole('button', { name: 'Keep all as is · 0' })
+      screen.getByRole('button', { name: 'Keep all 0 as is' })
     ).toBeDisabled();
   });
 });

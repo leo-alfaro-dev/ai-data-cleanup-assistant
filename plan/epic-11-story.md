@@ -1,10 +1,10 @@
-# Epic 11 — Story
+# Epic 11: Story
 
 **Outcome:** a reviewer understands in two minutes what this is, why it is built this way and that it works. The video shows it in five.
 
 **Why it matters:** the README and the video are what gets judged. Most reviewers will not clone the repository; they will read the first screen of the README and watch the video. Everything built before this epic only counts if these two make it visible. This epic is never cut.
 
-## T11.1 — Write the README
+## T11.1: Write the README
 
 **After:** checkpoint B at least
 
@@ -35,7 +35,7 @@
 - Every link resolves.
 - `yarn verify` passes, spellcheck included.
 
-## T11.2 — Add the five-minute demo script
+## T11.2: Add the five-minute demo script
 
 **After:** T11.1
 
@@ -61,7 +61,7 @@
 
 - A dry run of the clicks fits in five minutes, timed by you.
 
-## T11.3 — Run the final QA pass and complete the submission checklist
+## T11.3: Run the final QA pass and complete the submission checklist
 
 **After:** T11.2
 

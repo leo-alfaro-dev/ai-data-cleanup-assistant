@@ -34,6 +34,29 @@ describe('RunProgress', () => {
     vi.restoreAllMocks();
   });
 
+  it('shows beside the title how many hosted-key requests this window holds', () => {
+    showRun({ status: 'done' });
+    aiStore$.setState((state) => ({
+      ...state,
+      quota: { used: 12, limit: 50, resetsAt: Date.UTC(2026, 10, 16, 10, 42) },
+    }));
+
+    render(<RunProgress />);
+
+    expect(
+      screen.getByRole('heading', { name: 'AI tasks' }).parentElement
+    ).toHaveTextContent(/^AI tasks· 12 of 50 requests, resets at \S+/);
+  });
+
+  it('shows no count before the server reported one', () => {
+    showRun({ status: 'done' });
+
+    render(<RunProgress />);
+
+    expect(screen.getByText('Done')).toBeInTheDocument();
+    expect(screen.queryByText(/requests, resets at/)).not.toBeInTheDocument();
+  });
+
   it('shows a task as queued before any of its requests starts', () => {
     showRun({ status: 'queued' }, { status: 'queued' });
 

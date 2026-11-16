@@ -6,7 +6,7 @@ describe('toAiFailureReason', () => {
     [401, 'invalidKey'],
     [402, 'budgetExhausted'],
     [408, 'timeout'],
-    [429, 'rateLimited'],
+    [429, 'providerRateLimited'],
     [404, 'modelUnavailable'],
     [502, 'modelUnavailable'],
     [503, 'modelUnavailable'],

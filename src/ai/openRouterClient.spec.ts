@@ -88,7 +88,7 @@ describe('createOpenRouterClient', () => {
   it.each([
     [401, 'invalidKey'],
     [402, 'budgetExhausted'],
-    [429, 'rateLimited'],
+    [429, 'providerRateLimited'],
     [502, 'modelUnavailable'],
     [500, 'unexpected'],
   ])(

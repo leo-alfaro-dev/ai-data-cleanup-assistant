@@ -34,7 +34,7 @@ export function buildSummary({
       ...formatCategories(checksOnly.scores),
       formatPercent(pooledSuggestionAccuracy(checksOnly.scores)),
       '$0',
-      '—',
+      'n/a',
     ],
     ...sorted.map((result) => [
       result.model,
